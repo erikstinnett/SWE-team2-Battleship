@@ -1,0 +1,16 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "ocsf.jar"
+    ],
+    // The following will hide .class files in the editor
+    "files.exclude": {
+        // "**/.git": true,
+        // "**/.svn": true,
+        // "**/.hg": true,
+        // "**/CVS": true,
+        // "**/.DS_Store": true,
+        // "**/Thumbs.db": true
+        "**/*.class":true
+    }
+}

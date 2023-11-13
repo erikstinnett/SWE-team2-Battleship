@@ -1,0 +1,39 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ServerGUI",
+            "request": "launch",
+            "mainClass": "lab3out.ServerGUI",
+            "projectName": "LabOut_6a6d90f1"
+        },
+        {
+            "type": "java",
+            "name": "ClientGUI",
+            "request": "launch",
+            "mainClass": "lab3out.ClientGUI",
+            "args": "Client #1"
+        },
+        {
+            "type": "java",
+            "name": "ServerGUI",
+            "request": "launch",
+            "mainClass": "lab3out.ServerGUI",
+            "args": "Server"
+        },
+        {
+            "type": "java",
+            "name": "TestChatServer",
+            "request": "launch",
+            "mainClass": "lab2in.TestChatServer",
+            "args": [
+                "8300",
+                "500"
+            ]
+        }
+    ]
+}

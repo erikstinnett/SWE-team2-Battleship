@@ -1,0 +1,1 @@
+drop stuff here related to diagrams and overall design previously discussed

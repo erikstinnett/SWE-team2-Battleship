@@ -13,6 +13,7 @@ public class GameRoom {
 	
 	public void setPlayer2(ConnectionToClient p2) {
 		this.player2 = p2;
+		full = true;
 	}
 	
 	public ConnectionToClient getPlayer1() {

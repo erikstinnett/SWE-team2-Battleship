@@ -1,11 +1,12 @@
 package Utility;
 
-public class ShootGrid {
+public class ShootGrid extends Grid{
 
 	public ShootGrid() {
 		
 	}
-	public Coordinate miss{
-		return x;
+	
+	public void miss(int[] coordinate){
+		
 	}
 }

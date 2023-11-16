@@ -1,13 +1,15 @@
 package Utility;
 
-public class ShipGrid {
-	private Ship ship;
+import java.util.ArrayList;
+
+public class ShipGrid extends Grid{
+	private ArrayList<Ship> ship;
 	
-	public ShipGrid(Ship ship) {
-		
+	public ShipGrid(ArrayList<Ship> ship) {
+		this.ship = ship;
 	}
 
-	public Ship getShips() {
+	public ArrayList<Ship> getShips() {
 		return ship;
 	}
 }

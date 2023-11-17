@@ -38,6 +38,7 @@ public class ScoreboardPanel extends JPanel {
         exitLeaderboard.addActionListener(e -> {
             // Placeholder for exit functionality
             System.out.println("Exit button clicked");
+            
         });
     }
 

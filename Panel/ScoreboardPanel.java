@@ -71,8 +71,7 @@ private static void createAndShowGUI() {
 }
 }
 
-//You would also need a stub for the ScoreboardControl class since it is referenced in ScoreboardPanel.
+
 class ScoreboardControl {
-// This class should handle the logic for updating the scoreboard,
-// but for this test, we'll leave it empty.
+
 }

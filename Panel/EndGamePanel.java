@@ -48,9 +48,9 @@ class EndGamePanel extends JPanel {
         });
     }
 
-    // Additional methods and inner classes (if any)...
 }
 
+//mock EGC for testing..
 class EndGameControl {
     public boolean didPlayerWin() {
         // Logic to determine if the player won
@@ -67,7 +67,5 @@ class EndGameControl {
         System.out.println("Exiting to the main menu...");
     }
 
-    // Additional methods and inner classes (if any)...
 }
 
-// No separate test class is needed as the main method is included in the EndGamePanel class

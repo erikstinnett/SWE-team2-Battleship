@@ -5,6 +5,8 @@ import java.awt.GridLayout;
 
 import javax.swing.*;
 
+import Controller.CreateAccountControl;
+
 public class CreateAccountPanel extends JPanel
 {
   // Private data fields for the important GUI components.

@@ -3,6 +3,8 @@ package Panel;
 import java.awt.*;
 import javax.swing.*;
 
+import Controller.StartofGameControl;
+
 public class StartOfGamePanel extends JPanel {
     private Grid grid;
     private JLabel playerStatus;
@@ -10,7 +12,7 @@ public class StartOfGamePanel extends JPanel {
     private JPanel shipsPanel;
     private Object ships; // This could be a representation of ships for the UI
 
-    public StartOfGamePanel(StartOfGameControl control) {
+    public StartOfGamePanel(StartofGameControl control) {
         grid = new Grid();
         
         playerStatus = new JLabel("Place Your Ship Placement!");

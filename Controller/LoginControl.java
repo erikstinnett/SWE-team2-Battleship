@@ -1,5 +1,14 @@
 package Controller;
 
-public class LoginControl {
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LoginControl implements ActionListener{
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

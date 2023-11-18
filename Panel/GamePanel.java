@@ -2,6 +2,8 @@ package Panel;
 
 import javax.swing.*;
 
+import Controller.GameControl;
+
 //import Controller.GameControl;
 
 import java.awt.*;

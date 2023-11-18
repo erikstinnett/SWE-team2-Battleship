@@ -1,6 +1,9 @@
 package Panel;
 
 import javax.swing.*;
+
+import Controller.LoginControl;
+
 import java.awt.*;
 
 public class LoginPanel extends JPanel {

@@ -25,9 +25,11 @@ public class MenuControl implements ActionListener{
 			cardLayout.show(container, "InitialPanel");
 		}
 		else if (action.equals("Play!") || action.equals("Login!")) {
+			// "Find Game"
 			cardLayout.show(container, "StartofGamePanel");
 		}
 		else if (action.equals("View Scoreboard")) {
+			// "View Scoreboard"
 			cardLayout.show(container, "ScoreboardPanel");
 		}
 	}

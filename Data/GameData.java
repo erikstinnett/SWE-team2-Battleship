@@ -2,18 +2,21 @@ package Data;
 
 import java.io.*;
 
+import Utility.ShipGrid;
+import Utility.ShootGrid;
+
 public class GameData {
 
-	private int shipGrid;
-	private int shootGrid;
+	private ShipGrid shipGrid;
+	private ShootGrid shootGrid;
 	private int[] target;
 	
-	public int getShipGrid()
+	public ShipGrid getShipGrid()
 	{
 		return shipGrid;
 	}
 	
-	public int getShootGrid()
+	public ShootGrid getShootGrid()
 	{
 		return shootGrid;
 	}
@@ -23,12 +26,12 @@ public class GameData {
 		return target;
 	}
 	
-	public void setShipGrid(int shipGrid)
+	public void setShipGrid(ShipGrid shipGrid)
 	{
 		this.shipGrid = shipGrid;
 	}
 			
-	public void setShootGrid(int shootGrid)
+	public void setShootGrid(ShootGrid shootGrid)
 	{
 		this.shootGrid = shootGrid;
 	}

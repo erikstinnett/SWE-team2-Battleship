@@ -277,6 +277,7 @@ public class GameServer extends AbstractServer
 
       //Create Game data
       startofGameData = (StartofGameData)arg0;
+      
       gameData.gameData(startofGameData.getShipGrid(),startofGameData.getShootGrid());
 
       //Assign each players grid for the Server's reference

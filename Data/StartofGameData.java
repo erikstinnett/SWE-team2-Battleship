@@ -2,23 +2,28 @@ package Data;
 
 import java.io.*;
 
+import Utility.ShipGrid;
+
 public class StartofGameData {
 
-	private int shipGrid;
+	// private int shipGrid;
+
+	private ShipGrid shipGrid;
+	private ShootGrid shootGrid;
 	
-	public int ShipGrid()
-	  {
-	    return shipGrid;
-	  }
-	
-	public void getShipGrid(int shipGrid)
-	  {
-	    this.shipGrid = shipGrid;
-	  }
-	
-	public StartofGameData(int shipGrid)
+	public ShipGrid getShipGrid()
 	{
-		getShipGrid(shipGrid);
+	    return shipGrid;
+	}
+	
+	public ShootGrid getShootGrid(){
+		return shootGrid;
+	}
+	
+	public StartofGameData(ShipGrid shipGrid, ShootGrid shootGrid)
+	{
+		this.shipGrid = shipGrid;
+		this.shootGrid = shootGrid;
 	}
 	
 }

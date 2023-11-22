@@ -1,4 +1,4 @@
-package DataPackage;
+package Data;
 
 import java.io.*;
 

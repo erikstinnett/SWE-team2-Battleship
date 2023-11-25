@@ -17,7 +17,7 @@ public class Ship {
 		this.lives = lives;
 	}
 	
-	public int[] getCoordinate() {
+	public int[] getCoordinates() {
 		return coordinates;
 	}
 	
@@ -33,7 +33,7 @@ public class Ship {
 	// 	this.orientation = o;
 	// }
 	
-	public void setCoordinate(int[] coordinates) {
+	public void setCoordinates(int[] coordinates) {
 		this.coordinates = coordinates;
 	}
 	
@@ -51,6 +51,13 @@ public class Ship {
 
 	public void removeLife(){
 		this.lives -= 1;
+	}
+
+	public boolean isSunk(){
+		if (lives == 0)
+			return true;
+		else
+			return false;
 	}
 	
 	

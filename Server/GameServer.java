@@ -460,31 +460,39 @@ public class GameServer extends AbstractServer
         
       }
 
+        //Build feedback to send to client
+        Object result;
+        String sentences;
 
-      //REVISE: OR THIS COULD CLONE THE GAMEDATA SHOOTGRID ARRAY !!
-      //update player's gameroom shootgrid to include lastshot
-      if(whichPlayer.equals("Player 1")){
-        gameRoom.get(rNum).updatePlayer1ShootGrid(lastShot);
-      }
-      else{
-        gameRoom.get(rNum).updatePlayer2ShootGrid(lastShot);
-      }
-
-      //Build feedback to send to client
-      Object result;
-      String sentences;
-
-      if (hit_marker){
-        sentences = "Your opponent hit your " + hit_ship.getName();
-      }
-      else{
-        sentences = "Your opponent missed you";
-      }
-
+        //REVISE: OR THIS COULD CLONE THE GAMEDATA SHOOTGRID ARRAY !!
+        //update player's gameroom shootgrid to include lastshot
+        if(whichPlayer.equals("Player 1")){
+          //update shootgrid
+          gameRoom.get(rNum).updatePlayer1ShootGrid(lastShot);
+          //if a hit/miss, update shipgrid
+          if (hit_marker){
+            sentences = "Your opponent hit your " + hit_ship.getName();
+            // will have to find a way to show that the ship has been hit...
+          }
+          else{
+            sentences = "Your opponent missed you";
+            gameRoom.get(rNum).updatePlayer1ShipGridWithShots(lastShot, "miss");
+          }
+        }
+        else{
+          gameRoom.get(rNum).updatePlayer2ShootGrid(lastShot);
+          if (hit_marker){
+            sentences = "Your opponent hit your " + hit_ship.getName();
+          }
+          else{
+            sentences = "Your opponent missed you";
+            gameRoom.get(rNum).updatePlayer2ShipGridWithShots(lastShot, "miss");
+          }
+        }
 
       //This will test to see if any ships have lives left to see if the ATTACKER won
       if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk() && ships.get(4).isSunk()){
-        sentences += "Your opponent has sunk your fleet";
+        sentences += "\nYour opponent has sunk your fleet";
       }
 
       //construct message

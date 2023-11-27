@@ -1,4 +1,4 @@
 should  ships = 1
         shots = 2
 
-one grids? 
+player1 and player2 usernames stored in GameRoom!

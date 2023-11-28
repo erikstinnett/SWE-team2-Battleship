@@ -3,9 +3,13 @@ package Utility;
 import ocsf.server.ConnectionToClient;
 
 public class GameRoom {
+
+	//player related fields
 	private ConnectionToClient player1;
 	private ConnectionToClient player2;
 	private boolean full;
+	private String player1_username;
+	private String player2_username;
 
 	//grids
 	private ShipGrid p1_shipGrid;
@@ -21,6 +25,7 @@ public class GameRoom {
 		this.player1 = p1;
 	}
 	
+	//player methods
 	public void setPlayer2(ConnectionToClient p2) {
 		this.player2 = p2;
 		full = true;
@@ -29,10 +34,26 @@ public class GameRoom {
 	public ConnectionToClient getPlayer1() {
 		return player1;
 	}
+
+	public String getPlayer1Username(){
+		return player1_username;
+	}
+
+	public void setPlayer1Username(String username){
+		player1_username = username;
+	}
 	
 	public ConnectionToClient getPlayer2() {
 		return player2;
 		
+	}
+
+	public String getPlayer2Username(){
+		return player2_username;
+	}
+
+	public void setPlayer2Username(String username){
+		player2_username = username;
 	}
 	
 	public boolean isFull() {

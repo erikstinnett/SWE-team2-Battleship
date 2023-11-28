@@ -349,7 +349,7 @@ public class GameServer extends AbstractServer
       int rNum = gameRoomCount;
 
       //Get grid arrays
-      shootGridarr = shootGrid.getGridasArray(); //ATTACKER
+      shootGridarr = shootGrid.getGrid(); //ATTACKER
       ShipGrid shipGrid;
       //Is the attacker's last shot null? TRUE/FALSE
       Boolean attackerLastShotisNull;

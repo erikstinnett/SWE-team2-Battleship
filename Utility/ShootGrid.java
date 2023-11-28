@@ -2,11 +2,11 @@ package Utility;
 
 public class ShootGrid extends Grid{
 
-	// private int[][] shootGrid;
+	private int[][] shootGrid;
 
 	public ShootGrid() {
 		super();
-		// shootGrid = super.getGrid(); 
+		shootGrid = super.getGrid(); 
 		
 	}
 	
@@ -19,6 +19,10 @@ public class ShootGrid extends Grid{
 		super.updateGrid(lastShot, "ShootGrid");
 		//return parent grid
 		// shootGrid = super.getGrid();
+	}
+	
+	public int[][] getGrid(){
+		return shootGrid;
 	}
 
 }

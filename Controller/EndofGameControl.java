@@ -11,4 +11,19 @@ public class EndofGameControl implements ActionListener{
 		
 	}
 
+	public boolean didPlayerWin() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Object restartGame() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Object exitToMainMenu() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

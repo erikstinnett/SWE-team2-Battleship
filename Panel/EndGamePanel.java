@@ -1,13 +1,16 @@
 package Panel;
 
 import javax.swing.*;
+
+import Controller.EndofGameControl;
+
 import java.awt.*;
 
-class EndGamePanel extends JPanel {
-    private EndGameControl control;
+public class EndGamePanel extends JPanel {
+    private EndofGameControl control;
 
-    public EndGamePanel(EndGameControl ec) {
-        this.control = ec; // Store the reference to the EndGameControl object
+    public EndGamePanel(EndofGameControl egc) {
+        this.control = egc; // Store the reference to the EndGameControl object
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Determine the winner and create a message
@@ -41,7 +44,7 @@ class EndGamePanel extends JPanel {
         SwingUtilities.invokeLater(() -> {
             JFrame frame = new JFrame("End Game Panel Test");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new EndGamePanel(new EndGameControl()));
+            frame.add(new EndGamePanel(new EndofGameControl()));
             frame.pack();
             frame.setLocationRelativeTo(null); // Center the window
             frame.setVisible(true);

@@ -2,12 +2,13 @@ package Panel;
 
 import javax.swing.*;
 import java.awt.*;
+import Controller.ScoreboardControl;
 
 public class ScoreboardPanel extends JPanel {	
 	private JTable scoreTable;
 	
 	
-    public ScoreboardPanel(ScoreboardControl sc) {
+    public ScoreboardPanel(ScoreboardControl scoreboardControl) {
         // Initialize scoreboard
     	setLayout(new BorderLayout(10,10));
     	   	
@@ -71,7 +72,3 @@ private static void createAndShowGUI() {
 }
 }
 
-
-class ScoreboardControl {
-
-}

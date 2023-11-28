@@ -90,7 +90,7 @@ public class GameClient extends AbstractClient {
             // If we successfully created an account, tell the create account controller.
             else if (message.equals("CreateAccountSuccessful"))
             {
-                createAccountController.accountCreationSuccess();
+                createAccountController.createAccountSuccess();
                 //createAccountController.displayMessage(message);
             }
         }
@@ -104,13 +104,13 @@ public class GameClient extends AbstractClient {
             // Display login errors using the login controller.
             if (error.getType().equals("Login"))
             {
-                loginController.displayError(error.getMessage());
+                loginController.incorrectLogin(error.getMessage());
             }
             
             // Display account creation errors using the create account controller.
             else if (error.getType().equals("CreateAccount"))
             {
-                createAccountController.displayMessage(error.getMessage());
+                createAccountController.invalidAccount(error.getMessage());
             }
         }
 

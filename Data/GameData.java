@@ -41,7 +41,7 @@ public class GameData {
 		this.target = target;
 	}
 	
-	public GameData(int shipGrid, int shootGrid)
+	public GameData(ShipGrid shipGrid, ShootGrid shootGrid)
 	{
 		setShipGrid(shipGrid);
 		setShootGrid(shootGrid);

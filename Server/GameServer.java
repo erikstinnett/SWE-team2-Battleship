@@ -4,6 +4,7 @@ package Server;
 import Data.*;
 //
 import Utility.*;
+import Utility.Error;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.*;
@@ -129,7 +130,7 @@ public class GameServer extends AbstractServer
       Object result ="";
       String username = data.getUsername();
       String password = data.getPassword();
-      String passwordForVerif = data.getPasswordForVerification();
+      //String passwordForVerif = data.getPasswordForVerification();
 
       String query = "select username from user where username ='" + username + "'";
 
@@ -146,11 +147,11 @@ public class GameServer extends AbstractServer
         log.append("Client " + arg1.threadId() + " failed to create a new account\n");
         NoCredError = false;
       }
-      else if(!password.equals(passwordForVerif)){
-        result = new Error("Passwords must match", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
-        NoCredError = false;
-      }
+//      else if(!password.equals(passwordForVerif)){
+//        result = new Error("Passwords must match", "CreateAccount");
+//        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+//        NoCredError = false;
+//      }
 
       if (NoCredError) {
           if (!db.query(query)) //if NOT exists... create! (NoCredError has to be TRUE=no error)

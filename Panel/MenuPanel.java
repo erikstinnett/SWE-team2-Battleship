@@ -1,7 +1,7 @@
 package Panel;
 
-import javax.swing.;
-import java.awt.;
+import javax.swing.*;
+import java.awt.*;
 import Controller.MenuControl;
 
 public class MenuPanel extends JPanel {

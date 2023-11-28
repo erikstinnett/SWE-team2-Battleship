@@ -27,8 +27,8 @@ public class GameGUI extends JFrame{
 	    LoginControl lc  = new LoginControl(container, gameClient);
 	    MenuControl mc = new MenuControl(container, gameClient);
 	    ScoreboardControl sc = new ScoreboardControl();
-	    StartofGameControl sgc = new StartofGameControl();
-	    GameControl gc = new GameControl();
+	    StartofGameControl sgc = new StartofGameControl(container, gameClient);
+	    GameControl gc = new GameControl(container, gameClient);
 	   
 	    //Create panels for each controller
 	    // ex. JPanel view1 = new InitialPanel(ic)

@@ -25,7 +25,7 @@ public class LoginControl implements ActionListener{
 		
 		if (action.equals("Cancel")) {
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container,  "InitialPanel");
+			cardLayout.show(container,"1");
 		}
 		else if (action.equals("Submit")) {
 			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);

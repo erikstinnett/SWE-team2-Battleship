@@ -26,7 +26,7 @@ public class CreateAccountControl implements ActionListener{
 		
 		if (action.equals("Cancel")) {
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container, "InitialPanel");
+			cardLayout.show(container, "1");
 		}
 		else if (action.equals("Submit")) {
 			CreateAccountPanel createAccountPanel = (CreateAccountPanel)container.getComponent(2);

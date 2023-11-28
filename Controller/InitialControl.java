@@ -24,12 +24,12 @@ public class InitialControl implements ActionListener{
 		if (action.equals("Login")) {
 			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
 			loginPanel.setError("");
-			cardLayout.show(container, "LoginPanel");
+			cardLayout.show(container,"2");
 		}
 		else if (action.equals("Create Account")) {
 			CreateAccountPanel createAccountPanel = (CreateAccountPanel)container.getComponent(2);
 			createAccountPanel.setError("");
-			cardLayout.show(container,  "CreateAccountPanel");
+			cardLayout.show(container,"3");
 		}
 	}
 

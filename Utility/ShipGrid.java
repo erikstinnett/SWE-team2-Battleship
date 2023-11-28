@@ -3,13 +3,22 @@ package Utility;
 import java.util.ArrayList;
 
 public class ShipGrid extends Grid{
-	private ArrayList<Ship> ship;
+	private ArrayList<Ship> ships;
 	
-	public ShipGrid(ArrayList<Ship> ship) {
-		this.ship = ship;
+	public ShipGrid(ArrayList<Ship> ships) {
+		this.ships = ships;
 	}
 
 	public ArrayList<Ship> getShips() {
-		return ship;
+		return ships;
+	}
+
+	public int[][] getGridasArray(){
+		return super.getGrid();
+	}
+
+	public void update(int[] lastShot, String type){
+		//type = hit or miss
+		super.updateGrid(lastShot, type);
 	}
 }

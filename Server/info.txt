@@ -1,0 +1,4 @@
+should  ships = 1
+        shots = 2
+
+one grids? 

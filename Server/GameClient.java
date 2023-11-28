@@ -26,6 +26,9 @@ public class GameClient extends AbstractClient {
     private LoginControl loginController;
     private CreateAccountControl createAccountController;
 
+    //player cred
+    private String username;
+
     public GameClient(){
 
         super("localhost",8300);
@@ -85,6 +88,7 @@ public class GameClient extends AbstractClient {
             if (message.equals("LoginSuccessful"))
             {
                 loginController.loginSuccess();
+
             }
             
             // If we successfully created an account, tell the create account controller.
@@ -130,6 +134,13 @@ public class GameClient extends AbstractClient {
             //
             else if (feedback.getType().equals("")){
                 //implement
+            }
+
+            //login success
+            else if (feedback.getType().equals("LoginSuccessful")){
+                loginController.loginSuccess();
+                //assign the client's username
+                this.username = feedback.getMessage();
             }
         }
         

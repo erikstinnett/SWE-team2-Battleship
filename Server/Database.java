@@ -26,7 +26,7 @@ public class Database {
     // private String dml;
 
     // Constructor for DatabaseFile
-    public Database() throws IOException { // REVISE: if needed...
+    public Database() { // REVISE: if needed...
         //Create a properties object
         Properties prop = new Properties();
 
@@ -34,9 +34,9 @@ public class Database {
         //the db.properties file
         FileInputStream fis;
         try {
-            fis = new FileInputStream("lab7out/db.properties");
+            fis = new FileInputStream("REVISE/db.properties");
             prop.load(fis);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -53,14 +53,6 @@ public class Database {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // String currentDirectory = System.getProperty("user.dir");
-        // file = new File(currentDirectory + "\\data.txt");
-        // try {
-        //     file.createNewFile();
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
     }
 
     // public void setQuery(String query){
@@ -158,6 +150,8 @@ public class Database {
     stmt.execute(dml);
   }
 
+
+    //*************UN- USED CODE*********** */
     // public void setNewUserID(String id){
     //     this.id = id;
 

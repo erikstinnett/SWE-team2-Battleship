@@ -99,29 +99,29 @@ public class GamePanel extends JPanel {
     }    
     }
     
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                createAndShowGUI();
-            }
-        });
-    }
-
-    private static void createAndShowGUI() {
-        // Create the main window (frame)
-        JFrame frame = new JFrame("Battleship Game Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Create an instance of StartOfGamePanel
-        GamePanel GamePanel = new GamePanel(new GameControl()); // Assuming you have a StartOfGameControl class
-        frame.add(GamePanel);
-
-        // Configure the frame
-        frame.setPreferredSize(new Dimension(900, 600)); // Adjust as necessary
-        frame.setMinimumSize(frame.getPreferredSize()); // Prevent the frame from being too small
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
-    // Additional game-related methods
+//    public static void main(String[] args) {
+//        SwingUtilities.invokeLater(new Runnable() {
+//            public void run() {
+//                createAndShowGUI();
+//            }
+//        });
+//    }
+//
+//    private static void createAndShowGUI() {
+//        // Create the main window (frame)
+//        JFrame frame = new JFrame("Battleship Game Test");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//
+//        // Create an instance of StartOfGamePanel
+//        GamePanel GamePanel = new GamePanel(new GameControl()); // Assuming you have a StartOfGameControl class
+//        frame.add(GamePanel);
+//
+//        // Configure the frame
+//        frame.setPreferredSize(new Dimension(900, 600)); // Adjust as necessary
+//        frame.setMinimumSize(frame.getPreferredSize()); // Prevent the frame from being too small
+//        frame.pack();
+//        frame.setLocationRelativeTo(null);
+//        frame.setVisible(true);
+//    }
+//    // Additional game-related methods
 }

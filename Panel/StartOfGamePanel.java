@@ -1,16 +1,19 @@
 package Panel;
 
 import java.awt.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 import Controller.StartofGameControl;
+import Utility.Ship;
 
 public class StartOfGamePanel extends JPanel {
     private Grid grid;
     private JLabel playerStatus;
     private JButton confirmPlacement;
     private JPanel shipsPanel;
-    private Object ships; // This could be a representation of ships for the UI
+    private ArrayList<Ship> ships; // This could be a representation of ships for the UI
 
     public StartOfGamePanel(StartofGameControl control) {
         grid = new Grid();
@@ -32,8 +35,12 @@ public class StartOfGamePanel extends JPanel {
         shipsPanel.setPreferredSize(new Dimension(200,500));
         setPreferredSize(new Dimension(600,600));
     }
+    
+    public void setButtonStatus(Boolean bool) {
+    	confirmPlacement.setEnabled(bool);
+    }
 
-    public Object getShips() {
+    public ArrayList<Ship> getShips() {
         return ships;
     }
 

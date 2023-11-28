@@ -6,12 +6,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
+import Server.GameClient;
+import Utility.Feedback;
+
 public class MenuControl implements ActionListener{
 
 	private JPanel container;
-	private Object gameClient;
+	private GameClient gameClient;
 	
-	public MenuControl(JPanel container, Object gameClient) {
+	public MenuControl(JPanel container, GameClient gameClient) {
 		this.container = container;
 		this.gameClient = gameClient;
 	}
@@ -25,12 +28,22 @@ public class MenuControl implements ActionListener{
 			cardLayout.show(container, "InitialPanel");
 		}
 		else if (action.equals("Play!") || action.equals("Login!")) {
-			// "Find Game"
-			cardLayout.show(container, "StartofGamePanel");
+			Feedback feedback = new Feedback("Find a Game", "Create Game");
+			try {
+				gameClient.sendToServer(feedback);
+				cardLayout.show(container, "StartofGamePanel");
+			}catch (Exception err) {
+				err.printStackTrace();
+			}
 		}
 		else if (action.equals("View Scoreboard")) {
-			// "View Scoreboard"
-			cardLayout.show(container, "ScoreboardPanel");
+			Feedback feedback = new Feedback("Show the leaderboards", "ScoreBoardData");
+			try {
+				gameClient.sendToServer(feedback);
+				cardLayout.show(container, "ScoreboardPanel");
+			}catch (Exception err) {
+				err.printStackTrace();
+			}
 		}
 	}
 

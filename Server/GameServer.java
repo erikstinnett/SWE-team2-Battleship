@@ -103,12 +103,12 @@ public class GameServer extends AbstractServer
       if (password.equals(db.queryCheckPassword(query)))
       {
         result = "LoginSuccessful";
-        log.append("Client " + arg1.threadId() + " successfully logged in as " + data.getUsername() + "\n");
+        log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
       }
       else
       {
         result = new Error("The username and password are incorrect.", "Login");
-        log.append("Client " + arg1.threadId() + " failed to log in\n");
+        log.append("Client " + arg1.getId() + " failed to log in\n");
       }
       
       // Send the result to the client.
@@ -139,12 +139,12 @@ public class GameServer extends AbstractServer
 
       if (username.equals("")||password.equals("")){
         result = new Error("You must enter a username and password", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+        log.append("Client " + arg1.getId() + " failed to create a new account\n");
         NoCredError = false;
       } 
       else if(username.length() < 6){
         result = new Error("Username must be at least 6 characters", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+        log.append("Client " + arg1.getId() + " failed to create a new account\n");
         NoCredError = false;
       }
 //      else if(!password.equals(passwordForVerif)){
@@ -170,12 +170,12 @@ public class GameServer extends AbstractServer
           }
 
           result = "CreateAccountSuccessful";
-          log.append("Client " + arg1.threadId() + " created a new account called " + data.getUsername() + "\n");
+          log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
         }
         else
         {
           result = new Error("Username has already been selected", "CreateAccount");
-          log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+          log.append("Client " + arg1.getId() + " failed to create a new account\n");
         }
       }
 
@@ -569,7 +569,7 @@ public class GameServer extends AbstractServer
   protected void clientConnected(ConnectionToClient client) 
   {
     //Create User id
-    Long id = client.threadId();
+    Long id = client.getId();
     String userID = id.toString();
     //user_id = new User(userID);
 

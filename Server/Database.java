@@ -63,7 +63,7 @@ public class Database {
     //     this.dml= dml;
     // }
 
-    public Boolean query(String query)
+  public ArrayList<Strings> query(String query)
   {
 
     //instantiate arraylist
@@ -80,13 +80,13 @@ public class Database {
       // //Get the # of columns
       int no_columns = rmd.getColumnCount();
     
-    //   // //Get a column name
-    //   String name="";
+      // // //Get a column name
+      // String name="";
 
-    //   for (int i = 0; i < no_columns; i++){
-    //     name += rmd.getColumnName(i+1) + ",";
-    //   }
-    //   records.add(name);
+      // for (int i = 0; i < no_columns; i++){
+      //   name += rmd.getColumnName(i+1) + ",";
+      // }
+      // records.add(name);
       
       //Use a while loop to process the rows - Create a comma delimitted record from each field
       //and add comma delimited record to ArrayList
@@ -94,7 +94,10 @@ public class Database {
       {
         String row = "";
         for (int i = 0; i < no_columns; i++){
-          row += rs.getString(i+1) + ",";
+          row += rs.getString(i+1);
+          //avoid placing comma at the end of last item
+          if (i != no_columns - 1)
+            row += " , ";
         }
         records.add(row);
         //record.add(rs.getString(2));
@@ -107,15 +110,15 @@ public class Database {
       // TODO: handle exception
       //e.printStackTrace();
       //return null since the query did not go through
-      return false;
+      return null;
     }
     
     //return to show if it exists or not
     if (records.isEmpty()){
-        return false;
+        return null;
     }
     else{
-        return true;
+        return records;
     }
   }
 

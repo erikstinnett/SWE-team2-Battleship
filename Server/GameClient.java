@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,8 +80,7 @@ public class GameClient extends AbstractClient {
     public void handleMessageFromServer(Object arg0){
             
         // If we received a String, figure out what this event is.
-        if (arg0 instanceof String)
-        {
+        if (arg0 instanceof String){
             // Get the text of the message.
             String message = (String)arg0;
             
@@ -100,8 +100,7 @@ public class GameClient extends AbstractClient {
         }
         
         // If we received an Error, figure out where to display it.
-        else if (arg0 instanceof Error)
-        {
+        else if (arg0 instanceof Error){
             // Get the Error object.
             Error error = (Error)arg0;
             
@@ -142,6 +141,14 @@ public class GameClient extends AbstractClient {
                 //assign the client's username
                 this.username = feedback.getMessage();
             }
+        }
+
+        else if (arg0 instanceof ArrayList){
+
+            ArrayList test = (ArrayList)arg0;
+
+            //
+
         }
         
     }

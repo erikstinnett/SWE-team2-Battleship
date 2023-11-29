@@ -19,6 +19,7 @@ public class StartofGameControl implements ActionListener{
 		this.gameClient = gameClient;
 	}
 	
+	// TO-DO figure out how turn order will be handled!
 	public void startGame(Boolean goesFirst){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "GamePanel");
@@ -31,7 +32,7 @@ public class StartofGameControl implements ActionListener{
 		
 		if (action.equals("Confirm Ship Placement")) {
 			StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
-			sogPanel.setButtonStatus(true);
+			sogPanel.setButtonStatus(false);
 		}
 	}
 

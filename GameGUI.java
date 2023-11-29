@@ -22,11 +22,11 @@ public class GameGUI extends JFrame{
 	    
 	    //Create controllers 
 	    CreateAccountControl cac = new CreateAccountControl(container, gameClient);
-	    EndofGameControl egc = new EndofGameControl();
+	    EndofGameControl egc = new EndofGameControl(container, gameClient);
 	    InitialControl ic = new InitialControl(container);
 	    LoginControl lc  = new LoginControl(container, gameClient);
 	    MenuControl mc = new MenuControl(container, gameClient);
-	    ScoreboardControl sc = new ScoreboardControl();
+	    ScoreboardControl sc = new ScoreboardControl(container, gameClient);
 	    StartofGameControl sgc = new StartofGameControl(container, gameClient);
 	    GameControl gc = new GameControl(container, gameClient);
 	   
@@ -38,19 +38,19 @@ public class GameGUI extends JFrame{
 	    JPanel view4 = new MenuPanel(mc);
 	    JPanel view5 = new StartOfGamePanel(sgc);
 	    JPanel view6 = new GamePanel(gc);
-	    JPanel view7 = new ScoreboardPanel(sc);
+	    JPanel view7 = new ScoreboardPanel();
 	    JPanel view8 = new EndGamePanel(egc);
 
 	    // add each view to the container
 	    
-	    container.add(view1, "1");
-	    container.add(view2, "2");
-	    container.add(view3, "3");
-	    container.add(view4, "4");
-	    container.add(view5, "5");
-	    container.add(view6, "6");
-	    container.add(view7, "7");
-	    container.add(view8, "8");
+	    container.add(view1, "InitialPanel");
+	    container.add(view2, "LoginPanel");
+	    container.add(view3, "CreateAccountPanel");
+	    container.add(view4, "MenuPanel");
+	    container.add(view5, "StartOfGamePanel");
+	    container.add(view6, "GamePanel");
+	    container.add(view7, "ScoreboardPanel");
+	    container.add(view8, "EndGamePanel");
 
 	    //show default container
 	    cardLayout.show(container, "1");

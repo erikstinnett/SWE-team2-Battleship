@@ -27,7 +27,7 @@ public class LoginControl implements ActionListener{
 		
 		if (action.equals("Cancel")) {
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container,"1");
+			cardLayout.show(container,"InitialPanel");
 		}
 		else if (action.equals("Submit")) {
 			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
@@ -44,7 +44,6 @@ public class LoginControl implements ActionListener{
 			catch(IOException er) {
 				loginPanel.setError("Error connecting to the server.");
 			}
-			System.out.println("SUBMIT HIT");
 		}
 	}
 	

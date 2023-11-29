@@ -7,28 +7,28 @@ public class EndofGameData {
 	private String winerUser;
 	private String loserUser;
 	  
-	  public String winerUser()
+	  public String getwinerUser()
 	  {
 	    return winerUser;
 	  }
-	  public String loserUser()
+	  public String getloserUser()
 	  {
 	    return loserUser;
 	  }
 	  
-	  public void getwinerUser(String winerUser)
+	  public void setwinerUser(String winerUser)
 	  {
 	    this.winerUser = winerUser;
 	  }
-	  public void getloserUser(String passwordloserUser)
+	  public void setloserUser(String loserUser)
 	  {
 	    this.loserUser = loserUser;
 	  }
 	  
 	  public EndofGameData(String winerUser, String loserUser)
 	  {
-	    getwinerUser(winerUser);
-	    getloserUser(loserUser);
+	    setwinerUser(winerUser);
+	    setloserUser(loserUser);
 	  }
 	  
 	  

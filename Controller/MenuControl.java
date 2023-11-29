@@ -27,7 +27,7 @@ public class MenuControl implements ActionListener{
 		if (action.equals("Exit")) {
 			cardLayout.show(container, "InitialPanel");
 		}
-		else if (action.equals("Play!") || action.equals("Login!")) {
+		else if (action.equals("Play!")) {
 			Feedback feedback = new Feedback("Find a Game", "Create Game");
 			try {
 				gameClient.sendToServer(feedback);
@@ -40,7 +40,6 @@ public class MenuControl implements ActionListener{
 			Feedback feedback = new Feedback("Show the leaderboards", "ScoreBoardData");
 			try {
 				gameClient.sendToServer(feedback);
-				cardLayout.show(container, "ScoreboardPanel");
 			}catch (Exception err) {
 				err.printStackTrace();
 			}

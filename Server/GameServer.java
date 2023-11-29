@@ -29,7 +29,6 @@ public class GameServer extends AbstractServer
   //Utilities
   // private GameRoom[] gameRoom = new GameRoom[10];
   private ArrayList<GameRoom> gameRoom = new ArrayList<GameRoom>();
-  private ArrayList<Strings> queryResults;
 
   //grid 
   private int[][] shootGridarr;
@@ -43,6 +42,9 @@ public class GameServer extends AbstractServer
   //ships
   private ArrayList<Ship> ships;
   private Ship ship;
+
+  //other utilities for mini tasks
+  private ArrayList queryResults;
 
 
   public void setDatabase(Database db){
@@ -131,9 +133,10 @@ public class GameServer extends AbstractServer
       String password = data.getPassword();
       // String passwordForVerif = data.getPasswordForVerification();
 
-      String query = "select username from user where username ='" + username + "'";
+      String query = "select username from user where username ='" + username + "'";      
 
-      if (!db.query(query)) { //if NOT exists... create! (NoCredError has to be TRUE=no error)
+      //if NULL, then create user
+      if (db.query(query).equals(null)) { 
           //insert the username and password
           String dml = "insert into user values('";
                 dml += username + "',aes_encrypt('";
@@ -328,23 +331,20 @@ public class GameServer extends AbstractServer
           player_username = gameRoom.get(rNum).getPlayer2Username();
         }
 
-        //construct query results
-        String query = "select username,wins,losses from gameData where name = \"" + player_username + "\";";
+        //query for getting the player's username
+        String query_get_player = "select username,wins,losses from gameData where name = \"" + player_username + "\";";
 
-        //add query results to arraylist
-        queryResults = db.query(query);
+        //query for getting top 5 players
+        String query_get_top_5 = "select username,wins,losses from gameData order by wins desc limit 5;";
 
-        //create feedback
-        String sentences = "Not implemented yet";
-
-        //construct message
-        Object result;
-        result = new Feedback(sentences, "EndofGame");
+        //get the player, and top 5, and add them to queryResults
+        queryResults.addAll(0, db.query(query_get_player));
+        queryResults.addAll(1, db.query(query_get_top_5));
         
-        // Send the username,wins,and losses to the client.
+        // Send the queryREsults.
         try
         {
-          arg1.sendToClient(result);
+          arg1.sendToClient(queryResults);
         }
         catch (IOException e)
         {

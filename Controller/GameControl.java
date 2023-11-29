@@ -42,7 +42,12 @@ public class GameControl implements ActionListener{
 	
 	public void endGame(EndofGameData eogData) {
 		EndGamePanel egp = (EndGamePanel) container.getComponent(9);
-		egp.setResult(eogData.getwinerUser() + " has won the game!");
+		if (eogData.isWin()) {
+			egp.setResult("CONGRATULATIONS!!! YOU WIN!");
+		}
+		else {
+			egp.setResult("You lose. Try again!");
+		}
 		
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "EndGamePanel");

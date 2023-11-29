@@ -63,7 +63,7 @@ public class Database {
     //     this.dml= dml;
     // }
 
-  public ArrayList<Strings> query(String query)
+  public ArrayList<String> query(String query)
   {
 
     //instantiate arraylist

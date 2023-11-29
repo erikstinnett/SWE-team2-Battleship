@@ -222,15 +222,15 @@ public class GameServer extends AbstractServer
         String type;
 
         if (gameRoom.get(rNum).getPlayer1() != null){
-          gameRoom.get(rNum).setPlayer2(arg0);
+          gameRoom.get(rNum).setPlayer2(arg1);
           //get message
           sentence = "You are player 2";
           type = "CreateGameWait"; 
         }
         else{
-          gameRoom.get(rNum).GameRoom(arg1);
+          gameRoom.add(new GameRoom(arg1));
           //get message
-          sentence += "You are player 1\nWaiting for Opponent";
+          sentence = "You are player 1\nWaiting for Opponent";
           type = "CreateGameReady";
         }
 
@@ -279,11 +279,11 @@ public class GameServer extends AbstractServer
       //Create Game data
       startofGameData = (StartofGameData)arg0;
       
-      gameData.gameData(startofGameData.getShipGrid(),startofGameData.getShootGrid());
+      GameData gameData = new GameData(startofGameData.getShipGrid(),startofGameData.getShootGrid());
 
       //Assign each players grid for the Server's reference
       int gameRoomCount = 0;
-      String whichPlayer;
+      String whichPlayer = "";
       
       //Test which gameroom to use...
       for (int i = 0; i < gameRoom.size(); i++){
@@ -324,7 +324,7 @@ public class GameServer extends AbstractServer
 
       //determine the player
       int gameRoomCount = 0;
-      String whichPlayer;
+      String whichPlayer = "";
       
       //Test which gameroom to use...
       for (int i = 0; i < gameRoom.size(); i++){
@@ -428,7 +428,7 @@ public class GameServer extends AbstractServer
       //Get opponents ships to do further action!
       ships = shipGrid.getShips(); //DEFENDER ships
       Boolean hit_marker = false;
-      Ship hit_ship;
+      Ship hit_ship = new Ship("temp", 0);
 
       //loop over DEFENDER ships and see if ATTACKER lastshot matches their coordinates
       for (int shipIndex = 0; shipIndex < ships.size();shipIndex++){

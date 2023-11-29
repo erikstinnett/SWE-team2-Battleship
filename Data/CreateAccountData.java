@@ -7,27 +7,27 @@ public class CreateAccountData implements Serializable
   private String username;
   private String password;
   
-  public String Username()
+  public String getUsername()
   {
     return username;
   }
-  public String Password()
+  public String getPassword()
   {
     return password;
   }
   
-  public void getUsername(String username)
+  public void setUsername(String username)
   {
     this.username = username;
   }
-  public void getPassword(String password)
+  public void setPassword(String password)
   {
     this.password = password;
   }
 
   public CreateAccountData(String username, String password)
   {
-    getUsername(username);
-    getPassword(password);
+    setUsername(username);
+    setPassword(password);
   }
 }

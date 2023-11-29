@@ -1,21 +1,21 @@
 package Utility;
 
 public abstract class Grid {
-	private int[][] grid;
+	protected int[][] grid;
 	
 	public Grid() {
 		grid = new int[10][10];
 	}
 	
-	public void hit(int[] coord) {
+	protected void hit(int[] coord) {
 		
 	}
 	
-	public int[][] getGrid(){
+	protected int[][] getGrid(){
 		return grid;
 	}
 
-	public void updateGrid(int[] coords,String type){
+	protected void updateGrid(int[] coords,String type){
 		//1 = shot coord
 		//2 = ship coords
 
@@ -46,7 +46,7 @@ public abstract class Grid {
 		}
 	}
 
-	public String badPlacement(String err){
+	protected String badPlacement(String err){
 
 		return err;
 	}

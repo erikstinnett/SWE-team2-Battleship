@@ -2,9 +2,9 @@ package Utility;
 
 public class Ship {
 	
-	// private int size;
+	//private int size;
 	private int lives;
-	// private boolean orientation;
+	private boolean orientation;
 	private int[] coordinates;
 	private String name;
 	private boolean status;

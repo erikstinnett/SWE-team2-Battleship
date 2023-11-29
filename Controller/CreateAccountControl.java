@@ -3,7 +3,9 @@ package Controller;
 import java.awt.*;
 import javax.swing.*;
 
+import Data.CreateAccountData;
 import Panel.CreateAccountPanel;
+import Server.GameClient;
 
 import java.awt.event.*;
 import java.io.IOException;
@@ -11,9 +13,9 @@ import java.io.IOException;
 public class CreateAccountControl implements ActionListener{
 
 	private JPanel container;
-	private Object gameClient;
+	private GameClient gameClient;
 	
-	CreateAccountControl(JPanel container, Object gameClient){
+	public CreateAccountControl(JPanel container, GameClient gameClient){
 		this.container = container;
 		this.gameClient = gameClient;
 	}
@@ -45,13 +47,13 @@ public class CreateAccountControl implements ActionListener{
 				return;
 			}
 			
-//			CreateAccountData data = new CreateAccountData(username, password);
-//			try {
-//				client.sendToServer(data);
-//				
-//			}catch (IOException e) {
-//				createAccountPanel.setError("Error connecting to the server.");
-//			}
+			CreateAccountData data = new CreateAccountData(username, password);
+			try {
+				gameClient.sendToServer(data);
+				
+			}catch (IOException err) {
+				createAccountPanel.setError("Error connecting to the server.");
+			}
 		}
 	}
 	

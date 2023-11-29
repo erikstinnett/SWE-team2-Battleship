@@ -4,6 +4,7 @@ package Server;
 import Data.*;
 //
 import Utility.*;
+import Utility.Error;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.*;
@@ -105,12 +106,12 @@ public class GameServer extends AbstractServer
       if (password.equals(db.queryCheckPassword(query)))
       {
         result = new Feedback(data.getUsername(),"LoginSuccessfull");
-        log.append("Client " + arg1.threadId() + " successfully logged in as " + data.getUsername() + "\n");
+        log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
       }
       else
       {
         result = new Error("The username and password are incorrect.", "Login");
-        log.append("Client " + arg1.threadId() + " failed to log in\n");
+        log.append("Client " + arg1.getId() + " failed to log in\n");
       }
       
       // Send the result to the client.
@@ -131,8 +132,8 @@ public class GameServer extends AbstractServer
       Object result ="";
       String username = data.getUsername();
       String password = data.getPassword();
+      
       // String passwordForVerif = data.getPasswordForVerification();
-
       String query = "select username from user where username ='" + username + "'";      
 
       //if NULL, then create user
@@ -151,11 +152,13 @@ public class GameServer extends AbstractServer
           }
 
           result = "CreateAccountSuccessful";
-          log.append("Client " + arg1.threadId() + " created a new account called " + data.getUsername() + "\n");
-      }
-      else {
-        result = new Error("Username has already been selected", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+          log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
+        }
+        else
+        {
+          result = new Error("Username has already been selected", "CreateAccount");
+          log.append("Client " + arg1.getId() + " failed to create a new account\n");
+        }
       }
 
       // Send the result to the client.
@@ -255,15 +258,15 @@ public class GameServer extends AbstractServer
         String type;
 
         if (gameRoom.get(rNum).getPlayer1() != null){
-          gameRoom.get(rNum).setPlayer2(arg0);
+          gameRoom.get(rNum).setPlayer2(arg1);
           //get message
           sentence = "You are player 2";
           type = "CreateGameWait"; 
         }
         else{
-          gameRoom.get(rNum).GameRoom(arg1);
+          gameRoom.add(new GameRoom(arg1));
           //get message
-          sentence += "You are player 1\nWaiting for Opponent";
+          sentence = "You are player 1\nWaiting for Opponent";
           type = "CreateGameReady";
         }
 
@@ -366,11 +369,11 @@ public class GameServer extends AbstractServer
       //Create Game data
       startofGameData = (StartofGameData)arg0;
       
-      gameData.gameData(startofGameData.getShipGrid(),startofGameData.getShootGrid());
+      GameData gameData = new GameData(startofGameData.getShipGrid(),startofGameData.getShootGrid());
 
       //Assign each players grid for the Server's reference
       int gameRoomCount = 0;
-      String whichPlayer;
+      String whichPlayer = "";
       
       //Test which gameroom to use...
       for (int i = 0; i < gameRoom.size(); i++){
@@ -413,7 +416,7 @@ public class GameServer extends AbstractServer
 
       //determine the player
       int gameRoomCount = 0;
-      String whichPlayer;
+      String whichPlayer = "";
       
       //Test which gameroom to use...
       for (int i = 0; i < gameRoom.size(); i++){
@@ -438,7 +441,7 @@ public class GameServer extends AbstractServer
       int rNum = gameRoomCount;
 
       //Get grid arrays
-      shootGridarr = shootGrid.getGridasArray(); //ATTACKER
+      shootGridarr = shootGrid.getGrid(); //ATTACKER
       ShipGrid shipGrid;
       //Is the attacker's last shot null? TRUE/FALSE
       Boolean attackerLastShotisNull;
@@ -517,7 +520,7 @@ public class GameServer extends AbstractServer
       //Get opponents ships to do further action!
       ships = shipGrid.getShips(); //DEFENDER ships
       Boolean hit_marker = false;
-      Ship hit_ship;
+      Ship hit_ship = new Ship("temp", 0);
 
       //loop over DEFENDER ships and see if ATTACKER lastshot matches their coordinates
       for (int shipIndex = 0; shipIndex < ships.size();shipIndex++){
@@ -720,7 +723,7 @@ public class GameServer extends AbstractServer
   protected void clientConnected(ConnectionToClient client) 
   {
     //Create User id
-    Long id = client.threadId();
+    Long id = client.getId();
     String userID = id.toString();
     //user_id = new User(userID);
 

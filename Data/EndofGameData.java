@@ -39,9 +39,5 @@ public class EndofGameData {
 	//revise
 	public Boolean isWin(){
 		return win;
-	}
-	  
-	  
-	  
-	  
+	}	  
 }

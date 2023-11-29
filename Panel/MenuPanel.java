@@ -1,7 +1,7 @@
 package Panel;
 
-import javax.swing.;
-import java.awt.;
+import javax.swing.*;
+import java.awt.*;
 import Controller.MenuControl;
 
 public class MenuPanel extends JPanel {
@@ -15,12 +15,14 @@ public class MenuPanel extends JPanel {
 
         //Create Buttons
         JButton playButton = new JButton("Play!");
+        playButton.addActionListener(mc);
         //loginButton.addActionListener(mc);
         JPanel loginButtonBuffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         loginButtonBuffer.add(playButton);
 
         // Create the exit button.
         JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(mc);
         //exitButton.addActionListener(mc);
         JPanel exitButtonBuffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         exitButtonBuffer.add(exitButton);
@@ -28,6 +30,7 @@ public class MenuPanel extends JPanel {
         //Create the view scoreboard button.
 
         JButton viewScoreboard = new JButton("View Scoreboard");
+        viewScoreboard.addActionListener(mc);
         JPanel viewScoreboardBuffer = new JPanel(new FlowLayout(FlowLayout.CENTER));
         viewScoreboardBuffer.add(viewScoreboard);
 

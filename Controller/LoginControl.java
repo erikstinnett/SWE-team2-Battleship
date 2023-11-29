@@ -7,14 +7,16 @@ import java.io.IOException;
 
 import javax.swing.JPanel;
 
+import Data.LoginData;
 import Panel.LoginPanel;
+import Server.GameClient;
 
 public class LoginControl implements ActionListener{
 
 	private JPanel container;
-	private Object gameClient;
+	private GameClient gameClient;
 	
-	public LoginControl(JPanel container, Object gameClient) {
+	public LoginControl(JPanel container, GameClient gameClient) {
 		this.container = container;
 		this.gameClient = gameClient;
 	}
@@ -25,24 +27,23 @@ public class LoginControl implements ActionListener{
 		
 		if (action.equals("Cancel")) {
 			CardLayout cardLayout = (CardLayout)container.getLayout();
-			cardLayout.show(container,  "InitialPanel");
+			cardLayout.show(container,"InitialPanel");
 		}
 		else if (action.equals("Submit")) {
 			LoginPanel loginPanel = (LoginPanel)container.getComponent(1);
-			//LoginData data = new LoginData(loginPanel.getUsernamee(), loginPanel.getPassword());
+			LoginData data = new LoginData(loginPanel.getUsername(), loginPanel.getPassword());
 			
-//			if (data.getUsername().equals("") || data.getPassword.equals("")) {
-//				loginPanel.setError("you must enter a username and password.");
-//				return;
-//			}
+			if (data.getUsername().equals("") || data.getPassword().equals("")) {
+				loginPanel.setError("Error: You must enter a username and password.");
+				return;
+			}
 			
-//			try {
-//				client.sendToServer(data);
-//			}
-//			catch(IOException er) {
-//				loginPanel.setError("Error connecting to the server.");
-//			}
-			System.out.println("SUBMIT HIT");
+			try {
+				gameClient.sendToServer(data);
+			}
+			catch(IOException er) {
+				loginPanel.setError("Error connecting to the server.");
+			}
 		}
 	}
 	

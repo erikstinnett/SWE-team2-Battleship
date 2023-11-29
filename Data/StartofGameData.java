@@ -3,6 +3,7 @@ package Data;
 import java.io.*;
 
 import Utility.ShipGrid;
+import Utility.ShootGrid;
 
 public class StartofGameData {
 

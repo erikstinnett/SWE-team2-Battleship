@@ -43,6 +43,9 @@ public class GameServer extends AbstractServer
   private ArrayList<Ship> ships;
   private Ship ship;
 
+  //other utilities for mini tasks
+  private ArrayList queryResults;
+
 
   public void setDatabase(Database db){
     this.db = db;
@@ -101,7 +104,7 @@ public class GameServer extends AbstractServer
 
       if (password.equals(db.queryCheckPassword(query)))
       {
-        result = "LoginSuccessful";
+        result = new Feedback(data.getUsername(),"LoginSuccessfull");
         log.append("Client " + arg1.threadId() + " successfully logged in as " + data.getUsername() + "\n");
       }
       else
@@ -122,39 +125,18 @@ public class GameServer extends AbstractServer
     }
 
     // If we received CreateAccountData, create a new account.
-    else if (arg0 instanceof CreateAccountData)
-    {
+    else if (arg0 instanceof CreateAccountData) {
       // Try to create the account.
       CreateAccountData data = (CreateAccountData)arg0;
       Object result ="";
       String username = data.getUsername();
       String password = data.getPassword();
-      String passwordForVerif = data.getPasswordForVerification();
+      // String passwordForVerif = data.getPasswordForVerification();
 
-      String query = "select username from user where username ='" + username + "'";
+      String query = "select username from user where username ='" + username + "'";      
 
-      //Error check
-      Boolean NoCredError = true;
-
-      if (username.equals("")||password.equals("")){
-        result = new Error("You must enter a username and password", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
-        NoCredError = false;
-      } 
-      else if(username.length() < 6){
-        result = new Error("Username must be at least 6 characters", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
-        NoCredError = false;
-      }
-      else if(!password.equals(passwordForVerif)){
-        result = new Error("Passwords must match", "CreateAccount");
-        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
-        NoCredError = false;
-      }
-
-      if (NoCredError) {
-          if (!db.query(query)) //if NOT exists... create! (NoCredError has to be TRUE=no error)
-        {
+      //if NULL, then create user
+      if (db.query(query).equals(null)) { 
           //insert the username and password
           String dml = "insert into user values('";
                 dml += username + "',aes_encrypt('";
@@ -170,30 +152,82 @@ public class GameServer extends AbstractServer
 
           result = "CreateAccountSuccessful";
           log.append("Client " + arg1.threadId() + " created a new account called " + data.getUsername() + "\n");
-        }
-        else
-        {
-          result = new Error("Username has already been selected", "CreateAccount");
-          log.append("Client " + arg1.threadId() + " failed to create a new account\n");
-        }
+      }
+      else {
+        result = new Error("Username has already been selected", "CreateAccount");
+        log.append("Client " + arg1.threadId() + " failed to create a new account\n");
       }
 
       // Send the result to the client.
-      try
-      {
+      try {
         arg1.sendToClient(result);
       }
-      catch (IOException e)
-      {
+      catch (IOException e) {
         return;
       }
       
+
+      // //Error check
+      // Boolean NoCredError = true;
+
+      // if (username.equals("")||password.equals("")){
+      //   result = new Error("You must enter a username and password", "CreateAccount");
+      //   log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+      //   NoCredError = false;
+      // } 
+      // else if(username.length() < 6){
+      //   result = new Error("Username must be at least 6 characters", "CreateAccount");
+      //   log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+      //   NoCredError = false;
+      // }
+      // else if(!password.equals(passwordForVerif)){
+      //   result = new Error("Passwords must match", "CreateAccount");
+      //   log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+      //   NoCredError = false;
+      // }
+
+      // if (NoCredError) {
+      //   if (!db.query(query)) { //if NOT exists... create! (NoCredError has to be TRUE=no error)
+      //     //insert the username and password
+      //     String dml = "insert into user values('";
+      //           dml += username + "',aes_encrypt('";
+      //           dml += password + "','key'))";
+          
+      //     // execute DML onto db
+      //     try {
+      //       db.executeDML(dml);
+      //     } catch (SQLException e) {
+      //       // TODO Auto-generated catch block
+      //       e.printStackTrace();
+      //     }
+
+      //     result = "CreateAccountSuccessful";
+      //     log.append("Client " + arg1.threadId() + " created a new account called " + data.getUsername() + "\n");
+      //   }
+      //   else
+      //   {
+      //     result = new Error("Username has already been selected", "CreateAccount");
+      //     log.append("Client " + arg1.threadId() + " failed to create a new account\n");
+      //   }
+      // }
+
+      // // Send the result to the client.
+      // try
+      // {
+      //   arg1.sendToClient(result);
+      // }
+      // catch (IOException e)
+      // {
+      //   return;
+      // }
+      
     }
+
     //NOTES
     //will have to figure out how to keep gameRoom count! REVISE
     //will gameRoom actually be able to support multiple other objects? 
 
-    else if (arg0 instanceof Feedback){
+    else if (arg0 instanceof Feedback) {
       //implement String function
 
       //get the Feedback object
@@ -266,6 +300,60 @@ public class GameServer extends AbstractServer
       // If ScoreBoarddata
       else if (feedback.getType().equals("ScoreBoardData")){
         //implement
+
+        //determine the player
+        int gameRoomCount = 0;
+        String whichPlayer;
+        
+        //Test which gameroom to use...
+        for (int i = 0; i < gameRoom.size(); i++){
+          if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)){
+            if (gameRoom.get(i).getPlayer1().equals(arg1)){
+              whichPlayer = "Player 1";
+            }
+            else{
+              whichPlayer = "Player 2";
+            }
+            gameRoomCount = i;
+            break;
+          }
+        }
+        //assign the roomnumber for game room
+        int rNum = gameRoomCount;
+
+        String player_username;
+
+        if (whichPlayer.equals("Player 1")){
+
+          player_username = gameRoom.get(rNum).getPlayer1Username();
+        }
+        else {
+          player_username = gameRoom.get(rNum).getPlayer2Username();
+        }
+
+        //query for getting the player's username
+        String query_get_player = "select username,wins,losses from gameData where name = \"" + player_username + "\";";
+
+        //query for getting top 5 players
+        String query_get_top_5 = "select username,wins,losses from gameData order by wins desc limit 5;";
+
+        //get the player, and top 5, and add them to queryResults
+        queryResults.addAll(0, db.query(query_get_player));
+        queryResults.addAll(1, db.query(query_get_top_5));
+        
+        // Send the queryREsults.
+        try
+        {
+          arg1.sendToClient(queryResults);
+        }
+        catch (IOException e)
+        {
+          return;
+        }
+
+
+
+
       }
 
       //Scoreboarddata here? REVISE
@@ -289,9 +377,11 @@ public class GameServer extends AbstractServer
         if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)){
           if (gameRoom.get(i).getPlayer1().equals(arg1)){
             whichPlayer = "Player 1";
+            gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
           }
           else{
             whichPlayer = "Player 2";
+            gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
           }
           gameRoomCount = i;
           break;
@@ -513,6 +603,68 @@ public class GameServer extends AbstractServer
 
     else if (arg0 instanceof EndofGameData){
       //implement
+
+      //end of game data
+      endofGameData = (EndofGameData)arg0;
+    
+      //determine the player
+      int gameRoomCount = 0;
+      String whichPlayer;
+      
+      //Test which gameroom to use...
+      for (int i = 0; i < gameRoom.size(); i++){
+        if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)){
+          if (gameRoom.get(i).getPlayer1().equals(arg1)){
+            whichPlayer = "Player 1";
+          }
+          else{
+            whichPlayer = "Player 2";
+          }
+          gameRoomCount = i;
+          break;
+        }
+      }
+      //assign the roomnumber for game room
+      int rNum = gameRoomCount;
+
+      String player_username;
+
+      if (whichPlayer.equals("Player 1")){
+
+        player_username = gameRoom.get(rNum).getPlayer1Username();
+      }
+      else {
+        player_username = gameRoom.get(rNum).getPlayer2Username();
+      }
+
+      //determine if win/loss and add the result to wins/losses
+      String dml;
+
+      if (endofGameData.isWin())
+        dml = "update gameData set wins = wins + 1 where name = \"" + player_username + "\";";
+      else
+        dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
+
+      //update database
+      db.executeDML(dml);
+
+      String sentences = "Not implemented yet";
+
+      //construct message
+      Object result;
+      result = new Feedback(sentences, "EndofGame");
+      
+      // Send the result to the client.
+      try
+      {
+        arg1.sendToClient(result);
+      }
+      catch (IOException e)
+      {
+        return;
+      }
+
+
     }
 
     //else if (arg0 instanceof ScoreboardData){}

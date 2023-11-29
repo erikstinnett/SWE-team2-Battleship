@@ -1,34 +1,39 @@
 package Data;
 
-import java.io.*;
+import java.io.Serializable;
 
-public class LoginData implements Serializable 
+public class LoginData implements Serializable
 {
+  // Private data fields for the username and password.
   private String username;
   private String password;
   
-  
-  public String Username()
+  // Getters for the username and password.
+  public String getUsername()
   {
     return username;
   }
-  public String Password()
+  public String getPassword()
   {
     return password;
   }
   
-  public void getUsername(String username)
+  // Setters for the username and password.
+  public void setUsername(String username)
   {
     this.username = username;
   }
-  public void getPassword(String password)
+  public void setPassword(String password)
   {
     this.password = password;
   }
   
+  // Constructor that initializes the username and password.
   public LoginData(String username, String password)
   {
-    getUsername(username);
-    getPassword(password);
+    setUsername(username);
+    setPassword(password);
   }
 }
+
+

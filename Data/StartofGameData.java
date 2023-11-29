@@ -10,7 +10,18 @@ public class StartofGameData {
 
 	private ShipGrid shipGrid;
 	private ShootGrid shootGrid;
-	
+
+	//player cred
+	private String player_username;
+
+	public void setPlayerUsername(String player_username){
+		this.player_username = player_username;
+	}
+
+	public String getPlayerUsername(){
+		return this.player_username;
+	}
+		
 	public ShipGrid getShipGrid()
 	{
 	    return shipGrid;
@@ -20,10 +31,11 @@ public class StartofGameData {
 		return shootGrid;
 	}
 	
-	public StartofGameData(ShipGrid shipGrid, ShootGrid shootGrid)
+	public StartofGameData(ShipGrid shipGrid, ShootGrid shootGrid,String player_username)
 	{
 		this.shipGrid = shipGrid;
 		this.shootGrid = shootGrid;
+		setPlayerUsername(player_username);
 	}
 	
 }

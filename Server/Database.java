@@ -26,7 +26,7 @@ public class Database {
     // private String dml;
 
     // Constructor for DatabaseFile
-    public Database() throws IOException { // REVISE: if needed...
+    public Database() { // REVISE: if needed...
         //Create a properties object
         Properties prop = new Properties();
 
@@ -34,9 +34,9 @@ public class Database {
         //the db.properties file
         FileInputStream fis;
         try {
-            fis = new FileInputStream("lab7out/db.properties");
+            fis = new FileInputStream("REVISE/db.properties");
             prop.load(fis);
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -53,14 +53,6 @@ public class Database {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        // String currentDirectory = System.getProperty("user.dir");
-        // file = new File(currentDirectory + "\\data.txt");
-        // try {
-        //     file.createNewFile();
-        // } catch (IOException e) {
-        //     // TODO Auto-generated catch block
-        //     e.printStackTrace();
-        // }
     }
 
     // public void setQuery(String query){
@@ -71,7 +63,7 @@ public class Database {
     //     this.dml= dml;
     // }
 
-    public Boolean query(String query)
+  public ArrayList<Strings> query(String query)
   {
 
     //instantiate arraylist
@@ -88,13 +80,13 @@ public class Database {
       // //Get the # of columns
       int no_columns = rmd.getColumnCount();
     
-    //   // //Get a column name
-    //   String name="";
+      // // //Get a column name
+      // String name="";
 
-    //   for (int i = 0; i < no_columns; i++){
-    //     name += rmd.getColumnName(i+1) + ",";
-    //   }
-    //   records.add(name);
+      // for (int i = 0; i < no_columns; i++){
+      //   name += rmd.getColumnName(i+1) + ",";
+      // }
+      // records.add(name);
       
       //Use a while loop to process the rows - Create a comma delimitted record from each field
       //and add comma delimited record to ArrayList
@@ -102,7 +94,10 @@ public class Database {
       {
         String row = "";
         for (int i = 0; i < no_columns; i++){
-          row += rs.getString(i+1) + ",";
+          row += rs.getString(i+1);
+          //avoid placing comma at the end of last item
+          if (i != no_columns - 1)
+            row += " , ";
         }
         records.add(row);
         //record.add(rs.getString(2));
@@ -115,15 +110,15 @@ public class Database {
       // TODO: handle exception
       //e.printStackTrace();
       //return null since the query did not go through
-      return false;
+      return null;
     }
     
     //return to show if it exists or not
     if (records.isEmpty()){
-        return false;
+        return null;
     }
     else{
-        return true;
+        return records;
     }
   }
 
@@ -158,6 +153,8 @@ public class Database {
     stmt.execute(dml);
   }
 
+
+    //*************UN- USED CODE*********** */
     // public void setNewUserID(String id){
     //     this.id = id;
 

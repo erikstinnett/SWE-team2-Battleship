@@ -6,11 +6,6 @@ public class ShootGrid extends Grid{
 
 	public ShootGrid() {
 		super();
-		shootGrid = super.getGrid(); 
-		
-	}
-	
-	public void miss(int[] coordinate){
 		
 	}
 
@@ -22,7 +17,7 @@ public class ShootGrid extends Grid{
 	}
 	
 	public int[][] getGrid(){
-		return shootGrid;
+		return super.getGrid();
 	}
 
 }

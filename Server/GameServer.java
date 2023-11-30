@@ -129,7 +129,7 @@ public class GameServer extends AbstractServer
     else if (arg0 instanceof CreateAccountData) {
       // Try to create the account.
       CreateAccountData data = (CreateAccountData)arg0;
-      Object result ="";
+      Object result = "";
       String username = data.getUsername();
       String password = data.getPassword();
       
@@ -154,12 +154,11 @@ public class GameServer extends AbstractServer
           result = "CreateAccountSuccessful";
           log.append("Client " + arg1.getId() + " created a new account called " + data.getUsername() + "\n");
         }
-        else
+      else
         {
           result = new Error("Username has already been selected", "CreateAccount");
           log.append("Client " + arg1.getId() + " failed to create a new account\n");
         }
-      }
 
       // Send the result to the client.
       try {
@@ -306,7 +305,7 @@ public class GameServer extends AbstractServer
 
         //determine the player
         int gameRoomCount = 0;
-        String whichPlayer;
+        String whichPlayer = "";
         
         //Test which gameroom to use...
         for (int i = 0; i < gameRoom.size(); i++){
@@ -612,7 +611,7 @@ public class GameServer extends AbstractServer
     
       //determine the player
       int gameRoomCount = 0;
-      String whichPlayer;
+      String whichPlayer = "";
       
       //Test which gameroom to use...
       for (int i = 0; i < gameRoom.size(); i++){
@@ -649,7 +648,12 @@ public class GameServer extends AbstractServer
         dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
 
       //update database
-      db.executeDML(dml);
+      try {
+		db.executeDML(dml);
+	} catch (SQLException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
 
       String sentences = "Not implemented yet";
 

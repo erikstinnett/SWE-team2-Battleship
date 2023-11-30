@@ -1,10 +1,7 @@
 package Panel;
 
 import javax.swing.*;
-
 import Controller.GameControl;
-
-//import Controller.GameControl;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,6 +30,26 @@ public class GamePanel extends JPanel {
         // playerStatus.setHorizontalAlignment(JLabel.CENTER);
         
         fireButton = new JButton("Fire!");
+        fireButton.addActionListener(new ActionListener() {
+        	@Override
+        	public void actionPerformed(ActionEvent e) {
+        		String guess = shipGuess.getText();
+        		try {
+        			String[] parts = guess.split(",");
+        			int x = Integer.parseInt(parts[0].trim());
+        			int y = Integer.parseInt(parts[1].trim());
+        			
+        			if(x >= 0 && x < 10 && y >= 0 && y < 10) {
+        				shootAtGrid(x,y);
+        			}else {
+        				JOptionPane.showMessageDialog(GamePanel.this, "Invalid coordinates, please enter values between 0 and 9");
+        			}
+        		}catch (Exception ex) {
+        			JOptionPane.showMessageDialog(GamePanel.this, "Invalid input format. Please enter coordinates in the format 'x,y'");
+                }
+        	}	
+        });
+
         
         shipGuess = new JTextField();
 
@@ -41,6 +58,8 @@ public class GamePanel extends JPanel {
         JPanel panel2 = new JPanel(new FlowLayout());
         JPanel panel2a = new JPanel();
 
+        //addCoordinateLabels();
+        
         panel1.add(shootGrid);
         panela.add(shipGuess);
         panela.add(fireButton);
@@ -66,24 +85,78 @@ public class GamePanel extends JPanel {
 
     }
     
+    private void shootAtGrid(int x, int y)
+    {
+    	boolean isHit = checkIfHit(x,y);
+    	
+    	ShipGrid.ShipCell targetCell = shootGrid.cells[x][y];
+    	
+    	//Color the cell based on hit or miss
+    	if(isHit) {
+    		targetCell.setBackground(Color.GREEN);
+    	}
+    	else
+    	{
+    		targetCell.setBackground(Color.RED);
+    	}
+    	
+    }
+
+    private boolean checkIfHit(int x, int y) {
+    	return false;
+    }
+    
+    
  // Inner class for Grid
     private class ShipGrid extends JPanel {
         private final int size = 10;
         private ShipCell[][] cells;
         private boolean isPlayerGrid; // To distinguish between player's grid and target grid
+        private JPanel gridPanel;
+        private JPanel labelsColumn; // for the column headers
+        private JPanel labelsRow; // for the row headers
 
         public ShipGrid(boolean isPlayerGrid) {
-            this.isPlayerGrid = isPlayerGrid;
-            setLayout(new GridLayout(size, size));
+        	this.isPlayerGrid = isPlayerGrid;
+            this.setLayout(new BorderLayout()); // Use BorderLayout to place the headers
+
+            gridPanel = new JPanel(new GridLayout(size, size)); // Grid for the cells
             cells = new ShipCell[size][size];
             initializeGrid();
+
+            // Add the headers
+            JPanel rowHeader = new JPanel(new GridLayout(size, 1));
+            JPanel columnHeader = new JPanel(new GridLayout(1, size));
+
+            for (int i = 0; i < size; i++) {
+                rowHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
+                columnHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
+            }
+
+            // Add the headers and the grid to the ShipGrid
+            this.add(rowHeader, BorderLayout.WEST);
+            this.add(columnHeader, BorderLayout.NORTH);
+            this.add(gridPanel, BorderLayout.CENTER);
+
+        }
+        
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Add the numbers outside the grid here
+            for (int i = 0; i < size; i++) {
+                // Draw row numbers on the left side
+                g.drawString(Integer.toString(i), 0, i * (this.getHeight() / size) + (this.getHeight() / size / 2));
+                // Draw column numbers on the top
+                g.drawString(Integer.toString(i), i * (this.getWidth() / size) + (this.getWidth() / size / 2), 10);
+            }
         }
 
         private void initializeGrid() {
             for (int i = 0; i < size; i++) {
                 for (int j = 0; j < size; j++) {
                     cells[i][j] = new ShipCell();
-                    add(cells[i][j]);
+                    gridPanel.add(cells[i][j]);
                 }
             }
         }
@@ -98,6 +171,7 @@ public class GamePanel extends JPanel {
         // Update logic for the ship grid
     }    
     }
+}
     
 //    public static void main(String[] args) {
 //        SwingUtilities.invokeLater(new Runnable() {
@@ -123,5 +197,4 @@ public class GamePanel extends JPanel {
 //        frame.setLocationRelativeTo(null);
 //        frame.setVisible(true);
 //    }
-//    // Additional game-related methods
-}
+//}

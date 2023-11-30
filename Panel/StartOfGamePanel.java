@@ -21,7 +21,7 @@ public class StartOfGamePanel extends JPanel {
 
     public StartOfGamePanel(StartofGameControl control) {
         grid = new Grid();
-        playerStatus = new JLabel("Place Your Ship Placement!");
+        playerStatus = new JLabel("Place Your Ships!");
         playerStatus.setHorizontalAlignment(JLabel.CENTER);
         confirmPlacement = new JButton("Confirm Ship Placement");
 
@@ -96,6 +96,10 @@ public class StartOfGamePanel extends JPanel {
         } else {
             return new Rectangle(x, y, ship.getShipSize() * DraggableShip.CELL_SIZE, DraggableShip.CELL_SIZE);
         }
+    }
+    
+    public void setButtonStatus(Boolean bool) {
+    	confirmPlacement.setEnabled(bool);
     }
     
     class DraggableShip extends JPanel {

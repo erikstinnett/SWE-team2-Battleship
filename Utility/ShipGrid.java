@@ -6,6 +6,7 @@ public class ShipGrid extends Grid{
 	private ArrayList<Ship> ships;
 	
 	public ShipGrid(ArrayList<Ship> ships) {
+		super();
 		this.ships = ships;
 	}
 

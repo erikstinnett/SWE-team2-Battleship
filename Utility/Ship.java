@@ -2,7 +2,7 @@ package Utility;
 
 public class Ship {
 	
-	//private int size;
+	private int size;
 	private int lives;
 	private boolean orientation;
 	private int[] coordinates;
@@ -12,9 +12,38 @@ public class Ship {
 	
 	public Ship(String name, int lives) {
 		this.name = name;
-		// this.size = size;
-		// this.id = id;
+		switch (name){
+		
+			case "Carrier":
+				size = 5;
+				id = 20;
+				break;
+				
+			case "Battleship":
+				size = 4;
+				id = 21;
+				break;
+				
+			case "Cruiser":
+				size = 3;
+				id = 22;
+				break;
+				
+			case "Submarine":
+				size = 3;
+				id = 23;
+				break;
+				
+			case "Destroyer":
+				size = 2;
+				id = 24;
+				break;
+		}
 		this.lives = lives;
+	}
+	
+	public int getID() {
+		return id;
 	}
 	
 	public int[] getCoordinates() {

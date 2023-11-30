@@ -8,7 +8,11 @@ public abstract class Grid {
 	}
 	
 	protected void hit(int[] coord) {
-		
+		grid[coord[0]][coord[1]] = 1;
+	}
+	
+	protected void miss(int[] coord) {
+		grid[coord[0]][coord[1]] = 2;
 	}
 	
 	protected int[][] getGrid(){

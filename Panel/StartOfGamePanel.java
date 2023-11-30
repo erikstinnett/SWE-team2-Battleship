@@ -1,10 +1,12 @@
 package Panel;
 import Controller.StartofGameControl;
+import Utility.Ship;
 
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -14,7 +16,7 @@ public class StartOfGamePanel extends JPanel {
     private JButton confirmPlacement;
     private JPanel shipsPanel;
     private JLayeredPane layeredPane;
-    private Object ships; // This could be a representation of ships for the UI
+    private ArrayList<Ship> ships; // This could be a representation of ships for the UI
     private Ship currentShip;
     private JButton toggleOrientationButton;
     private DraggableShip selectedShip;
@@ -41,15 +43,15 @@ public class StartOfGamePanel extends JPanel {
         int shipSpacing = 50; // Adjust the space between ships
 
         // Add ships to the shipsPanel with new positions
-        addDraggableShip(5, Color.GRAY, initialX, initialY);     // Carrier
+        addDraggableShip("Carrier", Color.GRAY, initialX, initialY);     // Carrier
         initialY += shipSpacing;
-        addDraggableShip(4, Color.BLUE, initialX, initialY);     // Battleship
+        addDraggableShip("Battleship", Color.BLUE, initialX, initialY);     // Battleship
         initialY += shipSpacing;
-        addDraggableShip(3, Color.GREEN, initialX, initialY);    // Cruiser
+        addDraggableShip("Cruiser", Color.GREEN, initialX, initialY);    // Cruiser
         initialY += shipSpacing;
-        addDraggableShip(3, Color.YELLOW, initialX, initialY);   // Submarine
+        addDraggableShip("Submarine", Color.YELLOW, initialX, initialY);   // Submarine
         initialY += shipSpacing;
-        addDraggableShip(2, Color.RED, initialX, initialY);      // Destroyer
+        addDraggableShip("Destroyer", Color.RED, initialX, initialY);      // Destroyer
 
         // Set up the button panel with FlowLayout for appropriate button size
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
@@ -71,10 +73,14 @@ public class StartOfGamePanel extends JPanel {
         setPreferredSize(new Dimension(1000, 800));
     }
     
-    private void addDraggableShip(int size, Color color, int x, int y) {
-        DraggableShip ship = new DraggableShip(size, color);
+    private void addDraggableShip(String name, Color color, int x, int y) {
+        DraggableShip ship = new DraggableShip(name, color);
         ship.setBounds(x, y, ship.getPreferredSize().width, ship.getPreferredSize().height);
         layeredPane.add(ship, Integer.valueOf(1)); // Add to a higher layer than grid
+    }
+    
+    public ArrayList<Ship> getShips(){
+    	return ships;
     }
     
     private void toggleShipOrientation() {
@@ -103,20 +109,15 @@ public class StartOfGamePanel extends JPanel {
     }
     
     class DraggableShip extends JPanel {
-        private int shipSize;
         private Ship ship;
-        private boolean isVertical;
         private static final int CELL_SIZE = 40;
 
-        public DraggableShip(int shipSize, Color color) {
-            this.shipSize = shipSize;
-            this.ship = new Ship(shipSize);
-            this.isVertical = ship.isVertical;
-            setPreferredSize(calculateDimension(shipSize, isVertical)); // Assuming each grid cell is 40x40
+        public DraggableShip(String name, Color color) {
+        	ship = new Ship(name);
+        	ships.add(ship);
+            setPreferredSize(calculateDimension(ship.getSize(), ship.getOrientation())); // Assuming each grid cell is 40x40
             setBackground(color);
             setBorder(BorderFactory.createLineBorder(Color.BLACK));
-            
-            ship = new Ship(shipSize);
 
             MouseAdapter ma = new ShipMouseAdapter();
             addMouseListener(ma);
@@ -125,7 +126,7 @@ public class StartOfGamePanel extends JPanel {
         
         public boolean isVertical()
         {
-        	return isVertical;
+        	return ship.getOrientation();
         }
         
         private Dimension calculateDimension(int shipSize, boolean isVertical) {
@@ -134,9 +135,8 @@ public class StartOfGamePanel extends JPanel {
                 : new Dimension(shipSize * CELL_SIZE, CELL_SIZE);
         }
         public void toggleOrientation() {
-        	isVertical = !isVertical;
         	ship.toggleOrientation();
-        	setPreferredSize(calculateDimension(ship.getSize(),isVertical));
+        	setPreferredSize(calculateDimension(ship.getSize(),ship.getOrientation()));
         	revalidate();
         	repaint();
         }
@@ -177,39 +177,39 @@ public class StartOfGamePanel extends JPanel {
 
         // Getter for ship size
         public int getShipSize() {
-            return shipSize;
+            return ship.getSize();
         }
     }
 
     
 
     //new ship class
-    class Ship
-    {
-    	private int size;
-    	private boolean isVertical;
-    	
-    	public Ship(int size) 
-    	{
-    		this.size = size;
-    		this.isVertical = true;
-    	}
-    	
-    	public int getSize()
-    	{
-    		return size;
-    	}
-    	
-    	public boolean isVertical()
-    	{
-    		return isVertical();
-    	}
-    	
-    	public void toggleOrientation()
-    	{
-    		isVertical = !isVertical;
-    	}
-    }
+//    class Ship
+//    {
+//    	private int size;
+//    	private boolean isVertical;
+//    	
+//    	public Ship(int size) 
+//    	{
+//    		this.size = size;
+//    		this.isVertical = true;
+//    	}
+//    	
+//    	public int getSize()
+//    	{
+//    		return size;
+//    	}
+//    	
+//    	public boolean isVertical()
+//    	{
+//    		return isVertical();
+//    	}
+//    	
+//    	public void toggleOrientation()
+//    	{
+//    		isVertical = !isVertical;
+//    	}
+//    }
     
     
     // Inner class for Grid, which is now a graphical component
@@ -238,7 +238,7 @@ public class StartOfGamePanel extends JPanel {
         	if(currentShip == null) return;
         	
         	int shipSize = currentShip.getSize();
-        	boolean isVertical = currentShip.isVertical();
+        	boolean isVertical = currentShip.getOrientation();
         	
         	for(int i = 0; i < shipSize; i++)
         	{

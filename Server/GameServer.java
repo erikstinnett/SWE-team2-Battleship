@@ -519,7 +519,7 @@ public class GameServer extends AbstractServer
       //Get opponents ships to do further action!
       ships = shipGrid.getShips(); //DEFENDER ships
       Boolean hit_marker = false;
-      Ship hit_ship = new Ship("temp", 0);
+      Ship hit_ship = new Ship("temp");
 
       //loop over DEFENDER ships and see if ATTACKER lastshot matches their coordinates
       for (int shipIndex = 0; shipIndex < ships.size();shipIndex++){

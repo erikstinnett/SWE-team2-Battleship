@@ -26,6 +26,11 @@ public class GameClient extends AbstractClient {
 
     private LoginControl loginController;
     private CreateAccountControl createAccountController;
+    private StartofGameControl startofGameControl;
+    private GameControl gameControl;
+    private EndofGameControl endofGameControl;
+    private MenuControl menuControl;
+    private ScoreboardControl scoreboardControl;
 
     //player cred
     private String username;
@@ -52,6 +57,8 @@ public class GameClient extends AbstractClient {
         this.clientID = clientID;
     }
 
+
+    //controllers
     public void setLoginControl(LoginControl controller){
         loginController = controller;
     }
@@ -59,6 +66,23 @@ public class GameClient extends AbstractClient {
     public void setCreateAccountControl(CreateAccountControl controller){
         createAccountController = controller;
     }
+
+    public void setStartofGameControl(StartofGameControl controller){
+        startofGameControl = controller;
+    }
+    public void setGameControl(GameControl controller){
+        gameControl = controller;
+    }
+    public void setEndofGameControl(EndofGameControl controller){
+        endofGameControl = controller;
+    }
+    public void setMenuControl(MenuControl controller){
+        menuControl = controller;
+    }
+    public void setScoreboardControl(ScoreboardControl controller){
+        scoreboardControl = controller;
+    }
+    
 
     public void connectionEstablished(){ //hook
         //this method is called whenever the client's connection has been established with the server
@@ -131,9 +155,13 @@ public class GameClient extends AbstractClient {
                 //implement
             }
             //
-            else if (feedback.getType().equals("")){
+            else if (feedback.getType().equals("GameOver")){
                 //implement
             }
+            else if (feedback.getType().equals("EndOfGame")){
+                //implement
+            }
+            
 
             //login success
             else if (feedback.getType().equals("LoginSuccessful")){

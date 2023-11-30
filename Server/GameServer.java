@@ -35,6 +35,7 @@ public class GameServer extends AbstractServer {
 	private int[][] shootGridarr;
 	private int[][] shipGridarr;
 	private int[][] localShootgridarr; // REVISE
+	private ShipGrid shipGrid;
 
 	// coordinates
 	private int[] lastShot;
@@ -145,68 +146,6 @@ public class GameServer extends AbstractServer {
 			} catch (IOException e) {
 				return;
 			}
-
-			// //Error check
-			// Boolean NoCredError = true;
-
-			// if (username.equals("")||password.equals("")){
-			// result = new Error("You must enter a username and password",
-			// "CreateAccount");
-			// log.append("Client " + arg1.threadId() + " failed to create a new
-			// account\n");
-			// NoCredError = false;
-			// }
-			// else if(username.length() < 6){
-			// result = new Error("Username must be at least 6 characters",
-			// "CreateAccount");
-			// log.append("Client " + arg1.threadId() + " failed to create a new
-			// account\n");
-			// NoCredError = false;
-			// }
-			// else if(!password.equals(passwordForVerif)){
-			// result = new Error("Passwords must match", "CreateAccount");
-			// log.append("Client " + arg1.threadId() + " failed to create a new
-			// account\n");
-			// NoCredError = false;
-			// }
-
-			// if (NoCredError) {
-			// if (!db.query(query)) { //if NOT exists... create! (NoCredError has to be
-			// TRUE=no error)
-			// //insert the username and password
-			// String dml = "insert into user values('";
-			// dml += username + "',aes_encrypt('";
-			// dml += password + "','key'))";
-
-			// // execute DML onto db
-			// try {
-			// db.executeDML(dml);
-			// } catch (SQLException e) {
-			// // TODO Auto-generated catch block
-			// e.printStackTrace();
-			// }
-
-			// result = "CreateAccountSuccessful";
-			// log.append("Client " + arg1.threadId() + " created a new account called " +
-			// data.getUsername() + "\n");
-			// }
-			// else
-			// {
-			// result = new Error("Username has already been selected", "CreateAccount");
-			// log.append("Client " + arg1.threadId() + " failed to create a new
-			// account\n");
-			// }
-			// }
-
-			// // Send the result to the client.
-			// try
-			// {
-			// arg1.sendToClient(result);
-			// }
-			// catch (IOException e)
-			// {
-			// return;
-			// }
 
 		}
 
@@ -419,163 +358,59 @@ public class GameServer extends AbstractServer {
 				}
 			}
 
-			// game data
-			gameData = (GameData) arg0;
-
-			// update their grids, and grab the other player's board..
-			// ShipGrid shipGrid = gameData.getShipGrid();
-			ShootGrid shootGrid = gameData.getShootGrid();
+			//room number
 			int rNum = gameRoomCount;
 
-			// Get grid arrays
-			shootGridarr = shootGrid.getGrid(); // ATTACKER
-			ShipGrid shipGrid;
-			// Is the attacker's last shot null? TRUE/FALSE
-			Boolean attackerLastShotisNull;
-			// Grab attackee ship grid
-			if (whichPlayer.equals("Player 1")) {
-				shipGrid = gameRoom.get(rNum).getPlayer2ShipGrid(); // DEFENDER
-				shipGridarr = shipGrid.getGridasArray();
-				// are their last shot null?
-				if (gameRoom.get(rNum).getPlayer1LastShot().equals(null)) {
-					attackerLastShotisNull = true;
-				} else {
-					attackerLastShotisNull = false;
-				}
-			} else {
-				shipGrid = gameRoom.get(rNum).getPlayer1ShipGrid(); // DEFENDER
-				shipGridarr = shipGrid.getGridasArray();
+			// game data
+			gameData = (GameData) arg0;
+			int[] target = gameData.getTarget();
 
-				if (gameRoom.get(rNum).getPlayer2LastShot().equals(null)) {
-					attackerLastShotisNull = true;
-				} else {
-					attackerLastShotisNull = false;
-				}
+			//Construct Feedback 
+			Feedback feedback = null;
+
+			//see if hit or miss, and construct feedback. Also get the fleet of ships
+			if (whichPlayer.equals("Player 1")){
+				//get player 2 shipgrid
+				shipGrid = gameRoom.get(rNum).getPlayer2ShipGrid();
+
+				feedback = shipGrid.update(target);
+			}
+			else { //player 2
+				//get player 1 shipgrid
+				shipGrid = gameRoom.get(rNum).getPlayer1ShipGrid();
+
+				feedback = shipGrid.update(target);
 			}
 
-			// Assign the shootGrid coord to see if it hit a ship or missed
-			// if null
-			if (attackerLastShotisNull) {
-				for (int y = 0; y < shootGridarr.length; y++) { // y coord
-					for (int x = 0; x < shootGridarr[y].length; x++) {// x coord
-
-						if (shootGridarr[y][x] == 1) { // this means that an shootgrid attack pin has been found
-							lastShot = new int[2];
-							lastShot[0] = y;
-							lastShot[1] = x;
-							if (whichPlayer.equals("Player 1")) {
-								gameRoom.get(rNum).setPlayer1LastShot(lastShot); // store the last shot
-								break;
-							} else { // player 2
-								gameRoom.get(rNum).setPlayer2LastShot(lastShot); // store the last shot
-								break;
-							}
-
-						}
-					}
-				}
-			}
-			// else update lastshot
-			else {
-				for (int y = 0; y < shootGridarr.length; y++) { // y coord
-					for (int x = 0; x < shootGridarr[y].length; x++) {// x coord
-
-						if (shootGridarr[y][x] == 1) { // this means that an shootgrid attack pin has been found
-							lastShot = new int[2];
-							lastShot[0] = y;
-							lastShot[1] = x;
-							if (whichPlayer.equals("Player 1")) {
-								if (!gameRoom.get(rNum).getPlayer1LastShot().equals(lastShot)) { // previous shot !=
-																									// last shot
-									gameRoom.get(rNum).setPlayer1LastShot(lastShot);
-								}
-							} else { // player 2
-								if (!gameRoom.get(rNum).getPlayer2LastShot().equals(lastShot)) { // previous shot !=
-																									// last shot
-									gameRoom.get(rNum).setPlayer2LastShot(lastShot);
-								}
-							}
-						}
-					}
-				}
-			}
-
-			// Find the matching pins from the ATTACKER shootgrid to the DEFENDER shipgrid
-			// Get opponents ships to do further action!
-			ships = shipGrid.getShips(); // DEFENDER ships
-			Boolean hit_marker = false;
-			Ship hit_ship = new Ship("temp", 0);
-
-			// loop over DEFENDER ships and see if ATTACKER lastshot matches their
-			// coordinates
-			for (int shipIndex = 0; shipIndex < ships.size(); shipIndex++) {
-				// get ship
-				ship = ships.get(shipIndex);
-
-				// get ship coordinates
-				coords = ship.getCoordinates();
-				int ship_y1_coord = coords[0];
-				int ship_x1_coord = coords[1];
-				int ship_y2_coord = coords[2];
-				int ship_x2_coord = coords[3];
-				int attack_y_coord = lastShot[0];
-				int attack_x_coord = lastShot[1];
-
-				if (ship_y1_coord <= attack_y_coord && attack_y_coord <= ship_y2_coord) {
-					if (ship_x1_coord <= attack_x_coord && attack_x_coord <= ship_x2_coord) {
-
-						ship.removeLife(); // new method
-
-						// notify that there was a hitmarker
-						hit_marker = true;
-						// assign the hurt ship
-						hit_ship = ship;
-						break;
-
-					}
-				}
-
-			}
-
-			// Build feedback to send to client
-			Object result;
-			String sentences;
-
-			// REVISE: OR THIS COULD CLONE THE GAMEDATA SHOOTGRID ARRAY !!
-			// update player's gameroom shootgrid to include lastshot
-			if (whichPlayer.equals("Player 1")) {
-				// update shootgrid
-				gameRoom.get(rNum).updatePlayer1ShootGrid(lastShot);
-				// if a hit/miss, update shipgrid
-				if (hit_marker) {
-					sentences = "Your opponent hit your " + hit_ship.getName();
-					// will have to find a way to show that the ship has been hit...
-				} else {
-					sentences = "Your opponent missed you";
-					gameRoom.get(rNum).updatePlayer1ShipGridWithShots(lastShot, "miss");
-				}
-			} else {
-				gameRoom.get(rNum).updatePlayer2ShootGrid(lastShot);
-				if (hit_marker) {
-					sentences = "Your opponent hit your " + hit_ship.getName();
-				} else {
-					sentences = "Your opponent missed you";
-					gameRoom.get(rNum).updatePlayer2ShipGridWithShots(lastShot, "miss");
-				}
-			}
 
 			// This will test to see if any ships have lives left to see if the ATTACKER won
-			if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk()
-					&& ships.get(4).isSunk()) {
-				sentences += "\nYour opponent has sunk your fleet";
+			ships = shipGrid.getShips();
+
+			if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk() && ships.get(4).isSunk()) {
+				//overwrite feedback
+				feedback = new Feedback("You win! \nYou sunk the opponent's fleet.", "GameOver");
 			}
 
-			// construct message
-			result = new Feedback(sentences, "CreateAccount");
+			ConnectionToClient player_1 = gameRoom.get(rNum).getPlayer1();
+			ConnectionToClient player_2 = gameRoom.get(rNum).getPlayer2();
 
 			// Send the result to the client.
 			try {
-				arg1.sendToClient(result);
+				//in the instance the ATTACKER wins
+				if (feedback.getType().equals("GameOver")){
+					arg1.sendToClient(feedback);
+
+					//reassign feedback for the losing opponent
+					feedback = new Feedback("You lost", "GameOver");
+					if (whichPlayer.equals("Player 1"))
+						player_2.sendToClient(feedback);
+					else
+						player_1.sendToClient(feedback);
+				}
+				//Otherwise, send feedback regarding their attack
+				else{
+					arg1.sendToClient(feedback); //hit, miss
+				}
 			} catch (IOException e) {
 				return;
 			}
@@ -642,12 +477,6 @@ public class GameServer extends AbstractServer {
 
 		}
 
-		// else if (arg0 instanceof ScoreboardData){}
-
-	}
-
-	protected void determinePlayer() {
-		System.out.println("Not implemented");
 
 	}
 

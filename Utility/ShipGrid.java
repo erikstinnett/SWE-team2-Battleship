@@ -18,7 +18,7 @@ public class ShipGrid extends Grid{
 		return super.getGrid();
 	}
 
-	public Feedback update(int[] lastShot, String type){
+	public Feedback update(int[] lastShot){
 		//type = hit or miss
 		//super.updateGrid(lastShot, type);
 		grid = super.getGrid();

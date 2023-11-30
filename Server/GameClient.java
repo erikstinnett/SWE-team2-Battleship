@@ -2,8 +2,8 @@ package Server;
 
 //import packages 
 import Controller.*;
-import Utility.Error;
 import Utility.*;
+import Data.GameData;
 
 //
 
@@ -20,10 +20,12 @@ import ocsf.client.AbstractClient;
 
 public class GameClient extends AbstractClient {
 
+
     private JLabel status;
     private JTextArea serverMsg;
     private JTextField clientID;
 
+    //Controllers
     private LoginControl loginController;
     private CreateAccountControl createAccountController;
     private StartofGameControl startofGameControl;
@@ -31,6 +33,9 @@ public class GameClient extends AbstractClient {
     private EndofGameControl endofGameControl;
     private MenuControl menuControl;
     private ScoreboardControl scoreboardControl;
+
+    //Data
+    private GameData gameData;
 
     //player cred
     private String username;
@@ -154,10 +159,10 @@ public class GameClient extends AbstractClient {
             else if (feedback.getType().equals("CreateGameReady")){
                 //implement
             }
-            //
-            else if (feedback.getType().equals("GameOver")){
-                //implement
-            }
+            // //
+            // else if (feedback.getType().equals("GameOver")){
+            //     //implement
+            // }
             else if (feedback.getType().equals("EndOfGame")){
                 //implement
             }
@@ -177,6 +182,24 @@ public class GameClient extends AbstractClient {
 
             //
 
+        }
+
+        //Server sends gameData
+        else if (arg0 instanceof GameData){
+            gameData = (GameData)arg0;
+
+            // SHIP SUNK W/ NAME
+            if (gameData.getFeedback().startsWith("Sunk")){
+                //implement
+            }
+            // YOUR TURN || YOUR TURN AFTER OPPONENT SETS THEIR BOARD
+            else if (gameData.getFeedback().startsWith("Your turn")){
+                //implement
+            }
+            // YOU WIN || YOU LOSE
+            else if (gameData.getFeedback().startsWith("You")){
+                //implement
+            }
         }
         
     }

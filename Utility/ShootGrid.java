@@ -2,7 +2,7 @@ package Utility;
 
 public class ShootGrid extends Grid{
 
-	private int[][] shootGrid;
+	// private int[][] shootGrid;
 
 	public ShootGrid() {
 		super();

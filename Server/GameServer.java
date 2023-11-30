@@ -329,6 +329,15 @@ public class GameServer extends AbstractServer {
 				gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
 			}
 
+			//Decide turn order...
+			if (whichPlayer.equals("Player 1")) {
+				if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
+					gameData.setFeedback("Your turn after opponent sets their board");
+			} else {
+				if (gameRoom.get(rNum).getPlayer1Username().isEmpty())
+					gameData.setFeedback("Your turn after opponent sets their board");
+			}
+
 			// Send board data to the player
 			try {
 				arg1.sendToClient(gameData);
@@ -382,14 +391,13 @@ public class GameServer extends AbstractServer {
 				feedback = shipGrid.update(target);
 			}
 
-
 			// This will test to see if any ships have lives left to see if the ATTACKER won
 			ships = shipGrid.getShips();
 
-			if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk() && ships.get(4).isSunk()) {
+			if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk() && ships.get(4).isSunk()) 
 				//overwrite feedback
 				feedback = new Feedback("You win! \nYou sunk the opponent's fleet.", "GameOver");
-			}
+			
 
 			ConnectionToClient player_1 = gameRoom.get(rNum).getPlayer1();
 			ConnectionToClient player_2 = gameRoom.get(rNum).getPlayer2();
@@ -398,20 +406,35 @@ public class GameServer extends AbstractServer {
 			try {
 				//in the instance the ATTACKER wins
 				if (feedback.getType().equals("GameOver")){
-					arg1.sendToClient(feedback);
+					gameData.setFeedback(feedback.getMessage());
+					arg1.sendToClient(gameData);
 
 					//reassign feedback for the losing opponent
-					feedback = new Feedback("You lost", "GameOver");
+					gameData.setFeedback("You lost!");
 					if (whichPlayer.equals("Player 1"))
-						player_2.sendToClient(feedback);
+						player_2.sendToClient(gameData);
 					else
-						player_1.sendToClient(feedback);
+						player_1.sendToClient(gameData);
 				}
 				//Otherwise, send feedback regarding their attack
 				else{
+					gameData.setFeedback(feedback.getDetailedMessage());
 					arg1.sendToClient(feedback); //hit, miss
+					//reassign feedback for the losing opponent
+					gameData.setFeedback("Your turn");
+					if (whichPlayer.equals("Player 1"))
+						player_2.sendToClient(gameData);
+					else
+						player_1.sendToClient(gameData);
 				}
 			} catch (IOException e) {
+				return;
+			}
+
+			//Send GameData to player
+			try {
+				arg1.sendToClient(gameData);
+			} catch (Exception e) {
 				return;
 			}
 

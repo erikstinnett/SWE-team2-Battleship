@@ -10,6 +10,7 @@ public class GameData {
 	private ShipGrid shipGrid;
 	private ShootGrid shootGrid;
 	private int[] target;
+	private String feedback;
 	
 	public ShipGrid getShipGrid()
 	{
@@ -40,7 +41,17 @@ public class GameData {
 	{
 		this.target = target;
 	}
+
+	//feedback
+	public void setFeedback(String feedback){
+		this.feedback = feedback;
+	}
 	
+	public String getFeedback(){
+		return this.feedback;
+	}
+
+	//constructor
 	public GameData(ShipGrid shipGrid, ShootGrid shootGrid)
 	{
 		setShipGrid(shipGrid);

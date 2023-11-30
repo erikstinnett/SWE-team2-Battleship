@@ -18,8 +18,8 @@ public class GameRoom {
 	private ShootGrid p2_shootGrid;
 
 	//latest shots
-	private int[] p1_lastShot; 
-	private int[] p2_lastShot;
+	// private int[] p1_lastShot; 
+	// private int[] p2_lastShot;
 	
 	public GameRoom(ConnectionToClient p1) {
 		this.player1 = p1;

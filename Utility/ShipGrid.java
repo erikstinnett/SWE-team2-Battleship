@@ -34,6 +34,9 @@ public class ShipGrid extends Grid{
 				for (Ship i : ships) {
 					if (i.getID() == 20) {
 						i.removeLife();
+						//see if sunk and provide detailed message
+						if (i.isSunk())
+							feedback.setDetailedMessage("Sunk Carrier");
 					}
 				}
 					
@@ -44,8 +47,10 @@ public class ShipGrid extends Grid{
 				feedback.setType("hit");
 				super.hit(lastShot);
 				for (Ship i : ships) {
-					if (i.getID() == 20) {
+					if (i.getID() == 21) {
 						i.removeLife();
+						if (i.isSunk())
+							feedback.setDetailedMessage("Sunk Battleship");
 					}
 				}
 				break;
@@ -55,8 +60,10 @@ public class ShipGrid extends Grid{
 				feedback.setType("hit");
 				super.hit(lastShot);
 				for (Ship i : ships) {
-					if (i.getID() == 20) {
+					if (i.getID() == 22) {
 						i.removeLife();
+						if (i.isSunk())
+							feedback.setDetailedMessage("Sunk Cruiser");
 					}
 				}
 				break;
@@ -66,8 +73,10 @@ public class ShipGrid extends Grid{
 				feedback.setType("hit");
 				super.hit(lastShot);
 				for (Ship i : ships) {
-					if (i.getID() == 20) {
+					if (i.getID() == 23) {
 						i.removeLife();
+						if (i.isSunk())
+							feedback.setDetailedMessage("Sunk Submarine");
 					}
 				}
 				break;
@@ -77,8 +86,10 @@ public class ShipGrid extends Grid{
 				feedback.setType("hit");
 				super.hit(lastShot);
 				for (Ship i : ships) {
-					if (i.getID() == 20) {
+					if (i.getID() == 24) {
 						i.removeLife();
+						if (i.isSunk())
+							feedback.setDetailedMessage("Sunk Destroyer");
 					}
 				}
 				break;

@@ -70,21 +70,21 @@ public class GameRoom {
 		return p1_shipGrid;
 	}
 
-	public void setPlayer1LastShot(int[] lastShot){
-		p1_lastShot = lastShot;
-	}
+	// public void setPlayer1LastShot(int[] lastShot){
+	// 	p1_lastShot = lastShot;
+	// }
 
-	public int[] getPlayer1LastShot(){
-		return p1_lastShot;
-	}
+	// public int[] getPlayer1LastShot(){
+	// 	return p1_lastShot;
+	// }
 
-	public void updatePlayer1ShootGrid(int[] lastShot){
-		p1_shootGrid.update(lastShot);
-	}
+	// public void updatePlayer1ShootGrid(int[] lastShot){
+	// 	p1_shootGrid.update(lastShot);
+	// }
 
-	public void updatePlayer1ShipGridWithShots(int[] lastShot,String type){
-		p2_shipGrid.update(lastShot,type);
-	}
+	// public void updatePlayer1ShipGridWithShots(int[] lastShot,String type){
+	// 	p2_shipGrid.update(lastShot,type);
+	// }
 
 	//player 2 boards
 	public void setPlayer2Boards(ShipGrid shipGrid,ShootGrid shootGrid){
@@ -96,20 +96,20 @@ public class GameRoom {
 		return p2_shipGrid;
 	}
 
-	public void setPlayer2LastShot(int[] lastShot){
-		p2_lastShot = lastShot;
-	}
+	// public void setPlayer2LastShot(int[] lastShot){
+	// 	p2_lastShot = lastShot;
+	// }
 
-	public int[] getPlayer2LastShot(){
-		return p2_lastShot;
-	}
+	// public int[] getPlayer2LastShot(){
+	// 	return p2_lastShot;
+	// }
 
-	public void updatePlayer2ShootGrid(int[] lastShot){
-		p2_shootGrid.update(lastShot);
-	}
+	// public void updatePlayer2ShootGrid(int[] lastShot){
+	// 	p2_shootGrid.update(lastShot);
+	// }
 
-	public void updatePlayer2ShipGridWithShots(int[] lastShot,String type){
-		p2_shipGrid.update(lastShot,type);
-	}
+	// public void updatePlayer2ShipGridWithShots(int[] lastShot,String type){
+	// 	p2_shipGrid.update(lastShot,type);
+	// }
 
 }

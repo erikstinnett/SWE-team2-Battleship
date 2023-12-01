@@ -46,15 +46,15 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		
 		if (action.equals("Confirm Ship Placement")) {
 			sogPanel.setButtonStatus(false);
-			ShipGrid shipGrid = new ShipGrid(sogPanel.getShips());
-			StartofGameData sogData = new StartofGameData(shipGrid);
-			
-			try {
-				gameClient.sendToServer(sogData);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			//ShipGrid shipGrid = new ShipGrid(sogPanel.getShips());
+			//StartofGameData sogData = new StartofGameData(shipGrid);
+//			
+//			try {
+//				gameClient.sendToServer(sogData);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
 			DraggableShip selectedShip = sogPanel.getSelectedShip();

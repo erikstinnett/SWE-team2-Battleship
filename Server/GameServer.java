@@ -189,7 +189,7 @@ public class GameServer extends AbstractServer {
 						if (addnew) {
 							single_gameRoom = new GameRoom(arg1);
 							gameRoom.add(single_gameRoom); // player 2
-							rNum = gameRoom.get(gameRoom.size() - 1);
+							rNum = gameRoom.size() - 1;
 							sentence = "You are player 2";
 							type = "CreateGameReady";
 						}
@@ -245,7 +245,7 @@ public class GameServer extends AbstractServer {
 
 				// determine the player
 				int gameRoomCount = 0;
-				String whichPlayer;
+				String whichPlayer = "";
 
 				// Test which gameroom to use...
 				for (int i = 0; i < gameRoom.size(); i++) {
@@ -448,7 +448,7 @@ public class GameServer extends AbstractServer {
 
 			// determine the player
 			int gameRoomCount = 0;
-			String whichPlayer;
+			String whichPlayer = "";
 
 			// Test which gameroom to use...
 			for (int i = 0; i < gameRoom.size(); i++) {
@@ -483,7 +483,12 @@ public class GameServer extends AbstractServer {
 				dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
 
 			// update database
-			db.executeDML(dml);
+			try {
+				db.executeDML(dml);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				//e.printStackTrace();
+			}
 
 			String sentences = "Not implemented yet";
 

@@ -47,7 +47,7 @@ public class GameGUI extends JFrame{
 	    container.add(view2, "LoginPanel");
 	    container.add(view3, "CreateAccountPanel");
 	    container.add(view4, "MenuPanel");
-	    container.add(view5, "StartOfGamePanel");
+	    container.add(view5, "StartofGamePanel");
 	    container.add(view6, "GamePanel");
 	    container.add(view7, "ScoreboardPanel");
 	    container.add(view8, "EndGamePanel");

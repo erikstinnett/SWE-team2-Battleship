@@ -17,6 +17,7 @@ public class ShipGrid extends Grid {
 		super();
 		setLayout(new GridLayout(size, size)); // set layout for the grid
 		initializeGrid();
+		ships = new ArrayList<Ship>();
 	}
 	
 	private void initializeGrid() {

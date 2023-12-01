@@ -46,7 +46,15 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
 		
 		if (action.equals("Confirm Ship Placement")) {
+			if (sogPanel.getShips().size() != 5) {
+				return;
+			}
 			sogPanel.setButtonStatus(false);
+			for (Ship i : sogPanel.getShips()) {
+				i.removeMouseListener(this);
+				i.removeMouseMotionListener(this);
+			}
+			sogPanel.setStatus("Waiting on Opponent :)");
 			//ShipGrid shipGrid = new ShipGrid(sogPanel.getShips());
 			//StartofGameData sogData = new StartofGameData(shipGrid);
 //			
@@ -62,6 +70,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			if (selectedShip != null) {
 	    		selectedShip.toggleOrientation();
 	    		selectedShip.setBounds(calculateNewBounds(selectedShip));
+	    		mouseReleased(new MouseEvent(selectedShip, 0, 0, 0, (int)selectedShip.getLocation().getX(), (int)selectedShip.getLocation().getY(), 1, false));
 	    		sogPanel.getLayeredPane().repaint();
 	    	}
 		}

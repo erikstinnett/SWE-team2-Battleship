@@ -23,6 +23,7 @@ public class StartOfGamePanel extends JPanel {
     private Ship selectedShip;
 
     public StartOfGamePanel(StartofGameControl control) {
+    	ships = new ArrayList<Ship>();
         grid = new ShipGrid();
         playerStatus = new JLabel("Place Your Ships!");
         playerStatus.setHorizontalAlignment(JLabel.CENTER);
@@ -76,8 +77,13 @@ public class StartOfGamePanel extends JPanel {
         setPreferredSize(new Dimension(1000, 800));
     }
     
+    public void setStatus(String status) {
+    	playerStatus.setText(status);
+    }
+    
     private void addShip(String name, Color color, int x, int y, StartofGameControl control) {
         Ship ship = new Ship(name, color, control);
+        ships.add(ship);
         ship.setBounds(x, y, ship.getPreferredSize().width, ship.getPreferredSize().height);
         layeredPane.add(ship, Integer.valueOf(1)); // Add to a higher layer than grid
     }

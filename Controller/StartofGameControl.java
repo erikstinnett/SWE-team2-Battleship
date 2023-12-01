@@ -46,22 +46,32 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
 		
 		if (action.equals("Confirm Ship Placement")) {
+			if (sogPanel.getShips().size() != 5) {
+				JOptionPane.showMessageDialog(sogPanel.getGrid(), "Please place all of the ships correctly >:(", "Submission Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
 			sogPanel.setButtonStatus(false);
-			//ShipGrid shipGrid = new ShipGrid(sogPanel.getShips());
-			//StartofGameData sogData = new StartofGameData(shipGrid);
-//			
-//			try {
-//				gameClient.sendToServer(sogData);
-//			} catch (IOException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
+			for (Ship i : sogPanel.getShips()) {
+				i.removeMouseListener(this);
+				i.removeMouseMotionListener(this);
+			}
+			sogPanel.setStatus("Waiting on Opponent :)");
+			StartofGameData sogData = new StartofGameData(sogPanel.getGrid());
+			
+			try {
+				gameClient.sendToServer(sogData);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
 			Ship selectedShip = sogPanel.getSelectedShip();
 			if (selectedShip != null) {
 	    		selectedShip.toggleOrientation();
 	    		selectedShip.setBounds(calculateNewBounds(selectedShip));
+	    		sogPanel.getGrid().clearShip(selectedShip);
+	    		mouseReleased(new MouseEvent(selectedShip, 0, 0, 0, (int)selectedShip.getLocation().getX(), (int)selectedShip.getLocation().getY(), 1, false));
 	    		sogPanel.getLayeredPane().repaint();
 	    	}
 		}
@@ -109,6 +119,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
     	Point locationOnGrid = SwingUtilities.convertPoint(shipPanel,  new Point(0, 0),  grid);
     	int row = locationOnGrid.y / Ship.getCELL_SIZE();
     	int col = locationOnGrid.x / Ship.getCELL_SIZE();
+    	boolean valid = true;
     	
     	// Check if the location is within grid bounds
     	if (row< 0 || row >= grid.getGridSize() || col < 0 || col >= grid.getGridSize()) {
@@ -117,12 +128,52 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
     			shipPanel.setLastPosition(-1,  -1); // Reset last position since it's off-grid now
     		}
     	} else {
-    		grid.placeShip(shipPanel,  row, col);
-    		shipPanel.setLastPosition(row,  col);; // Set the new last position
+    		for (int i = 0; i < shipPanel.getShipSize(); i ++) {
+            	if (shipPanel.isVertical()) {
+            		if (grid.getGridasArray()[row + i][col] != 0) {
+            			valid = false;
+            			break;
+            		}
+            	}
+            	else {
+            		if (grid.getGridasArray()[row][col + i] != 0) {
+            			valid = false;
+            			break;
+            		}
+            	}
+            }
+			if(valid) {
+				grid.placeShip(shipPanel, row, col);
+				shipPanel.setLastPosition(row,  col); // Set the new last position
+			}
+			else {
+				JOptionPane.showMessageDialog(grid, "Please make sure your ships are not overlapping.", "Placement Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+    		 
     	}
     	if (row >= 0 && row < grid.getGridSize() && col >= 0 && col < grid.getGridSize() && 
                 (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.getGridSize() : col + shipPanel.getShipSize() <= grid.getGridSize())) {
-                grid.placeShip(shipPanel, row, col);
+//    			for (int i = 0; i < shipPanel.getShipSize(); i ++) {
+//                	if (shipPanel.isVertical()) {
+//                		if (grid.getGridasArray()[row + i][col] != 0 && valid) {
+//                			valid = false;
+//                			break;
+//                		}
+//                	}
+//                	else {
+//                		if (grid.getGridasArray()[row][col + i] == 0 && valid) {
+//                			valid = false;
+//                			break;
+//                		}
+//                	}
+//                }
+    			if(valid) {
+    				grid.placeShip(shipPanel, row, col);
+    			}
+    			else {
+    				JOptionPane.showMessageDialog(grid, "Please make sure your ships are not overlapping.", "Placement Error", JOptionPane.ERROR_MESSAGE);
+    			}
             } else {
                 // If the ship is outside the grid, reset its position and show an error message
                 JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);

@@ -17,7 +17,7 @@ public class Ship extends JPanel{
 	private String name;
 	private boolean status;
 	private int id;
-	private static final int CELL_SIZE = 40;
+	private static final int CELL_SIZE = 55;
 	private int lastRow = -1;
 	private int lastCol = -1;
 	

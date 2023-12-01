@@ -29,12 +29,14 @@ public class MenuControl implements ActionListener{
 		}
 		else if (action.equals("Play!")) {
 			Feedback feedback = new Feedback("Find a Game", "Create Game");
-			try {
-				gameClient.sendToServer(feedback);
-				cardLayout.show(container, "StartofGamePanel");
-			}catch (Exception err) {
-				err.printStackTrace();
-			}
+//			try {
+//				gameClient.sendToServer(feedback);
+//				cardLayout.show(container, "StartofGamePanel");
+//			}catch (Exception err) {
+//				err.printStackTrace();
+//			}
+			System.out.println("Play! button pressed!");
+			cardLayout.show(container, "StartofGamePanel");
 		}
 		else if (action.equals("View Scoreboard")) {
 			Feedback feedback = new Feedback("Show the leaderboards", "ScoreBoardData");

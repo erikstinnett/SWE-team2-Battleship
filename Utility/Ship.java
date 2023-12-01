@@ -1,6 +1,14 @@
 package Utility;
 
-public class Ship {
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+import Controller.StartofGameControl;
+
+public class Ship extends JPanel{
 	
 	private int size;
 	private int lives;
@@ -9,8 +17,11 @@ public class Ship {
 	private String name;
 	private boolean status;
 	private int id;
+	private static final int CELL_SIZE = 40;
+	private int lastRow = -1;
+	private int lastCol = -1;
 	
-	public Ship(String name) {
+	public Ship(String name, Color color, StartofGameControl control) {
 		this.name = name;
 		switch (name){
 		
@@ -49,6 +60,17 @@ public class Ship {
 		}
 		
 		orientation = true;
+		
+		setPreferredSize(calculateDimension(size, orientation));
+		setBackground(color);
+		setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		
+		addMouseListener(control);
+		addMouseMotionListener(control);
+	}
+	
+	public static int getCELL_SIZE() {
+		return CELL_SIZE;
 	}
 	
 	public int getID() {
@@ -59,7 +81,7 @@ public class Ship {
 		return coordinates;
 	}
 	
-	 public boolean getOrientation() {
+	 public boolean isVertical() {
 	 	return orientation;
 	 }
 	
@@ -69,6 +91,9 @@ public class Ship {
 
 	 public void toggleOrientation() {
 	 	orientation = !orientation;
+	 	setPreferredSize(calculateDimension(size, orientation));
+	 	revalidate();
+	 	repaint();
 	 }
 	
 	public void setCoordinates(int[] coordinates) {
@@ -91,10 +116,36 @@ public class Ship {
 		return lives == 0;
 	}
 	
-	public int getSize() {
+	public int getShipSize() {
 		return size;
 	}
 	
+	public int getLastRow() {
+		return lastRow;
+	}
+	
+	public void setLastRow(int lastRow) {
+		this.lastRow = lastRow;
+	}
+	
+	public int getLastCol() {
+		return lastCol;
+	}
+	
+	public void setLastCol(int lastCol) {
+		this.lastCol = lastCol;
+	}
+	
+	private Dimension calculateDimension(int shipSize, boolean isVertical) {
+		return isVertical
+				? new Dimension(CELL_SIZE, shipSize * CELL_SIZE)
+				: new Dimension(shipSize * CELL_SIZE, CELL_SIZE);
+	}
+	
+	public void setLastPosition(int row, int col) {
+		this.lastRow = row;
+		this.lastCol = col;
+	}
 	
 }
  

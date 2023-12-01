@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-import Panel.StartOfGamePanel.DraggableShip;
+//import Panel.StartOfGamePanel.DraggableShip;
 
 public class ShipGrid extends Grid {
 	private ArrayList<Ship> ships;
@@ -30,7 +30,7 @@ public class ShipGrid extends Grid {
 		}
 	}
 	
-	public void placeShip(DraggableShip ship, int rowStart, int colStart) {
+	public void placeShip(Ship ship, int rowStart, int colStart) {
 		int shipSize = ship.getShipSize();
 		boolean isVertical = ship.isVertical();
 		int [][] grid = super.getGrid();
@@ -46,11 +46,11 @@ public class ShipGrid extends Grid {
             int currentCol = isVertical ? colStart : colStart + i;
             
 //          shipPositions[currentRow][currentCol] = ship.getShip();
-            if (!ships.contains(ship.getShip())) {
-            	ships.add(ship.getShip());
+            if (!ships.contains(ship)) {
+            	ships.add(ship);
             }
             
-            grid[currentRow][currentCol] = ship.getShip().getID();
+            grid[currentRow][currentCol] = ship.getID();
 //          cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
         }
         
@@ -61,13 +61,13 @@ public class ShipGrid extends Grid {
 		return size;
 	}
 	
-	public void clearShip(DraggableShip ship) {
+	public void clearShip(Ship ship) {
 		int[][] grid = super.getGrid();
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                if (grid[row][col] == ship.getShip().getID()) {
+                if (grid[row][col] == ship.getID()) {
                 	for (int k = 0; k < ships.size(); k++) {
-                		if (ships.get(k).getID() == ship.getShip().getID()) {
+                		if (ships.get(k).getID() == ship.getID()) {
                 			ships.remove(k);
                 			break;
                 		}

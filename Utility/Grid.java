@@ -7,6 +7,10 @@ public abstract class Grid {
 		grid = new int[10][10];
 	}
 	
+	protected void setGrid(int[][] grid) {
+		this.grid = grid;
+	}
+	
 	protected void hit(int[] coord) {
 		grid[coord[0]][coord[1]] = 1;
 	}

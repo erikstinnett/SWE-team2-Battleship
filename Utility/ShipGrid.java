@@ -8,6 +8,26 @@ public class ShipGrid extends Grid{
 	public ShipGrid(ArrayList<Ship> ships) {
 		super();
 		this.ships = ships;
+		int[][] grid = super.getGrid();
+		
+		for(Ship i : ships) {
+			int[] location = i.getCoordinates();
+			boolean vertical = i.getOrientation();
+			int id = i.getID();
+			int size = i.getSize();
+			if (vertical) {
+				for (int j = 0; j < size; j++) {
+					grid[location[0]][location[1] + j] = id;
+				}
+			}
+			else {
+				for (int j = 0; j < size; j++) {
+					grid[location[0] + j][location[1]] = id;
+				}
+			}
+		}
+		
+		super.setGrid(grid);
 	}
 
 	public ArrayList<Ship> getShips() {

@@ -43,20 +43,20 @@ public class StartOfGamePanel extends JPanel {
         int shipSpacing = 50; // Adjust the space between ships
 
         // Add ships to the shipsPanel with new positions
-        addDraggableShip("Carrier", Color.GRAY, initialX, initialY);     // Carrier
+        addDraggableShip("Carrier", Color.GRAY, initialX, initialY, control);     // Carrier
         initialY += shipSpacing;
-        addDraggableShip("Battleship", Color.BLUE, initialX, initialY);     // Battleship
+        addDraggableShip("Battleship", Color.BLUE, initialX, initialY, control);     // Battleship
         initialY += shipSpacing;
-        addDraggableShip("Cruiser", Color.GREEN, initialX, initialY);    // Cruiser
+        addDraggableShip("Cruiser", Color.GREEN, initialX, initialY, control);    // Cruiser
         initialY += shipSpacing;
-        addDraggableShip("Submarine", Color.YELLOW, initialX, initialY);   // Submarine
+        addDraggableShip("Submarine", Color.YELLOW, initialX, initialY, control);   // Submarine
         initialY += shipSpacing;
-        addDraggableShip("Destroyer", Color.RED, initialX, initialY);      // Destroyer
+        addDraggableShip("Destroyer", Color.RED, initialX, initialY, control);      // Destroyer
 
         // Set up the button panel with FlowLayout for appropriate button size
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         toggleOrientationButton = new JButton("Toggle Ship Orientation");
-        toggleOrientationButton.addActionListener(e -> toggleShipOrientation());
+        toggleOrientationButton.addActionListener(control);
         buttonPanel.add(toggleOrientationButton);
 
         // Set up the main layout of the StartOfGamePanel
@@ -75,8 +75,8 @@ public class StartOfGamePanel extends JPanel {
         setPreferredSize(new Dimension(1000, 800));
     }
     
-    private void addDraggableShip(String name, Color color, int x, int y) {
-        DraggableShip ship = new DraggableShip(name, color);
+    private void addDraggableShip(String name, Color color, int x, int y, StartofGameControl control) {
+        DraggableShip ship = new DraggableShip(name, color, control);
         ship.setBounds(x, y, ship.getPreferredSize().width, ship.getPreferredSize().height);
         layeredPane.add(ship, Integer.valueOf(1)); // Add to a higher layer than grid
     }
@@ -85,53 +85,98 @@ public class StartOfGamePanel extends JPanel {
     	return ships;
     }
     
-    private void toggleShipOrientation() {
-    	if (selectedShip != null) {
-    		selectedShip.toggleOrientation();
-    		selectedShip.setBounds(calculateNewBounds(selectedShip));
-    		layeredPane.repaint();
-    	}
+//    private void toggleShipOrientation() {
+//    	if (selectedShip != null) {
+//    		selectedShip.toggleOrientation();
+//    		selectedShip.setBounds(calculateNewBounds(selectedShip));
+//    		layeredPane.repaint();
+//    	}
+//    }
+    
+    public DraggableShip getSelectedShip() {
+    	return selectedShip;
     }
     
-    private Rectangle calculateNewBounds(DraggableShip ship) {
-        // This method should calculate the new bounds for the ship
-        // based on its current position and orientation
-        // For example:
-        int x = ship.getBounds().x;
-        int y = ship.getBounds().y;
-        if (ship.isVertical()) {
-            return new Rectangle(x, y, DraggableShip.CELL_SIZE, ship.getShipSize() * DraggableShip.CELL_SIZE);
-        } else {
-            return new Rectangle(x, y, ship.getShipSize() * DraggableShip.CELL_SIZE, DraggableShip.CELL_SIZE);
-        }
+    public void setSelectedShip(DraggableShip selectedShip) {
+    	this.selectedShip = selectedShip;
     }
     
+    public JLayeredPane getLayeredPane() {
+    	return layeredPane;
+    }
+    
+    public Grid getGrid() {
+    	return grid;
+    }
+    
+    public Ship getCurrentShip() {
+    	return currentShip;
+    }
+    
+    public void setCurrentShip(Ship currentShip) {
+    	this.currentShip = currentShip;
+    }
+    
+//    private Rectangle calculateNewBounds(DraggableShip ship) {
+//        // This method should calculate the new bounds for the ship
+//        // based on its current position and orientation
+//        // For example:
+//        int x = ship.getBounds().x;
+//        int y = ship.getBounds().y;
+//        if (ship.isVertical()) {
+//            return new Rectangle(x, y, DraggableShip.CELL_SIZE, ship.getShipSize() * DraggableShip.CELL_SIZE);
+//        } else {
+//            return new Rectangle(x, y, ship.getShipSize() * DraggableShip.CELL_SIZE, DraggableShip.CELL_SIZE);
+//        }
+//    }
+//    
     public void setButtonStatus(Boolean bool) {
     	confirmPlacement.setEnabled(bool);
+    	toggleOrientationButton.setEnabled(bool);
     }
     
-    class DraggableShip extends JPanel {
+    public class DraggableShip extends JPanel {
         private Ship ship;
         private static final int CELL_SIZE = 40;
         
         private int lastRow = -1;
         private int lastCol = -1;
 
-        public DraggableShip(String name, Color color) {
+        public DraggableShip(String name, Color color, StartofGameControl control) {
         	ship = new Ship(name);
         	ships.add(ship);
             setPreferredSize(calculateDimension(ship.getSize(), ship.getOrientation())); // Assuming each grid cell is 40x40
             setBackground(color);
             setBorder(BorderFactory.createLineBorder(Color.BLACK));
 
-            MouseAdapter ma = new ShipMouseAdapter();
-            addMouseListener(ma);
-            addMouseMotionListener(ma);
+            // MouseAdapter ma = new ShipMouseAdapter();
+            addMouseListener(control);
+            addMouseMotionListener(control);
+        }
+        
+        public static int getCELL_SIZE() {
+        	return CELL_SIZE;
         }
         
         public boolean isVertical()
         {
         	return ship.getOrientation();
+        }
+        
+        public int getLastRow() {
+        	return lastRow;
+        }
+        
+        public void setLastRow(int lastRow) {
+        	this.lastRow = lastRow;
+        }
+        
+        public int getLastCol() {
+        	return lastCol;
+        }
+        
+        public void setLastCol(int lastCol) {
+        	this.lastCol = lastCol;
         }
         
         private Dimension calculateDimension(int shipSize, boolean isVertical) {
@@ -156,67 +201,67 @@ public class StartOfGamePanel extends JPanel {
         	return ship;
         }
 
-        private class ShipMouseAdapter extends MouseAdapter {
-            Point offset;
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-                offset = e.getPoint();
-                DraggableShip shipPanel = (DraggableShip) e.getSource();
-               
-                
-                //Claer the ships previous position before moving it
-                if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
-                	grid.clearShip(shipPanel);
-                }
-                
-                selectedShip = (DraggableShip) e.getSource();
-                currentShip = ((DraggableShip)e.getSource()).getShip();
-             // Bring the dragged ship to the top
-                layeredPane.setComponentZOrder(shipPanel, 0);
-                layeredPane.revalidate();
-                layeredPane.repaint();
-            }
-
-            @Override
-            public void mouseDragged(MouseEvent e) {
-            	Point current = getLocation();
-                int x = current.x - offset.x + e.getX();
-                int y = current.y - offset.y + e.getY();
-                setLocation(x, y);
-                getParent().repaint();
-            }
-            
-            @Override
-            public void mouseReleased(MouseEvent e) {
-            	DraggableShip shipPanel = (DraggableShip) e.getSource();
-            	
-            	// Convert the location to grid coordinates
-            	Point locationOnGrid = SwingUtilities.convertPoint(shipPanel,  new Point(0, 0),  grid);
-            	int row = locationOnGrid.y / DraggableShip.CELL_SIZE;
-            	int col = locationOnGrid.x / DraggableShip.CELL_SIZE;
-            	
-            	// Check if the location is within grid bounds
-            	if (row< 0 || row >= grid.size || col < 0 || col >= grid.size) {
-            		if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
-            			grid.clearShip(shipPanel);
-            			shipPanel.setLastPosition(-1,  -1); // Reset last position since it's off-grid now
-            		}
-            	} else {
-            		grid.placeShip(shipPanel,  row, col);
-            		shipPanel.setLastPosition(row,  col);; // Set the new last position
-            	}
-            	if (row >= 0 && row < grid.size && col >= 0 && col < grid.size && 
-                        (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.size : col + shipPanel.getShipSize() <= grid.size)) {
-                        grid.placeShip(shipPanel, row, col);
-                    } else {
-                        // If the ship is outside the grid, reset its position and show an error message
-                        JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
-
-                    }
-                System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
-            }
-        }
+//        private class ShipMouseAdapter extends MouseAdapter {
+//            Point offset;
+//
+//            @Override
+//            public void mousePressed(MouseEvent e) {
+//                offset = e.getPoint();
+//                DraggableShip shipPanel = (DraggableShip) e.getSource();
+//               
+//                
+//                //Claer the ships previous position before moving it
+//                if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
+//                	grid.clearShip(shipPanel);
+//                }
+//                
+//                selectedShip = (DraggableShip) e.getSource();
+//                currentShip = ((DraggableShip)e.getSource()).getShip();
+//             // Bring the dragged ship to the top
+//                layeredPane.setComponentZOrder(shipPanel, 0);
+//                layeredPane.revalidate();
+//                layeredPane.repaint();
+//            }
+//
+//            @Override
+//            public void mouseDragged(MouseEvent e) {
+//            	Point current = getLocation();
+//                int x = current.x - offset.x + e.getX();
+//                int y = current.y - offset.y + e.getY();
+//                setLocation(x, y);
+//                getParent().repaint();
+//            }
+//            
+//            @Override
+//            public void mouseReleased(MouseEvent e) {
+//            	DraggableShip shipPanel = (DraggableShip) e.getSource();
+//            	
+//            	// Convert the location to grid coordinates
+//            	Point locationOnGrid = SwingUtilities.convertPoint(shipPanel,  new Point(0, 0),  grid);
+//            	int row = locationOnGrid.y / DraggableShip.CELL_SIZE;
+//            	int col = locationOnGrid.x / DraggableShip.CELL_SIZE;
+//            	
+//            	// Check if the location is within grid bounds
+//            	if (row< 0 || row >= grid.size || col < 0 || col >= grid.size) {
+//            		if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
+//            			grid.clearShip(shipPanel);
+//            			shipPanel.setLastPosition(-1,  -1); // Reset last position since it's off-grid now
+//            		}
+//            	} else {
+//            		grid.placeShip(shipPanel,  row, col);
+//            		shipPanel.setLastPosition(row,  col);; // Set the new last position
+//            	}
+//            	if (row >= 0 && row < grid.size && col >= 0 && col < grid.size && 
+//                        (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.size : col + shipPanel.getShipSize() <= grid.size)) {
+//                        grid.placeShip(shipPanel, row, col);
+//                    } else {
+//                        // If the ship is outside the grid, reset its position and show an error message
+//                        JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
+//
+//                    }
+//                System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
+//            }
+//        }
 
         // Getter for ship size
         public int getShipSize() {
@@ -256,7 +301,7 @@ public class StartOfGamePanel extends JPanel {
     
     
     // Inner class for Grid, which is now a graphical component
-    private class Grid extends JPanel implements DropTargetListener {
+    public class Grid extends JPanel {//implements DropTargetListener {
         private final int size = 10;
         private Cell[][] cells;
         private Ship[][] shipPositions = new Ship[size][size];
@@ -264,7 +309,7 @@ public class StartOfGamePanel extends JPanel {
         public Grid() {
             setLayout(new GridLayout(size, size)); // Set layout for the grid
             cells = new Cell[size][size];
-            new DropTarget(this,this);
+            //new DropTarget(this,this);
             initializeGrid();
         }
         
@@ -278,7 +323,7 @@ public class StartOfGamePanel extends JPanel {
 //        	placeShip(row,col);
 //        }
         
-        private void placeShip(DraggableShip ship, int rowStart, int colStart) {
+        public void placeShip(DraggableShip ship, int rowStart, int colStart) {
             
             int shipSize = ship.getShipSize();
             boolean isVertical = ship.isVertical();
@@ -296,6 +341,10 @@ public class StartOfGamePanel extends JPanel {
                 shipPositions[currentRow][currentCol] = ship.getShip();
                 cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
             }
+        }
+        
+        public int getGridSize() {
+        	return size;
         }
         
         public void clearShip(DraggableShip ship) {
@@ -354,35 +403,35 @@ public class StartOfGamePanel extends JPanel {
             }
         }
 
-		@Override
-		public void dragEnter(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void dragOver(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void dropActionChanged(DropTargetDragEvent dtde) {
-			// TODO Auto-generated method stub
-			
-		}
-
-		@Override
-		public void dragExit(DropTargetEvent dte) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-		@Override
-		public void drop(DropTargetDropEvent dtde) {
-			// TODO Auto-generated method stub
-			
-		}
+//		@Override
+//		public void dragEnter(DropTargetDragEvent dtde) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void dragOver(DropTargetDragEvent dtde) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void dropActionChanged(DropTargetDragEvent dtde) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//
+//		@Override
+//		public void dragExit(DropTargetEvent dte) {
+//			// TODO Auto-generated method stub
+//			
+//		}
+//		
+//		@Override
+//		public void drop(DropTargetDropEvent dtde) {
+//			// TODO Auto-generated method stub
+//			
+//		}
         
     }
 }

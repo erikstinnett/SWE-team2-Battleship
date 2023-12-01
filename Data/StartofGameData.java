@@ -32,11 +32,15 @@ public class StartofGameData {
 		return shootGrid;
 	}
 	
-	public StartofGameData(ShipGrid shipGrid, ShootGrid shootGrid,String player_username)
+	public void setShootGrid(ShootGrid shootGrid) {
+		this.shootGrid = shootGrid;
+	}
+	
+	public StartofGameData(ShipGrid shipGrid)//, ShootGrid shootGrid)//,String player_username)
 	{
 		this.shipGrid = shipGrid;
-		this.shootGrid = shootGrid;
-		setPlayerUsername(player_username);
+		//this.shootGrid = shootGrid;
+		//setPlayerUsername(player_username);
 	}
 	
 }

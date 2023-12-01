@@ -3,6 +3,7 @@ package Panel;
 import javax.swing.*;
 
 import Controller.GameControl;
+import Utility.ShootGrid;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,7 +12,7 @@ import java.awt.event.ActionListener;
 public class GamePanel extends JPanel {
 
     private ShipGrid shipGrid; // Placeholder for your ship grid object
-    private ShipGrid shootGrid;
+    private ShootGrid shootGrid;
     private JLabel playerStatus;
     private JButton fireButton;
     private JTextField shipGuess;
@@ -19,10 +20,10 @@ public class GamePanel extends JPanel {
     public GamePanel(GameControl gc) {
         setLayout(new BorderLayout(10, 10)); // Added gap between components
 
-        shipGrid = new ShipGrid(true);
+        shipGrid = new ShipGrid();
         shipGrid.setPreferredSize(new Dimension(350, 350)); // Set preferred size for a square grid
 
-        shootGrid = new ShipGrid(false);
+        shootGrid = new ShootGrid();
         shootGrid.setPreferredSize(new Dimension(350, 350)); // Set preferred size for a square grid
 
         playerStatus = new JLabel("Guess Your Opponents Ship Location!");
@@ -86,14 +87,6 @@ public class GamePanel extends JPanel {
 
     }
 
-    //setter/getter for shipGuess
-    public void setShipGuess(JTextField shipGuess){
-        this.shipGuess = shipGuess;
-    }
-
-    public JTextField getShipGuess(){
-        return this.shipGuess;
-    }
 
     private void shootAtGrid(int x, int y) {
         boolean isHit = checkIfHit(x, y);
@@ -113,6 +106,32 @@ public class GamePanel extends JPanel {
         return false;
     }
 
+    //setter/getter for shipGuess
+    public void setShipGuess(JTextField shipGuess){
+        this.shipGuess = shipGuess;
+    }
+
+    public JTextField getShipGuess(){
+        return this.shipGuess;
+    }
+
+    //setter/getter for the shipGrid/shootGrid
+    public void setShipGrid(ShipGrid shipGrid){
+        this.shipGrid = shipGrid;
+    }
+
+    public ShipGrid getShipGrid(){
+        return this.shipGrid;
+    }
+
+    public void setShootGrid(ShootGrid shootGrid){
+        this.shootGrid = shootGrid;
+    }
+
+    public ShootGrid getShootGrid(){
+        return this.shootGrid;
+    }
+    
     // Inner class for Grid
     private class ShipGrid extends JPanel {
         private final int size = 10;

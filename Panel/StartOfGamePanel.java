@@ -65,6 +65,8 @@ public class StartOfGamePanel extends JPanel {
         add(playerStatus, BorderLayout.NORTH);
         add(confirmPlacement, BorderLayout.SOUTH);
         add(buttonPanel, BorderLayout.EAST);
+        
+        confirmPlacement.addActionListener(control);
 
         // Set preferred sizes for the components
         confirmPlacement.setPreferredSize(new Dimension(200, 50));
@@ -111,6 +113,9 @@ public class StartOfGamePanel extends JPanel {
     class DraggableShip extends JPanel {
         private Ship ship;
         private static final int CELL_SIZE = 40;
+        
+        private int lastRow = -1;
+        private int lastCol = -1;
 
         public DraggableShip(String name, Color color) {
         	ship = new Ship(name);
@@ -141,6 +146,11 @@ public class StartOfGamePanel extends JPanel {
         	repaint();
         }
         
+        public void setLastPosition(int row, int col) {
+        	this.lastRow = row;
+        	this.lastCol = col;
+        }
+        
         public Ship getShip()
         {
         	return ship;
@@ -153,12 +163,19 @@ public class StartOfGamePanel extends JPanel {
             public void mousePressed(MouseEvent e) {
                 offset = e.getPoint();
                 DraggableShip shipPanel = (DraggableShip) e.getSource();
+               
+                
+                //Claer the ships previous position before moving it
+                if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
+                	grid.clearShip(shipPanel);
+                }
+                
                 selectedShip = (DraggableShip) e.getSource();
                 currentShip = ((DraggableShip)e.getSource()).getShip();
              // Bring the dragged ship to the top
-                shipsPanel.setComponentZOrder(shipPanel, 0);
-                shipsPanel.revalidate();
-                shipsPanel.repaint();
+                layeredPane.setComponentZOrder(shipPanel, 0);
+                layeredPane.revalidate();
+                layeredPane.repaint();
             }
 
             @Override
@@ -170,8 +187,34 @@ public class StartOfGamePanel extends JPanel {
                 getParent().repaint();
             }
             
+            @Override
             public void mouseReleased(MouseEvent e) {
             	DraggableShip shipPanel = (DraggableShip) e.getSource();
+            	
+            	// Convert the location to grid coordinates
+            	Point locationOnGrid = SwingUtilities.convertPoint(shipPanel,  new Point(0, 0),  grid);
+            	int row = locationOnGrid.y / DraggableShip.CELL_SIZE;
+            	int col = locationOnGrid.x / DraggableShip.CELL_SIZE;
+            	
+            	// Check if the location is within grid bounds
+            	if (row< 0 || row >= grid.size || col < 0 || col >= grid.size) {
+            		if (shipPanel.lastRow != -1 && shipPanel.lastCol != -1) {
+            			grid.clearShip(shipPanel);
+            			shipPanel.setLastPosition(-1,  -1); // Reset last position since it's off-grid now
+            		}
+            	} else {
+            		grid.placeShip(shipPanel,  row, col);
+            		shipPanel.setLastPosition(row,  col);; // Set the new last position
+            	}
+            	if (row >= 0 && row < grid.size && col >= 0 && col < grid.size && 
+                        (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.size : col + shipPanel.getShipSize() <= grid.size)) {
+                        grid.placeShip(shipPanel, row, col);
+                    } else {
+                        // If the ship is outside the grid, reset its position and show an error message
+                        JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
+
+                    }
+                System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
             }
         }
 
@@ -216,6 +259,7 @@ public class StartOfGamePanel extends JPanel {
     private class Grid extends JPanel implements DropTargetListener {
         private final int size = 10;
         private Cell[][] cells;
+        private Ship[][] shipPositions = new Ship[size][size];
 
         public Grid() {
             setLayout(new GridLayout(size, size)); // Set layout for the grid
@@ -224,31 +268,59 @@ public class StartOfGamePanel extends JPanel {
             initializeGrid();
         }
         
-        @Override
-        public void drop(DropTargetDropEvent dtde) {
-        	//Convert the drop point to grid coordinates
-        	Point dropPoint = dtde.getLocation();
-        	int row = dropPoint.y / (getHeight() / size);
-        	int col = dropPoint.x / (getWidth() / size);
-        	
-        	placeShip(row,col);
+//        @Override
+//        public void drop(DropTargetDropEvent dtde) {
+//        	//Convert the drop point to grid coordinates
+//        	Point dropPoint = dtde.getLocation();
+//        	int row = dropPoint.y / (getHeight() / size);
+//        	int col = dropPoint.x / (getWidth() / size);
+//        	
+//        	placeShip(row,col);
+//        }
+        
+        private void placeShip(DraggableShip ship, int rowStart, int colStart) {
+            
+            int shipSize = ship.getShipSize();
+            boolean isVertical = ship.isVertical();
+            
+            // Check if the entire ship can be placed without going out of bounds
+            if ((isVertical && (rowStart + shipSize) > size) || (!isVertical && (colStart + shipSize) > size)) {
+                System.out.println("Ship placement is out of bounds.");
+                return; // Ship placement is out of bounds
+            }
+
+            for (int i = 0; i < shipSize; i++) {
+                int currentRow = isVertical ? rowStart + i : rowStart;
+                int currentCol = isVertical ? colStart : colStart + i;
+                
+                shipPositions[currentRow][currentCol] = ship.getShip();
+                cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
+            }
         }
         
-        private void placeShip(int row, int col) {
-        	if(currentShip == null) return;
-        	
-        	int shipSize = currentShip.getSize();
-        	boolean isVertical = currentShip.getOrientation();
-        	
-        	for(int i = 0; i < shipSize; i++)
-        	{
-        		int currentRow = isVertical ? row + i : row;
-        		int currentCol = isVertical ? col : col + i;
-        		
-        		if(currentRow < size && currentCol < size) {
-        			cells[currentRow][currentCol].setShipPart(currentShip);
-        		}
-        	}
+        public void clearShip(DraggableShip ship) {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (shipPositions[row][col] == ship.getShip()) {
+                        shipPositions[row][col] = null;
+                        cells[row][col].clearShipPart(); // Assuming you have a method to clear the visual part of the cell
+                    }
+                }
+            }
+        }
+        
+        //for debugging can comment out.
+        public void printShipPlacements() {
+            for (int row = 0; row < size; row++) {
+                for (int col = 0; col < size; col++) {
+                    if (shipPositions[row][col] != null) {
+                        System.out.print("S "); // 'S' for ship
+                    } else {
+                        System.out.print(". "); // '.' for empty
+                    }
+                }
+                System.out.println();
+            }
         }
 
         private void initializeGrid() {
@@ -269,7 +341,11 @@ public class StartOfGamePanel extends JPanel {
                 // Set other properties, like size, background color, etc.
             }
             
-            public void setShipPart(Ship ship) {
+            public void clearShipPart() {
+                repaint(); // Repaint the cell to update the UI
+            }
+
+			public void setShipPart(Ship ship) {
             	this.shipPart = ship;
             }
             
@@ -301,7 +377,12 @@ public class StartOfGamePanel extends JPanel {
 			// TODO Auto-generated method stub
 			
 		}
-        
+		
+		@Override
+		public void drop(DropTargetDropEvent dtde) {
+			// TODO Auto-generated method stub
+			
+		}
         
     }
 }

@@ -3,9 +3,9 @@ import Controller.StartofGameControl;
 import Utility.Ship;
 
 import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+//import java.awt.dnd.*;
+//import java.awt.event.MouseAdapter;
+//import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -14,7 +14,7 @@ public class StartOfGamePanel extends JPanel {
     private Grid grid;
     private JLabel playerStatus;
     private JButton confirmPlacement;
-    private JPanel shipsPanel;
+//    private JPanel shipsPanel;
     private JLayeredPane layeredPane;
     private ArrayList<Ship> ships; // This could be a representation of ships for the UI
     private Ship currentShip;

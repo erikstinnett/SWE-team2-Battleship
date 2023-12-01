@@ -16,9 +16,10 @@ import javax.swing.SwingUtilities;
 
 import Data.StartofGameData;
 import Panel.StartOfGamePanel;
-import Panel.StartOfGamePanel.DraggableShip;
-import Panel.StartOfGamePanel.Grid;
+//import Panel.StartOfGamePanel.DraggableShip;
+//import Panel.StartOfGamePanel.Grid;
 import Server.GameClient;
+import Utility.Ship;
 import Utility.ShipGrid;
 
 public class StartofGameControl extends MouseAdapter implements ActionListener {
@@ -57,7 +58,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 //			}
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
-			DraggableShip selectedShip = sogPanel.getSelectedShip();
+			Ship selectedShip = sogPanel.getSelectedShip();
 			if (selectedShip != null) {
 	    		selectedShip.toggleOrientation();
 	    		selectedShip.setBounds(calculateNewBounds(selectedShip));
@@ -69,7 +70,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		offset = e.getPoint();
-        DraggableShip shipPanel = (DraggableShip) e.getSource();
+        Ship shipPanel = (Ship) e.getSource();
         StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
        
         
@@ -78,8 +79,8 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
         	sogPanel.getGrid().clearShip(shipPanel);
         }
         
-        sogPanel.setSelectedShip((DraggableShip) e.getSource());
-        sogPanel.setCurrentShip(((DraggableShip)e.getSource()).getShip());
+        sogPanel.setSelectedShip((Ship) e.getSource());
+        sogPanel.setCurrentShip((Ship)e.getSource());
      // Bring the dragged ship to the top
         JLayeredPane layeredPane = sogPanel.getLayeredPane();
         layeredPane.setComponentZOrder(shipPanel, 0);
@@ -90,7 +91,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	@Override
     public void mouseDragged(MouseEvent e) {
 		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
-		DraggableShip selectedShip = sogPanel.getSelectedShip();
+		Ship selectedShip = sogPanel.getSelectedShip();
     	Point current = selectedShip.getLocation();
         int x = current.x - offset.x + e.getX();
         int y = current.y - offset.y + e.getY();
@@ -100,14 +101,14 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	
 	@Override
     public void mouseReleased(MouseEvent e) {
-    	DraggableShip shipPanel = (DraggableShip) e.getSource();
+    	Ship shipPanel = (Ship) e.getSource();
     	StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
-    	Grid grid = sogPanel.getGrid();
+    	ShipGrid grid = sogPanel.getGrid();
     	
     	// Convert the location to grid coordinates
     	Point locationOnGrid = SwingUtilities.convertPoint(shipPanel,  new Point(0, 0),  grid);
-    	int row = locationOnGrid.y / DraggableShip.getCELL_SIZE();
-    	int col = locationOnGrid.x / DraggableShip.getCELL_SIZE();
+    	int row = locationOnGrid.y / Ship.getCELL_SIZE();
+    	int col = locationOnGrid.x / Ship.getCELL_SIZE();
     	
     	// Check if the location is within grid bounds
     	if (row< 0 || row >= grid.getGridSize() || col < 0 || col >= grid.getGridSize()) {
@@ -130,16 +131,16 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
         System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
     }
 	
-	private Rectangle calculateNewBounds(DraggableShip ship) {
+	private Rectangle calculateNewBounds(Ship ship) {
 		// This method should calculate the new bounds for the ship
         // based on its current position and orientation
         // For example:
         int x = ship.getBounds().x;
         int y = ship.getBounds().y;
         if (ship.isVertical()) {
-            return new Rectangle(x, y, DraggableShip.getCELL_SIZE(), ship.getShipSize() * DraggableShip.getCELL_SIZE());
+            return new Rectangle(x, y, Ship.getCELL_SIZE(), ship.getShipSize() * Ship.getCELL_SIZE());
         } else {
-            return new Rectangle(x, y, ship.getShipSize() * DraggableShip.getCELL_SIZE(), DraggableShip.getCELL_SIZE());
+            return new Rectangle(x, y, ship.getShipSize() * Ship.getCELL_SIZE(), Ship.getCELL_SIZE());
         }
 	}
 

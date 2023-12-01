@@ -52,6 +52,7 @@ public class ShipGrid extends Grid {
             }
             
             grid[currentRow][currentCol] = ship.getID();
+            
 //          cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
         }
         

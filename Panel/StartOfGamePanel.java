@@ -17,13 +17,13 @@ public class StartOfGamePanel extends JPanel {
     private JButton confirmPlacement;
 //    private JPanel shipsPanel;
     private JLayeredPane layeredPane;
-    private ArrayList<Ship> ships; // This could be a representation of ships for the UI
+//    private ArrayList<Ship> ships; // This could be a representation of ships for the UI
     private Ship currentShip;
     private JButton toggleOrientationButton;
     private Ship selectedShip;
 
     public StartOfGamePanel(StartofGameControl control) {
-    	ships = new ArrayList<Ship>();
+//    	ships = new ArrayList<Ship>();
         grid = new ShipGrid();
         playerStatus = new JLabel("Place Your Ships!");
         playerStatus.setHorizontalAlignment(JLabel.CENTER);
@@ -83,13 +83,13 @@ public class StartOfGamePanel extends JPanel {
     
     private void addShip(String name, Color color, int x, int y, StartofGameControl control) {
         Ship ship = new Ship(name, color, control);
-        ships.add(ship);
+//        ships.add(ship);
         ship.setBounds(x, y, ship.getPreferredSize().width, ship.getPreferredSize().height);
         layeredPane.add(ship, Integer.valueOf(1)); // Add to a higher layer than grid
     }
     
     public ArrayList<Ship> getShips(){
-    	return ships;
+    	return grid.getShips();
     }
     
 //    private void toggleShipOrientation() {

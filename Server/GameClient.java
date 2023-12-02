@@ -3,6 +3,7 @@ package Server;
 //import packages 
 import Controller.*;
 import Utility.*;
+import Utility.Error;
 import Data.GameData;
 
 //

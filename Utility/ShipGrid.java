@@ -1,14 +1,111 @@
 package Utility;
 
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
-public class ShipGrid extends Grid{
+import javax.swing.BorderFactory;
+import javax.swing.JPanel;
+
+//import Panel.StartOfGamePanel.DraggableShip;
+
+public class ShipGrid extends Grid {
 	private ArrayList<Ship> ships;
+	private final int size = 10;
 	
-	public ShipGrid(ArrayList<Ship> ships) {
+	public ShipGrid() {
 		super();
-		this.ships = ships;
+		setLayout(new GridLayout(size, size)); // set layout for the grid
+		initializeGrid();
+		ships = new ArrayList<Ship>();
 	}
+	
+	private void initializeGrid() {
+		JPanel[][] cells = new JPanel[10][10];
+		for (int i = 0; i < size; i++) {
+			for (int j = 0; j < size; j++) {
+				cells[i][j] = new JPanel();
+				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				add(cells[i][j]);
+			}
+		}
+	}
+	
+	public void placeShip(Ship ship, int rowStart, int colStart) {
+		int shipSize = ship.getShipSize();
+		boolean isVertical = ship.isVertical();
+		int [][] grid = super.getGrid();
+		
+		// Check if the entire ship can be placed without going out of bounds
+        if ((isVertical && (rowStart + shipSize) > size) || (!isVertical && (colStart + shipSize) > size)) {
+            System.out.println("Ship placement is out of bounds.");
+            return; // Ship placement is out of bounds
+        }
+
+        for (int i = 0; i < shipSize; i++) {
+            int currentRow = isVertical ? rowStart + i : rowStart;
+            int currentCol = isVertical ? colStart : colStart + i;
+            
+//          shipPositions[currentRow][currentCol] = ship.getShip();
+            if (!ships.contains(ship)) {
+            	ships.add(ship);
+            }
+            
+            grid[currentRow][currentCol] = ship.getID();
+            
+//          cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
+        }
+        
+        super.setGrid(grid);
+	}
+	
+	public int getGridSize() {
+		return size;
+	}
+	
+	public void clearShip(Ship ship) {
+		int[][] grid = super.getGrid();
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (grid[row][col] == ship.getID()) {
+                	for (int k = 0; k < ships.size(); k++) {
+                		if (ships.get(k).getID() == ship.getID()) {
+                			ships.remove(k);
+                			break;
+                		}
+                	}
+                    grid[row][col] = 0;
+                    //cells[row][col].clearShipPart(); // Assuming you have a method to clear the visual part of the cell
+                }
+            }
+        }
+        super.setGrid(grid);
+    }
+	
+//	public ShipGrid(ArrayList<Ship> ships) {
+//		super();
+//		this.ships = ships;
+//		int[][] grid = super.getGrid();
+//		
+//		for(Ship i : ships) {
+//			int[] location = i.getCoordinates();
+//			boolean vertical = i.getOrientation();
+//			int id = i.getID();
+//			int size = i.getSize();
+//			if (vertical) {
+//				for (int j = 0; j < size; j++) {
+//					grid[location[0]][location[1] + j] = id;
+//				}
+//			}
+//			else {
+//				for (int j = 0; j < size; j++) {
+//					grid[location[0] + j][location[1]] = id;
+//				}
+//			}
+//		}
+//		
+//		super.setGrid(grid);
+//	}
 
 	public ArrayList<Ship> getShips() {
 		return ships;

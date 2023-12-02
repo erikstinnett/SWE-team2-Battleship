@@ -1,10 +1,16 @@
 package Utility;
 
-public abstract class Grid {
+import javax.swing.JPanel;
+
+public abstract class Grid extends JPanel{
 	protected int[][] grid;
 	
 	public Grid() {
 		grid = new int[10][10];
+	}
+	
+	protected void setGrid(int[][] grid) {
+		this.grid = grid;
 	}
 	
 	protected void hit(int[] coord) {

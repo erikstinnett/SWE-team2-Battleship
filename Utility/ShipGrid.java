@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
-//import Panel.StartOfGamePanel.DraggableShip;
-
 public class ShipGrid extends Grid {
 	private ArrayList<Ship> ships;
 	private final int size = 10;
@@ -46,14 +44,11 @@ public class ShipGrid extends Grid {
             int currentRow = isVertical ? rowStart + i : rowStart;
             int currentCol = isVertical ? colStart : colStart + i;
             
-//          shipPositions[currentRow][currentCol] = ship.getShip();
             if (!ships.contains(ship)) {
             	ships.add(ship);
             }
             
             grid[currentRow][currentCol] = ship.getID();
-            
-//          cells[currentRow][currentCol].setShipPart(ship.getShip()); // Update the cell visually if needed
         }
         
         super.setGrid(grid);
@@ -75,37 +70,11 @@ public class ShipGrid extends Grid {
                 		}
                 	}
                     grid[row][col] = 0;
-                    //cells[row][col].clearShipPart(); // Assuming you have a method to clear the visual part of the cell
                 }
             }
         }
         super.setGrid(grid);
     }
-	
-//	public ShipGrid(ArrayList<Ship> ships) {
-//		super();
-//		this.ships = ships;
-//		int[][] grid = super.getGrid();
-//		
-//		for(Ship i : ships) {
-//			int[] location = i.getCoordinates();
-//			boolean vertical = i.getOrientation();
-//			int id = i.getID();
-//			int size = i.getSize();
-//			if (vertical) {
-//				for (int j = 0; j < size; j++) {
-//					grid[location[0]][location[1] + j] = id;
-//				}
-//			}
-//			else {
-//				for (int j = 0; j < size; j++) {
-//					grid[location[0] + j][location[1]] = id;
-//				}
-//			}
-//		}
-//		
-//		super.setGrid(grid);
-//	}
 
 	public ArrayList<Ship> getShips() {
 		return ships;
@@ -116,8 +85,6 @@ public class ShipGrid extends Grid {
 	}
 
 	public Feedback update(int[] lastShot){
-		//type = hit or miss
-		//super.updateGrid(lastShot, type);
 		grid = super.getGrid();
 		int whatThere = grid[lastShot[0]][lastShot[1]];
 		Feedback feedback = new Feedback("","");

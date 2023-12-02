@@ -38,13 +38,12 @@ public class LoginControl implements ActionListener{
 				return;
 			}
 			
-//			try {
-//				gameClient.sendToServer(data);
-//			}
-//			catch(IOException er) {
-//				loginPanel.setError("Error connecting to the server.");
-//			}
-			loginSuccess();
+			try {
+				gameClient.sendToServer(data);
+			}
+			catch(IOException er) {
+				loginPanel.setError("Error connecting to the server.");
+			}
 		}
 	}
 	

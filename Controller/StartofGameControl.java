@@ -154,20 +154,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
     	}
     	if (row >= 0 && row < grid.getGridSize() && col >= 0 && col < grid.getGridSize() && 
                 (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.getGridSize() : col + shipPanel.getShipSize() <= grid.getGridSize())) {
-//    			for (int i = 0; i < shipPanel.getShipSize(); i ++) {
-//                	if (shipPanel.isVertical()) {
-//                		if (grid.getGridasArray()[row + i][col] != 0 && valid) {
-//                			valid = false;
-//                			break;
-//                		}
-//                	}
-//                	else {
-//                		if (grid.getGridasArray()[row][col + i] == 0 && valid) {
-//                			valid = false;
-//                			break;
-//                		}
-//                	}
-//                }
     			if(valid) {
     				grid.placeShip(shipPanel, row, col);
     			}

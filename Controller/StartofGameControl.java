@@ -15,6 +15,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Data.StartofGameData;
+import Panel.GamePanel;
 import Panel.StartOfGamePanel;
 //import Panel.StartOfGamePanel.DraggableShip;
 //import Panel.StartOfGamePanel.Grid;
@@ -36,7 +37,11 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	// TO-DO figure out how turn order will be handled!
 	public void startGame(Boolean goesFirst){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
+		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		GamePanel gp = (GamePanel) container.getComponent(5);
+		gp.drawShip(sogPanel.getGrid());
 		cardLayout.show(container, "GamePanel");
+		
 	}
 	
 	@Override
@@ -58,12 +63,13 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			sogPanel.setStatus("Waiting on Opponent :)");
 			StartofGameData sogData = new StartofGameData(sogPanel.getGrid());
 			
-			try {
-				gameClient.sendToServer(sogData);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+//			try {
+//				gameClient.sendToServer(sogData);
+//			} catch (IOException e1) {
+//				// TODO Auto-generated catch block
+//				e1.printStackTrace();
+//			}
+			startGame(true);
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
 			Ship selectedShip = sogPanel.getSelectedShip();

@@ -53,7 +53,7 @@ public class GameGUI extends JFrame{
 	    container.add(view8, "EndGamePanel");
 
 	    //show default container
-	    cardLayout.show(container, "1");
+	    cardLayout.show(container, "InitialPanel");
 	    this.add(container, BorderLayout.CENTER);
 	    this.setSize(550, 350);
 	    this.setVisible(true);

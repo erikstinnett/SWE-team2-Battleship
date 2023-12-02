@@ -40,7 +40,7 @@ public class GameControl implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		CardLayout cardLayout = (CardLayout)container.getLayout();
+//		CardLayout cardLayout = (CardLayout)container.getLayout();
 		gamePanel = (GamePanel)container.getComponent(5); //REVISE : might need to change this component 
 		
 		if (action.equals("Fire!")) {
@@ -70,7 +70,8 @@ public class GameControl implements ActionListener{
 					}
 					else if (shot_validity.equals("validShot")){
 						// send the data to the server
-						gameClient.sendToServer(gameData);
+//						gameClient.sendToServer(gameData);
+						gamePanel.setButtonStatus(false);
 					}					 
 				} else {
 					JOptionPane.showMessageDialog(gamePanel,"Invalid coordinates, please enter values between 0 and 9");

@@ -51,9 +51,9 @@ public class StartOfGamePanel extends JPanel {
         initialY += shipSpacing;
         addShip("Cruiser", Color.GREEN, initialX, initialY, control);    // Cruiser
         initialY += shipSpacing;
-        addShip("Submarine", Color.YELLOW, initialX, initialY, control);   // Submarine
+        addShip("Submarine", Color.ORANGE, initialX, initialY, control);   // Submarine
         initialY += shipSpacing;
-        addShip("Destroyer", Color.RED, initialX, initialY, control);      // Destroyer
+        addShip("Destroyer", Color.MAGENTA, initialX, initialY, control);      // Destroyer
 
         // Set up the button panel with FlowLayout for appropriate button size
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));

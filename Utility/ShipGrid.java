@@ -1,11 +1,15 @@
 package Utility;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class ShipGrid extends Grid {
 	private ArrayList<Ship> ships;
@@ -18,12 +22,72 @@ public class ShipGrid extends Grid {
 		ships = new ArrayList<Ship>();
 	}
 	
-	private void initializeGrid() {
+//	public ShipGrid(JPanel gridPanel) {
+//		this.setLayout(new BorderLayout()); // Use BorderLayout to place the headers
+//        initializeGrid();
+//
+//        // Add the headers
+//        JPanel rowHeader = new JPanel(new GridLayout(size, 1));
+//        JPanel columnHeader = new JPanel(new GridLayout(1, size));
+//
+//        for (int i = 0; i < size; i++) {
+//            rowHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
+//            columnHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
+//        }
+//
+//        // Add the headers and the grid to the ShipGrid
+//        this.add(rowHeader, BorderLayout.WEST);
+//        this.add(columnHeader, BorderLayout.NORTH);
+//        this.add(gridPanel, BorderLayout.CENTER);
+//	}
+	
+	public void initializeGrid() {
 		JPanel[][] cells = new JPanel[10][10];
+		int[][] grid = super.getGrid();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
 				cells[i][j] = new JPanel();
 				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+				switch (grid[i][j]) {
+					case 1:
+						//hit
+						cells[i][j].setBackground(Color.RED);
+						break;
+					
+					case 2:
+						//miss
+						cells[i][j].setBackground(Color.YELLOW);
+						break;
+					
+					case 20:
+						//gray
+						cells[i][j].setBackground(Color.GRAY);
+						break;
+					
+					case 21:
+						//blue
+						cells[i][j].setBackground(Color.BLUE);
+						break;
+						
+					case 22:
+						//green
+						cells[i][j].setBackground(Color.GREEN);
+						break;
+						
+					case 23:
+						//orange
+						cells[i][j].setBackground(Color.ORANGE);
+						break;
+						
+					case 24:
+						//magenta
+						cells[i][j].setBackground(Color.MAGENTA);
+						break;
+						
+					default:
+						//nothing
+						break;
+				}
 				add(cells[i][j]);
 			}
 		}
@@ -58,6 +122,10 @@ public class ShipGrid extends Grid {
 		return size;
 	}
 	
+	public void setGridArray(int[][] grid) {
+		super.setGrid(grid);
+	}
+	
 	public void clearShip(Ship ship) {
 		int[][] grid = super.getGrid();
         for (int row = 0; row < size; row++) {
@@ -78,6 +146,10 @@ public class ShipGrid extends Grid {
 
 	public ArrayList<Ship> getShips() {
 		return ships;
+	}
+	
+	public void setShips(ArrayList<Ship> ships) {
+		this.ships = ships;
 	}
 
 	public int[][] getGridasArray(){
@@ -167,4 +239,16 @@ public class ShipGrid extends Grid {
 		
 		return feedback;
 	}
+	
+//	@Override
+//    protected void paintComponent(Graphics g) {
+//        super.paintComponent(g);
+//        // Add the numbers outside the grid here
+//        for (int i = 0; i < size; i++) {
+//            // Draw row numbers on the left side
+//            g.drawString(Integer.toString(i), 0, i * (this.getHeight() / size) + (this.getHeight() / size / 2));
+//            // Draw column numbers on the top
+//            g.drawString(Integer.toString(i), i * (this.getWidth() / size) + (this.getWidth() / size / 2), 10);
+//        }
+//    }
 }

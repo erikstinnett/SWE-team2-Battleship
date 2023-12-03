@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.io.IOException;
+
 import Controller.*;
 import Panel.*;
 
@@ -19,6 +21,15 @@ public class GameGUI extends JFrame{
 	    
 	    //Create player client and and open connection
 	    GameClient gameClient = new GameClient();
+		// gameClient.setHost("localhost");
+    	// gameClient.setPort(8300);
+
+		try {
+			gameClient.openConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	    
 	    //Create controllers 
 	    CreateAccountControl cac = new CreateAccountControl(container, gameClient);
@@ -29,6 +40,15 @@ public class GameGUI extends JFrame{
 	    ScoreboardControl sc = new ScoreboardControl(container, gameClient);
 	    StartofGameControl sgc = new StartofGameControl(container, gameClient);
 	    GameControl gc = new GameControl(container, gameClient);
+
+		//Set Client controllers
+		gameClient.setLoginControl(lc);
+		gameClient.setCreateAccountControl(cac);
+		gameClient.setMenuControl(mc);
+		gameClient.setScoreboardControl(sc);
+		gameClient.setStartofGameControl(sgc);
+		gameClient.setGameControl(gc);
+		gameClient.setEndofGameControl(egc);
 	   
 	    //Create panels for each controller
 	    // ex. JPanel view1 = new InitialPanel(ic)

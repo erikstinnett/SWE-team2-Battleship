@@ -160,6 +160,7 @@ public class ShipGrid extends Grid {
 		grid = super.getGrid();
 		int whatThere = grid[lastShot[0]][lastShot[1]];
 		Feedback feedback = new Feedback("","");
+		feedback.setDetailedMessage("");
 		
 		switch (whatThere) {
 				

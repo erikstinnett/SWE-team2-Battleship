@@ -2,7 +2,7 @@ package Data;
 
 import java.io.*;
 
-public class EndofGameData {
+public class EndofGameData implements Serializable {
 
 	private Boolean win;
 

@@ -31,6 +31,13 @@ public class GameControl implements ActionListener{
 
 	//Data
 	GameData gameData;
+
+	//Update player on their shot, turn, etc
+	String status;
+
+	public void setStatus(String status){
+		this.status = status;
+	}
 	
 	public GameControl(JPanel container, GameClient gameClient) {
 		this.container = container;
@@ -53,49 +60,58 @@ public class GameControl implements ActionListener{
 				int x = Integer.parseInt(parts[0].trim());
 				int y = Integer.parseInt(parts[1].trim());
 
-				if (x >= 0 && x < 10 && y >= 0 && y < 10) {
+				// if (x >= 0 && x < 10 && y >= 0 && y < 10) {
 					// shootAtGrid(x, y);
-					shot = new int[2];
-					shot[0] = x;
-					shot[1] = y;
-					//validate the shot
-					shootGrid = gamePanel.getShootGrid();
-					feedback = shootGrid.validate(shot);
-					//get feedback message and display
-					String shot_feedback = feedback.getMessage();
-					//get type to see what kind of shot it was
-					String shot_validity = feedback.getType();
-					if (shot_validity.equals("invalidShot")){
-						//display shot_feedback
-					}
-					else if (shot_validity.equals("validShot")){
-						// send the data to the server
-//						gameClient.sendToServer(gameData);
-						gamePanel.setButtonStatus(false);
-					}					 
-				} else {
+				shot = new int[2];
+				shot[0] = x;
+				shot[1] = y;
+				//validate the shot
+				shootGrid = gamePanel.getShootGrid();
+				feedback = shootGrid.validate(shot);
+				//get feedback message and display
+				String shot_feedback = feedback.getMessage();
+				//get type to see what kind of shot it was
+				String shot_validity = feedback.getType();
+				if (shot_validity.equals("invalidShot")){
 					JOptionPane.showMessageDialog(gamePanel,"Invalid coordinates, please enter values between 0 and 9");
 				}
+				else if (shot_validity.equals("validShot")){
+					//since it's valid, assign it
+					gameData.setTarget(shot);
+					//set turn order (opponent next) and status (opponent turn)
+					gamePanel.setTurnOrder(false,status);
+					// send the data to the server
+					gameClient.sendToServer(gameData);
+				}					 
+				// } 
+				// else {
+				// 	JOptionPane.showMessageDialog(gamePanel,"Invalid coordinates, please enter values between 0 and 9");
+				// }
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(gamePanel,"Invalid input format. Please enter coordinates in the format 'x,y'");
 			}
 		}
 	}
 	
-	public void fire(ShootGrid shootGrid, int[] target) {
-		// build game data, send to server
-	}
+	// public void fire(ShootGrid shootGrid, int[] target) {
+	// 	// build game data, send to server
+	// }
 
 	//this is a key setter for initializing gamedata to communicate with the server
-	public void updateGrids(GameData gameData) {
+	public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG) {
 		// unpackage game data, and tell teh panel to update
-		this.gameData = gameData;
-		//set shipgrid
-		setShipGrid(gameData.getShipGrid());
-		//set shootgrid
-		setShootGrid(gameData.getShootGrid());
+		// this.gameData = gameData;
+		if (updateShipG){
+			setShipGrid(gameData.getShipGrid());
+		}
+		if (updateShootG){
+			setShootGrid(gameData.getShootGrid());
+		}
 
-		//Perform the update on the grids
+		// //set shipgrid
+		// setShipGrid(gameData.getShipGrid());
+		// //set shootgrid
+		// setShootGrid(gameData.getShootGrid());
 		
 	}
 	
@@ -115,11 +131,13 @@ public class GameControl implements ActionListener{
 	
 	//setter for the shipgrid
 	public void setShipGrid(ShipGrid shipGrid){
-		this.shipGrid = shipGrid;
+		// this.shipGrid = shipGrid;
+		this.gameData.setShipGrid(shipGrid);
 	}
 	//setter for the shootgrid
 	public void setShootGrid(ShootGrid shootGrid){
-		this.shootGrid = shootGrid;
+		// this.shootGrid = shootGrid;
+		this.gameData.setShootGrid(shootGrid);
 	}
 
 }

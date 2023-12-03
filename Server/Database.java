@@ -23,7 +23,8 @@ public class Database {
       FileInputStream fis;
       
       try {
-          fis = new FileInputStream("../SWE-team2-Battleship/db.properties");
+          fis = new FileInputStream(fn);
+          System.out.println("Working Directory = " + System.getProperty("user.dir"));
           prop.load(fis);
       } catch (IOException e) {
           // TODO Auto-generated catch block

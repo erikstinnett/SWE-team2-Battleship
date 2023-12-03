@@ -19,6 +19,21 @@ public class GamePanel extends JPanel {
     private JTextField shipGuess;
     private JPanel gridPanel;
 
+    //turn order label
+    JLabel turn_order = new JLabel("");
+
+    public void setTurnOrder(Boolean bool, String msg){
+        if (bool){
+            turn_order.setText(msg);
+            fireButton.setEnabled(bool);
+        }
+        else{
+            turn_order.setText(msg);
+            fireButton.setEnabled(bool);
+        }
+        
+    }
+
     public GamePanel(GameControl gc) {
         setLayout(new BorderLayout(10, 10)); // Added gap between components
         
@@ -92,6 +107,7 @@ public class GamePanel extends JPanel {
         panel1.add(buffer1);
         panela.add(shipGuess);
         panela.add(fireButton);
+        panela.add(turn_order);
         panel2.add(buffer);
         panel2a.add(playerStatus);
 
@@ -111,7 +127,7 @@ public class GamePanel extends JPanel {
         container.add(gridPanel2);
 
         this.add(container);
-
+        this.setSize(700,700);
     }
     
     public void setButtonStatus(boolean bool) {

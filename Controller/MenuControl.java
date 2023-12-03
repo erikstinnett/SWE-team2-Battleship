@@ -28,7 +28,7 @@ public class MenuControl implements ActionListener{
 			cardLayout.show(container, "InitialPanel");
 		}
 		else if (action.equals("Play!")) {
-			Feedback feedback = new Feedback("Find a Game", "Create Game");
+			Feedback feedback = new Feedback("Find a Game", "CreateGame");
 			try {
 				gameClient.sendToServer(feedback);
 				cardLayout.show(container, "StartofGamePanel");

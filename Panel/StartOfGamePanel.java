@@ -77,6 +77,10 @@ public class StartOfGamePanel extends JPanel {
     public void setStatus(String status) {
     	playerStatus.setText(status);
     }
+
+    public void setButtonStatus(boolean bool) {
+    	confirmPlacement.setEnabled(bool);
+    }
     
     private void addShip(String name, Color color, int x, int y, StartofGameControl control) {
         Ship ship = new Ship(name, color, control);

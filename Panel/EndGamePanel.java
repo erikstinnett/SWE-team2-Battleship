@@ -15,7 +15,6 @@ public class EndGamePanel extends JPanel {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Determine the winner and create a message
-        //String resultText = control.didPlayerWin() ? "Congratulations, You Won!" : "You Lost, Opponent Won!";
         resultLabel = new JLabel("", JLabel.CENTER);
         resultLabel.setFont(new Font("Serif", Font.BOLD, 24));
         resultLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -43,37 +42,4 @@ public class EndGamePanel extends JPanel {
     public void setResult(String result) {
     	resultLabel.setText(result);
     }
-
-//    // Main method for testing the panel
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(() -> {
-//            JFrame frame = new JFrame("End Game Panel Test");
-//            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//            frame.add(new EndGamePanel(new EndofGameControl()));
-//            frame.pack();
-//            frame.setLocationRelativeTo(null); // Center the window
-//            frame.setVisible(true);
-//        });
-//    }
-
 }
-
-////mock EGC for testing..
-//class EndGameControl {
-//    public boolean didPlayerWin() {
-//        // Logic to determine if the player won
-//        return true; // Placeholder for actual win determination logic
-//    }
-//
-//    public void restartGame() {
-//        // Logic to restart the game
-//        System.out.println("Restarting game...");
-//    }
-//
-//    public void exitToMainMenu() {
-//        // Logic to exit to the main menu
-//        System.out.println("Exiting to the main menu...");
-//    }
-//
-//}
-

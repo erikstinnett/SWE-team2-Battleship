@@ -13,12 +13,8 @@ public class InitialPanel extends JPanel
 
 	public InitialPanel(InitialControl ic)
 	{
-	
-	//InitialControl controller = new InitialControl(container);
 		
 	JLabel label = new JLabel("Battleship Main Menu", JLabel.CENTER);
-	
-	//Create Information Labels
 	
 	//Create the login button
 	JButton loginButton = new JButton("Login");

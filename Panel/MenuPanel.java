@@ -46,28 +46,11 @@ public class MenuPanel extends JPanel {
         this.add(grid);
     }
     
-//    public static void main(String[] args) {
-//        SwingUtilities.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                createAndShowGUI();
-//            }
-//        });
-//    }
-//
-//    private static void createAndShowGUI() {
-//        // Create the window.
-//        JFrame frame = new JFrame("Menu Test");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//
-//        // Add the MenuPanel instance to the frame.
-//        MenuControl mc = new MenuControl();
-//        MenuPanel menuPanel = new MenuPanel(mc);
-//        frame.getContentPane().add(menuPanel);
-//
-//        // Display the window.
-//        frame.pack();
-//        frame.setLocationRelativeTo(null);
-//        frame.setVisible(true);
-//    }
+    public JButton getButton(String text) {
+    	JButton button = new JButton(text);
+    	String name = button.getText();
+    	System.out.println(name);
+    	return button;
+    }
+
 }

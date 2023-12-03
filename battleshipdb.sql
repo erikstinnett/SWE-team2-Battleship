@@ -1,3 +1,5 @@
+DROP TABLE gameData;
+
 CREATE TABLE gameData
 (username VARCHAR (20),
 password VARBINARY (16) NOT NULL,

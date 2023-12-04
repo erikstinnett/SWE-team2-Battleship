@@ -121,16 +121,8 @@ public class GameClient extends AbstractClient {
             // Get the text of the message.
             String message = (String)arg0;
             
-            // If we successfully logged in, tell the login controller.
-            if (message.equals("LoginSuccessful"))
-            {
-                loginController.loginSuccess();
-
-            }
-            
-            // If we successfully created an account, tell the create account controller.
-            else if (message.equals("CreateAccountSuccessful"))
-            {
+            // Successful account creation
+            if (message.equals("CreateAccountSuccessful")) {
                 createAccountController.createAccountSuccess();
                 //createAccountController.displayMessage(message);
             }

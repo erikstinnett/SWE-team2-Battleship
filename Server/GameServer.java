@@ -191,7 +191,7 @@ public class GameServer extends AbstractServer {
 				else {
 					for (int i = 0; i < gameRoom.size(); i++) {
 						if (gameRoom.get(i).getPlayer1().equals(arg1)){ //player 1 confirmed ship placement
-							sentence = "You are player 1\nWaiting for Opponent";
+							sentence = "You are player 1...Waiting for Opponent";
 							type = "CreateGameWait";
 							addnew = false;
 							break;
@@ -390,87 +390,65 @@ public class GameServer extends AbstractServer {
 			// implement
 			// The server will let the client know when
 
-			try {
-				// Create Game data
-				startofGameData = (StartofGameData) arg0;
+			// Create Game data
+			startofGameData = (StartofGameData) arg0;
 
-				// //for logs...
-				// log.append("Message from Client " + arg0.toString() + " " + startofGameData.getPlayerUsername() + "\n");
+			// //for logs...
+			// log.append("Message from Client " + arg0.toString() + " " + startofGameData.getPlayerUsername() + "\n");
 
-				gameData = new GameData(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+			gameData = new GameData(startofGameData.getShipGrid(), startofGameData.getShootGrid());
 
-				// Assign each players grid for the Server's reference
-				int gameRoomCount = 0;
-				String whichPlayer = "";
+			// Assign each players grid for the Server's reference
+			int gameRoomCount = 0;
+			String whichPlayer = "";
 
-				// Test which gameroom to use...
-				for (int i = 0; i < gameRoom.size(); i++) {
-					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
-						if (gameRoom.get(i).getPlayer1().equals(arg1)) {
-							whichPlayer = "Player 1";
-							gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
-						} else {
-							whichPlayer = "Player 2";
-							gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
-						}
-						gameRoomCount = i;
-						break;
+			// Test which gameroom to use...
+			for (int i = 0; i < gameRoom.size(); i++) {
+				if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+					if (gameRoom.get(i).getPlayer1().equals(arg1)) {
+						whichPlayer = "Player 1";
+						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+					} else {
+						whichPlayer = "Player 2";
+						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
 					}
+					gameRoomCount = i;
+					break;
 				}
-
-				int rNum = gameRoomCount;
-				if (whichPlayer.equals("Player 1")) {
-					gameRoom.get(rNum).setPlayer1Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
-				} else {
-					gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
-				}
-
-				//Decide turn order...
-				if (whichPlayer.equals("Player 1")) {
-					// if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
-					gameData.setTurn("Your turn");
-					gameData.setType("InitialPlayerTurn");
-				}
-				else{
-					gameData.setTurn("Opponent turn");
-					gameData.setType("InitialPlayerTurn");
-				}
-				// } else {
-				// 	if (gameRoom.get(rNum).getPlayer1Username().isEmpty())
-				// 		gameData.setFeedback("Your turn after opponent sets their board");
-				// }
-
-				//Tell either player to wait if the other has not placed their ships
-				if (gameRoom.get(rNum).getPlayer1Username().isEmpty() || gameRoom.get(rNum).getPlayer2Username().isEmpty()){
-					Feedback feedback = new Feedback("Waiting on opponent...", "");
-				}
-
-				// Send board data to the player
-				try {
-					// if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
-					// 	//tell player 2 to wait if player 1 is still setting their game
-					// 	Feedback feedback = new Feedback("", whichPlayer)
-					// 	arg1.sendToClient(feedback);
-					// }
-					// else
-						arg1.sendToClient(gameData);
-				} catch (IOException e) {
-					return;
-				}
-			} 
-
-			//EXCEPTION OCCURS
-			catch (Exception e){
-				Error err = new Error("Player left", "PlayerLeft");
-
-				try {
-					arg1.sendToClient(err);
-				} catch (Exception e1) {
-					// TODO: handle exception
-					e1.printStackTrace();
-				}
-
 			}
+
+			int rNum = gameRoomCount;
+			if (whichPlayer.equals("Player 1")) {
+				gameRoom.get(rNum).setPlayer1Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+			} else {
+				gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+			}
+
+			//Decide turn order...
+			if (whichPlayer.equals("Player 1")) {
+				// if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
+				gameData.setTurn("Your turn");
+				gameData.setType("InitialPlayerTurn");
+			}
+			else {
+				gameData.setTurn("Opponent turn");
+				gameData.setType("InitialPlayerTurn");
+			}
+
+
+			// Send board data to the player
+			try {
+				//Tell player 2 to wait if player 1 hasn't set their board yet
+				if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
+					Feedback feedback = new Feedback("You are " + whichPlayer + "... Waiting on opponent", "CreateGameP1NotReady");
+					arg1.sendToClient(feedback);
+				}
+				else
+					arg1.sendToClient(gameData);
+			} catch (IOException e) {
+				return;
+			}
+			
 
 		}
 

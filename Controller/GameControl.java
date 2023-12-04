@@ -164,6 +164,8 @@ public class GameControl implements ActionListener{
 
 			//redraw grid
 			gamePanel.drawShoot(shootGrid);
+			
+			gamePanel.setTurnOrder(false, status);
 		}
 
 		// //set shipgrid

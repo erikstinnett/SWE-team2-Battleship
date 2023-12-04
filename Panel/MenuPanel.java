@@ -45,4 +45,12 @@ public class MenuPanel extends JPanel {
 
         this.add(grid);
     }
+    
+    public JButton getButton(String text) {
+    	JButton button = new JButton(text);
+    	String name = button.getText();
+    	System.out.println(name);
+    	return button;
+    }
+
 }

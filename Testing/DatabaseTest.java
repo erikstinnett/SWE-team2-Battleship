@@ -1,24 +1,24 @@
 package Testing;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import Server.Database;
 
 //Testing database values:
 /*
- * User: pandawee
- * Password: Muffin
- * Wins: 1
- * Losses: 1
- */
+* User: pandawee
+* Password: Muffin
+* Wins: 1
+* Losses: 1
+*/
 
-class DatabaseTest {
+public class DatabaseTest {
 	private Database database;
 	private Connection conn;
 	
@@ -29,12 +29,12 @@ class DatabaseTest {
 	}
 	
 	@Test
-	void testDatabase() {
+	public void testDatabase() {
 		assertNotNull(conn);
 	}
 
 	@Test
-	void testQuery() {
+	public void testQuery() {
 		// Testing table has one entry only
 		String query = "select username, aes_decrypt(password, 'key') from testingTable;";
 		ArrayList<String> result = database.query(query);
@@ -44,12 +44,12 @@ class DatabaseTest {
 	}
 
 	@Test
-	void testGetConnection() {
+	public void testGetConnection() {
 		assertTrue(database.getConnection() instanceof Connection);
 
 	}
 	@Test
-	void testQueryCheckPassword() {
+	public void testQueryCheckPassword() {
 		String query = "select aes_decrypt(password, 'key') from testingTable;";
 		String result = database.queryCheckPassword(query);
 		String expected = "Muffin";
@@ -57,7 +57,7 @@ class DatabaseTest {
 	}
 
 	@Test
-	void testSuccessfulExecuteDML() {
+	public void testSuccessfulExecuteDML() {
 		String query = "update testingTable set wins=1 where username='pandawee';";
 				
 		try {
@@ -69,9 +69,9 @@ class DatabaseTest {
 	}
 	
 	@Test
-	void testFailedExecuteDML() {
+	public void testFailedExecuteDML() {
 		String query = "insert into testingTable values('rik',aes_encrypt('hello','key');";
 
-        Exception exception = assertThrows(SQLException.class, () -> database.executeDML(query));	
-    }
+      Exception exception = assertThrows(SQLException.class, () -> database.executeDML(query));	
+  }
 }

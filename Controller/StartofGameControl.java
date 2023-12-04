@@ -15,10 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import Data.StartofGameData;
+import Panel.GamePanel;
 import Panel.StartOfGamePanel;
 //import Panel.StartOfGamePanel.DraggableShip;
 //import Panel.StartOfGamePanel.Grid;
 import Server.GameClient;
+import Utility.Feedback;
 import Utility.Ship;
 import Utility.ShipGrid;
 
@@ -27,6 +29,11 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	private JPanel container;
 	private GameClient gameClient;
 	private Point offset;
+
+	//Data
+	StartofGameData sogData;
+	//Panel
+	StartOfGamePanel sogPanel;
 	
 	public StartofGameControl(JPanel container, GameClient gameClient) {
 		this.container = container;
@@ -34,16 +41,36 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	}
 	
 	// TO-DO figure out how turn order will be handled!
-	public void startGame(Boolean goesFirst){
+	public void startGame(Boolean goesFirst, String msg){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
+		sogPanel = (StartOfGamePanel)container.getComponent(4);
+		GamePanel gp = (GamePanel) container.getComponent(5);
+		gp.drawShip(sogPanel.getGrid());
 		cardLayout.show(container, "GamePanel");
+		//set initial turn order
+		gp.setTurnOrder(goesFirst, msg); 
+	}
+
+	//sets the panel status
+	public void setStatus(String status){
+		sogPanel.setStatus(status);
+	}
+
+	//sends sogData
+	public void sendSOGdata(String username){
+		sogData.setPlayerUsername(username);
+		try {
+			gameClient.sendToServer(sogData);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
 		CardLayout cardLayout = (CardLayout) container.getLayout();
-		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		sogPanel = (StartOfGamePanel)container.getComponent(4);
 		
 		if (action.equals("Confirm Ship Placement")) {
 			if (sogPanel.getShips().size() != 5) {
@@ -55,15 +82,20 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 				i.removeMouseListener(this);
 				i.removeMouseMotionListener(this);
 			}
-			sogPanel.setStatus("Waiting on Opponent :)");
-			StartofGameData sogData = new StartofGameData(sogPanel.getGrid());
-			
+			// sogPanel.setStatus("Waiting on Opponent :)");
+			sogData = new StartofGameData(sogPanel.getGrid());
+
+			//set confirm button status
+			sogPanel.setButtonStatus(false);
+
+			//send the server that they are ready to play
+			Feedback feedback = new Feedback("CreateGame", "CreateGame");
 			try {
-				gameClient.sendToServer(sogData);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
+				gameClient.sendToServer(feedback);
+			} catch (Exception e1) {
 				e1.printStackTrace();
 			}
+
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
 			Ship selectedShip = sogPanel.getSelectedShip();
@@ -81,7 +113,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	public void mousePressed(MouseEvent e) {
 		offset = e.getPoint();
         Ship shipPanel = (Ship) e.getSource();
-        StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+        sogPanel = (StartOfGamePanel)container.getComponent(4);
        
         
         //Clear the ships previous position before moving it
@@ -100,7 +132,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	
 	@Override
     public void mouseDragged(MouseEvent e) {
-		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		sogPanel = (StartOfGamePanel)container.getComponent(4);
 		Ship selectedShip = sogPanel.getSelectedShip();
     	Point current = selectedShip.getLocation();
         int x = current.x - offset.x + e.getX();
@@ -112,7 +144,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	@Override
     public void mouseReleased(MouseEvent e) {
     	Ship shipPanel = (Ship) e.getSource();
-    	StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+    	sogPanel = (StartOfGamePanel)container.getComponent(4);
     	ShipGrid grid = sogPanel.getGrid();
     	
     	// Convert the location to grid coordinates

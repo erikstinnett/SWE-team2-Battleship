@@ -70,6 +70,10 @@ public class GameRoom {
 		return p1_shipGrid;
 	}
 
+	public void setPlayer1ShipGrid(ShipGrid shipGrid){
+		this.p1_shipGrid = shipGrid;
+	}
+
 	// public void setPlayer1LastShot(int[] lastShot){
 	// 	p1_lastShot = lastShot;
 	// }
@@ -94,6 +98,10 @@ public class GameRoom {
 
 	public ShipGrid getPlayer2ShipGrid(){
 		return p2_shipGrid;
+	}
+
+	public void setPlayer2ShipGrid(ShipGrid shipGrid){
+		this.p2_shipGrid = shipGrid;
 	}
 
 	// public void setPlayer2LastShot(int[] lastShot){

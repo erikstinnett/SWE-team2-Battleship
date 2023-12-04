@@ -1,12 +1,26 @@
 package Utility;
 
+import java.awt.Color;
+
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public abstract class Grid extends JPanel{
 	protected int[][] grid;
+	protected JPanel[][] cells = new JPanel[10][10];
 	
 	public Grid() {
 		grid = new int[10][10];
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				cells[i][j] = new JPanel();
+				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
+			}
+		}
+	}
+	
+	protected JPanel[][] getCells(){
+		return cells;
 	}
 	
 	protected void setGrid(int[][] grid) {

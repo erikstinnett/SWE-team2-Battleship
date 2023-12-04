@@ -32,7 +32,7 @@ public class MenuControl implements ActionListener{
 			container.setName("InitialPanel");
 		}
 		else if (action.equals("Play!")) {
-			Feedback feedback = new Feedback("Find a Game", "Create Game");
+			Feedback feedback = new Feedback("Find a Game", "CreateGame");
 			try {
 				gameClient.sendToServer(feedback);
 				cardLayout.show(container, "StartofGamePanel");
@@ -45,12 +45,15 @@ public class MenuControl implements ActionListener{
 
 		}
 		else if (action.equals("View Scoreboard")) {
-			Feedback feedback = new Feedback("Show the leaderboards", "ScoreBoardData");
+			String player_username = gameClient.getUsername();
+			Feedback feedback = new Feedback(player_username, "ScoreBoardData");
 			try {
 				gameClient.sendToServer(feedback);
 			}catch (Exception err) {
 				err.printStackTrace();
 			}
+
+			cardLayout.show(container, "ScoreboardPanel");
 		}
 	}
 

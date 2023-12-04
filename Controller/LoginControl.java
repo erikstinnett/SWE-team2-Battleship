@@ -43,6 +43,7 @@ public class LoginControl implements ActionListener{
 			}
 			catch(IOException er) {
 				loginPanel.setError("Error connecting to the server.");
+				// loginSuccess();
 			}
 		}
 	}

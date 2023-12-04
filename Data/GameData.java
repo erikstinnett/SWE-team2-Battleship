@@ -2,15 +2,20 @@ package Data;
 
 import java.io.*;
 
+import Utility.Feedback;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
-public class GameData {
+public class GameData implements Serializable{
 
 	private ShipGrid shipGrid;
 	private ShootGrid shootGrid;
 	private int[] target;
 	private String feedback;
+	// private Feedback detailed_feedback;
+	private String turn;
+	private String detailed_feedback;
+	private String type;
 	
 	public ShipGrid getShipGrid()
 	{
@@ -42,7 +47,7 @@ public class GameData {
 		this.target = target;
 	}
 
-	//feedback
+	//3 types of messages... feedback (for the player), detailed feedback (for the player), turn (for player), type (for client)
 	public void setFeedback(String feedback){
 		this.feedback = feedback;
 	}
@@ -51,10 +56,51 @@ public class GameData {
 		return this.feedback;
 	}
 
+	public void setDetailedFeedback(String detailed_feedback){
+		this.detailed_feedback = detailed_feedback;
+	}
+
+	public String getDetailedFeedback(){
+		return this.detailed_feedback;
+	}
+
+	public void setTurn(String turn){
+		this.turn = turn;
+	}
+
+	//keep track of turn 
+	public String getTurn(){
+		return this.turn;
+	}
+
+	public void setType(String type){
+		this.type = type;
+	}
+
+	public String getType(){
+		return this.type;
+	}
+
+	// //detailed feedback
+	// public void setDetailedFeedback(Feedback feedback){
+	// 	this.detailed_feedback = feedback;
+	// }
+
+	// public Feedback getDetailedFeedback(){
+	// 	if (detailed_feedback.getType().isEmpty() && 
+	// 		detailed_feedback.getMessage().isEmpty() && 
+	// 		detailed_feedback.getDetailedMessage().isEmpty())
+	// 			return null;
+	// 	else
+	// 		return this.detailed_feedback;
+	// }
+
 	//constructor
 	public GameData(ShipGrid shipGrid, ShootGrid shootGrid)
 	{
 		setShipGrid(shipGrid);
 		setShootGrid(shootGrid);
+		this.target = new int[2];
+		// detailed_feedback = new Feedback("", "");
 	}
 }

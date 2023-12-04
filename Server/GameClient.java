@@ -4,6 +4,7 @@ package Server;
 import Controller.*;
 import Utility.*;
 import Utility.Error;
+import Data.EndofGameData;
 import Data.GameData;
 
 //
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +39,14 @@ public class GameClient extends AbstractClient {
 
     //Data
     private GameData gameData;
+    private EndofGameData endofGameData;
 
     //player cred
     private String username;
+
+    public String getUsername(){
+        return this.username;
+    }
 
     public GameClient(){
 
@@ -135,15 +142,20 @@ public class GameClient extends AbstractClient {
             Error error = (Error)arg0;
             
             // Display login errors using the login controller.
-            if (error.getType().equals("Login"))
-            {
+            if (error.getType().equals("Login")) {
                 loginController.incorrectLogin(error.getMessage());
             }
             
             // Display account creation errors using the create account controller.
-            else if (error.getType().equals("CreateAccount"))
-            {
+            else if (error.getType().equals("CreateAccount")) {
                 createAccountController.invalidAccount(error.getMessage());
+            }
+
+            // If a player leaves before starting a game...
+            else if (error.getType().equals("PlayerLeft")){
+                //bring back to Menu
+                loginController.loginSuccess();
+                //set message
             }
         }
 
@@ -152,28 +164,76 @@ public class GameClient extends AbstractClient {
             //Get the Feedback object
             Feedback feedback = (Feedback)arg0;
 
-            // If one player in Waiting Room (waiting on player 2)
-            if (feedback.getType().equals("CreateGameWait")){
+            // Player 1 is in a game room, OR player 2 joins player 1's game room
+            if (feedback.getType().equals("CreatedGame") ||
+                feedback.getType().equals("JoinedGame")){
                 //implement
             }
-            // Both players will get this feedback after they are both in waiting room
+            // If player1 has been established
+            else if (feedback.getType().equals("CreateGameWait")){
+                //implement
+                startofGameControl.setStatus(feedback.getMessage());
+            }
+            // Player 2 confirms ship placement, sends that they are now ready to play game
             else if (feedback.getType().equals("CreateGameReady")){
                 //implement
+                Feedback playGame = new Feedback("", "PlayGame");
+                try {
+                    sendToServer(playGame);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            // //
-            // else if (feedback.getType().equals("GameOver")){
-            //     //implement
-            // }
-            else if (feedback.getType().equals("EndOfGame")){
-                //implement
-            }
-            
+            // Request player 1 / 2 to send back sogData
+            else if (feedback.getType().equals("SendSOGData")){
+                startofGameControl.sendSOGdata(username);
+            }        
 
             //login success
-            else if (feedback.getType().equals("LoginSuccessful")){
+            else if (feedback.getType().equals("LoginSuccessfull")){
                 loginController.loginSuccess();
                 //assign the client's username
                 this.username = feedback.getMessage();
+            }
+
+            // A player wins/loses
+            else if (feedback.getType().equals("EndofGame")){
+
+                //win
+                if (feedback.getMessage().equals("You win!")){
+                    endofGameData = new EndofGameData(true);
+                    endofGameData.setPlayerUsername(username);
+                    try {
+                        sendToServer(endofGameData);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    gameControl.endGame(feedback.getMessage());
+                }
+                //loss
+                else if (feedback.getMessage().equals("You lost!")){
+                    endofGameData = new EndofGameData(false);
+                    endofGameData.setPlayerUsername(username);
+                    try {
+                        sendToServer(endofGameData);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    gameControl.endGame(feedback.getMessage());
+                }
+
+                // //win
+                // if (feedback.getMessage().equals("You win!")){
+                //     gameControl.endGame(feedback.getMessage());
+                // //lost
+                // }
+                // else if (feedback.getMessage().equals("You lost!")){
+                //     gameControl.endGame(feedback.getMessage());
+                // }
             }
         }
 
@@ -187,20 +247,66 @@ public class GameClient extends AbstractClient {
 
         //Server sends gameData
         else if (arg0 instanceof GameData){
+
             gameData = (GameData)arg0;
 
-            // SHIP SUNK W/ NAME
-            if (gameData.getFeedback().startsWith("Sunk")){
-                //implement
+            // Initial turns...
+            if (gameData.getType().equals("InitialPlayerTurn")){
+                if (gameData.getTurn().equals("Your turn")){
+                    gameControl.setStatus("Opponent turn");
+                    // gameControl.updateGrids(gameData,true,true);
+                    gameControl.setGameData(gameData);
+                    startofGameControl.startGame(true,gameData.getTurn());
+                }
+                else if (gameData.getTurn().equals("Opponent turn")){
+                    // gameControl.setStatus("");
+                    gameControl.setGameData(gameData);
+                    startofGameControl.startGame(false,gameData.getTurn());
+                }
+                
             }
-            // YOUR TURN || YOUR TURN AFTER OPPONENT SETS THEIR BOARD
-            else if (gameData.getFeedback().startsWith("Your turn")){
-                //implement
+
+            else if (gameData.getType().equals("PlayerTurn")){
+
+                if (gameData.getTurn().equals("Your turn")){
+                    gameControl.setStatus(gameData.getTurn());
+                  
+                    gameControl.updateGrids(gameData,true,false);
+                    // startofGameControl.startGame(true,gameData.getTurn());
+                }
+                else if (gameData.getTurn().equals("Opponent turn")){
+                    // startofGameControl.startGame(false,gameData.getTurn());
+                    gameControl.setStatus(gameData.getTurn());
+                    
+                    gameControl.updateGrids(gameData, false, true);
+                }
             }
-            // YOU WIN || YOU LOSE
-            else if (gameData.getFeedback().startsWith("You")){
-                //implement
-            }
+
+            // else if (gameData.getType().equals("GameOver")){
+            //     //set username
+            //     endofGameData.setPlayerUsername(username);
+
+            //     if (gameData.getFeedback().startsWith("You win!")){
+            //         endofGameData = new EndofGameData(true);
+            //         try {
+            //             sendToServer(endofGameData);
+            //         } catch (IOException e) {
+            //             // TODO Auto-generated catch block
+            //             e.printStackTrace();
+            //         }
+            //     }
+            //     else if (gameData.getFeedback().equals("You lost!")){
+            //         endofGameData = new EndofGameData(false);
+            //         try {
+            //             sendToServer(endofGameData);
+            //         } catch (IOException e) {
+            //             // TODO Auto-generated catch block
+            //             e.printStackTrace();
+            //         }
+            //     }
+
+            // }
+            
         }
         
     }

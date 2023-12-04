@@ -5,7 +5,7 @@ import java.io.*;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
-public class StartofGameData {
+public class StartofGameData implements Serializable{
 
 	// private int shipGrid;
 

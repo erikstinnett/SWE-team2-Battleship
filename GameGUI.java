@@ -1,5 +1,7 @@
 
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.IOException;
 
 import Controller.*;
@@ -7,6 +9,7 @@ import Panel.*;
 
 import javax.swing.*;
 import Server.*;
+import Utility.Feedback;
 
 public class GameGUI extends JFrame{
 
@@ -32,7 +35,7 @@ public class GameGUI extends JFrame{
 		});
 
 		gameClient.setHost("localhost");
-    gameClient.setPort(8300);
+    	gameClient.setPort(8300);
 
 		try {
 			gameClient.openConnection();
@@ -87,6 +90,15 @@ public class GameGUI extends JFrame{
 	    this.add(container, BorderLayout.CENTER);
 	    this.setSize(550, 350);
 	    this.setVisible(true);
+	}
+
+	public void exitProcedure(GameClient gameClient) {
+		Feedback feedback = new Feedback("Player is closing the application", "CloseApp");
+		try {
+			gameClient.sendToServer(feedback);
+		} catch (IOException e) {}
+	    this.dispose();
+	    System.exit(0);
 	}
 	
 	public static void main(String[] args) {

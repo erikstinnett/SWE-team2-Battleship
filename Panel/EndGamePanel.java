@@ -39,6 +39,7 @@ public class EndGamePanel extends JPanel {
         add(Box.createVerticalGlue());
     }
     
+    
     public void setResult(String result) {
     	resultLabel.setText(result);
     }

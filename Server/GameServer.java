@@ -50,7 +50,9 @@ public class GameServer extends AbstractServer {
 
 	public void startDatabase(){
 		db = new Database();
-        db.setConnection("./db.properties");
+		
+		db.setConnection("./SWE-team2-Battleship/db.properties");
+        
 	}
 
 	public void setDatabase(Database db) {
@@ -128,7 +130,8 @@ public class GameServer extends AbstractServer {
 				// insert the username and password
 				String dml = "insert into user values('";
 				dml += username + "',aes_encrypt('";
-				dml += password + "','key'))";
+				dml += password + "','key'),";
+				dml += "0,0);";
 
 				// execute DML onto db
 				try {
@@ -223,10 +226,10 @@ public class GameServer extends AbstractServer {
 
 				feedback = new Feedback(sentence, type);
 
-				// Send the result to the client.
-				// grab the players ConnectionToClient object
-				ConnectionToClient player_1;
-				ConnectionToClient player_2;
+				// // Send the result to the client.
+				// // grab the players ConnectionToClient object
+				// ConnectionToClient player_1;
+				// ConnectionToClient player_2;
 
 				try {
 					// send to player 1/2 when they are in a room
@@ -286,33 +289,36 @@ public class GameServer extends AbstractServer {
 			else if (feedback.getType().equals("ScoreBoardData")) {
 				// implement
 
-				// determine the player
-				int gameRoomCount = 0;
-				String whichPlayer = "";
+				// // determine the player
+				// int gameRoomCount = 0;
+				// String whichPlayer = "";
 
-				// Test which gameroom to use...
-				for (int i = 0; i < gameRoom.size(); i++) {
-					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
-						if (gameRoom.get(i).getPlayer1().equals(arg1)) {
-							whichPlayer = "Player 1";
-						} else {
-							whichPlayer = "Player 2";
-						}
-						gameRoomCount = i;
-						break;
-					}
-				}
-				// assign the roomnumber for game room
-				int rNum = gameRoomCount;
+				// // Test which gameroom to use...
+				// for (int i = 0; i < gameRoom.size(); i++) {
+				// 	if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+				// 		if (gameRoom.get(i).getPlayer1().equals(arg1)) {
+				// 			whichPlayer = "Player 1";
+				// 		} else {
+				// 			whichPlayer = "Player 2";
+				// 		}
+				// 		gameRoomCount = i;
+				// 		break;
+				// 	}
+				// }
+				// // assign the roomnumber for game room
+				// int rNum = gameRoomCount;
 
-				String player_username;
+				// String player_username;
 
-				if (whichPlayer.equals("Player 1")) {
+				// if (whichPlayer.equals("Player 1")) {
 
-					player_username = gameRoom.get(rNum).getPlayer1Username();
-				} else {
-					player_username = gameRoom.get(rNum).getPlayer2Username();
-				}
+				// 	player_username = gameRoom.get(rNum).getPlayer1Username();
+				// } else {
+				// 	player_username = gameRoom.get(rNum).getPlayer2Username();
+				// }
+
+				//player username
+				String player_username = feedback.getMessage();
 
 				// query for getting the player's username
 				String query_get_player = "select username,wins,losses from gameData where name = \"" + player_username
@@ -341,60 +347,75 @@ public class GameServer extends AbstractServer {
 			// implement
 			// The server will let the client know when
 
-			// Create Game data
-			startofGameData = (StartofGameData) arg0;
-
-			//for logs...
-			log.append("Message from Client " + arg0.toString() + " " + startofGameData.getPlayerUsername() + "\n");
-
-			gameData = new GameData(startofGameData.getShipGrid(), startofGameData.getShootGrid());
-
-			// Assign each players grid for the Server's reference
-			int gameRoomCount = 0;
-			String whichPlayer = "";
-
-			// Test which gameroom to use...
-			for (int i = 0; i < gameRoom.size(); i++) {
-				if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
-					if (gameRoom.get(i).getPlayer1().equals(arg1)) {
-						whichPlayer = "Player 1";
-						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
-					} else {
-						whichPlayer = "Player 2";
-						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
-					}
-					gameRoomCount = i;
-					break;
-				}
-			}
-
-			int rNum = gameRoomCount;
-			if (whichPlayer.equals("Player 1")) {
-				gameRoom.get(rNum).setPlayer1Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
-			} else {
-				gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
-			}
-
-			//Decide turn order...
-			if (whichPlayer.equals("Player 1")) {
-				// if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
-				gameData.setTurn("Your turn");
-				gameData.setType("InitialPlayerTurn");
-			}
-			else{
-				gameData.setTurn("Opponent turn");
-				gameData.setType("InitialPlayerTurn");
-			}
-			// } else {
-			// 	if (gameRoom.get(rNum).getPlayer1Username().isEmpty())
-			// 		gameData.setFeedback("Your turn after opponent sets their board");
-			// }
-
-			// Send board data to the player
 			try {
-				arg1.sendToClient(gameData);
-			} catch (IOException e) {
-				return;
+				// Create Game data
+				startofGameData = (StartofGameData) arg0;
+
+				// //for logs...
+				// log.append("Message from Client " + arg0.toString() + " " + startofGameData.getPlayerUsername() + "\n");
+
+				gameData = new GameData(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+
+				// Assign each players grid for the Server's reference
+				int gameRoomCount = 0;
+				String whichPlayer = "";
+
+				// Test which gameroom to use...
+				for (int i = 0; i < gameRoom.size(); i++) {
+					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+						if (gameRoom.get(i).getPlayer1().equals(arg1)) {
+							whichPlayer = "Player 1";
+							gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+						} else {
+							whichPlayer = "Player 2";
+							gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+						}
+						gameRoomCount = i;
+						break;
+					}
+				}
+
+				int rNum = gameRoomCount;
+				if (whichPlayer.equals("Player 1")) {
+					gameRoom.get(rNum).setPlayer1Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+				} else {
+					gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
+				}
+
+				//Decide turn order...
+				if (whichPlayer.equals("Player 1")) {
+					// if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
+					gameData.setTurn("Your turn");
+					gameData.setType("InitialPlayerTurn");
+				}
+				else{
+					gameData.setTurn("Opponent turn");
+					gameData.setType("InitialPlayerTurn");
+				}
+				// } else {
+				// 	if (gameRoom.get(rNum).getPlayer1Username().isEmpty())
+				// 		gameData.setFeedback("Your turn after opponent sets their board");
+				// }
+
+				// Send board data to the player
+				try {
+					arg1.sendToClient(gameData);
+				} catch (IOException e) {
+					return;
+				}
+			} 
+
+			//EXCEPTION OCCURS
+			catch (Exception e){
+				Error err = new Error("Player left", "PlayerLeft");
+
+				try {
+					arg1.sendToClient(err);
+				} catch (Exception e1) {
+					// TODO: handle exception
+					e1.printStackTrace();
+				}
+
 			}
 
 		}
@@ -450,7 +471,7 @@ public class GameServer extends AbstractServer {
 			}
 
 			//log
-			log.append(whichPlayer + " sent an attack\n");
+			log.append(whichPlayer + " sent an attack\n" + ": From " + arg1.toString());
 
 			//set the feedback for gamedata
 			gameData.setFeedback(feedback.getMessage());
@@ -472,8 +493,9 @@ public class GameServer extends AbstractServer {
 
 			if (ships.get(0).isSunk() && ships.get(1).isSunk() && ships.get(2).isSunk() && ships.get(3).isSunk() && ships.get(4).isSunk()) {
 				//overwrite feedback
-				gameData.setFeedback("You win! \nYou sunk the opponent's fleet.");
-				gameData.setType("GameOver");
+				// gameData.setFeedback("You win! \nYou sunk the opponent's fleet.");
+				feedback.setMessage("You win!");
+				feedback.setType("EndofGame");
 			}
 				
 			// feedback = new Feedback("You win! \nYou sunk the opponent's fleet.", "GameOver");
@@ -485,15 +507,15 @@ public class GameServer extends AbstractServer {
 			// Send the result to the client.
 			try {
 				//in the instance the ATTACKER wins
-				if (feedback.getType().equals("GameOver")){
-					arg1.sendToClient(gameData);
-
+				if (feedback.getType().equals("EndofGame")){
+					// arg1.sendToClient(gameData);
+					arg1.sendToClient(feedback);
 					//reassign feedback for the losing opponent
-					gameData.setFeedback("You lost!");
+					feedback.setMessage("You lost!");
 					if (whichPlayer.equals("Player 1"))
-						player_2.sendToClient(gameData);
+						player_2.sendToClient(feedback);
 					else
-						player_1.sendToClient(gameData);
+						player_1.sendToClient(feedback);
 				}
 				//Otherwise, send feedback regarding their attack
 				else{
@@ -523,51 +545,31 @@ public class GameServer extends AbstractServer {
 			// end of game data
 			endofGameData = (EndofGameData) arg0;
 
-			// determine the player
-			int gameRoomCount = 0;
-			String whichPlayer = "";
-
-			// Test which gameroom to use...
-			for (int i = 0; i < gameRoom.size(); i++) {
-				if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
-					if (gameRoom.get(i).getPlayer1().equals(arg1)) {
-						whichPlayer = "Player 1";
-					} else {
-						whichPlayer = "Player 2";
-					}
-					gameRoomCount = i;
-					break;
-				}
-			}
-			// assign the roomnumber for game room
-			int rNum = gameRoomCount;
-
-			String player_username;
-
-			//assign username
-			if (whichPlayer.equals("Player 1"))
-				player_username = gameRoom.get(rNum).getPlayer1Username(); 
-			else 
-				player_username = gameRoom.get(rNum).getPlayer2Username();
+			String player_username = endofGameData.getPlayerUsername();
 			
 
 			// determine if win/loss and add the result to wins/losses
-			String dml;
+			String dml = "";
+			String sentences = "";
 
-			if (endofGameData.isWin())
+			if (endofGameData.isWin()){
 				dml = "update gameData set wins = wins + 1 where name = \"" + player_username + "\";";
-			else
-				dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
-
-			// update database
-			try {
-				db.executeDML(dml);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				//e.printStackTrace();
+				sentences = "You win!";
 			}
+				
+			else{
+				dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
+				sentences = "You lost!";
+			}
+				
 
-			String sentences = "Not implemented yet";
+			// // update database
+			// try {
+			// 	db.executeDML(dml);
+			// } catch (SQLException e) {
+			// 	// TODO Auto-generated catch block
+			// 	//e.printStackTrace();
+			// }
 
 			// construct message
 			Object result;

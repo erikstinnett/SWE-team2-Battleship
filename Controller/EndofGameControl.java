@@ -27,17 +27,31 @@ public class EndofGameControl implements ActionListener{
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		
 		if (action.equals("Play Again")) {
+			Feedback feedback = new Feedback("Find a Game", "CreateGame");
 			try {
-				Feedback feedback = new Feedback("start new game", "Create Game");
 				gameClient.sendToServer(feedback);
-				cardLayout.show(container, "StartOfGamePanel");
-			}catch (IOException exc){
-				System.out.println("Error occurred connecting to server");
-				cardLayout.show(container, "MenuPanel");
+				cardLayout.show(container, "StartofGamePanel");
+			}catch (Exception err) {
+				err.printStackTrace();
 			}
+			System.out.println("Play! button pressed!");
+			cardLayout.show(container, "StartofGamePanel");
 		}
 		else if (action.equals("Exit to Main Menu")) {
 			cardLayout.show(container, "MenuPanel");
+		}
+
+		else if (action.equals("View Scoreboard")){
+			String player_username = gameClient.getUsername();
+			Feedback feedback = new Feedback(player_username, "ScoreBoardData");
+			try {
+				gameClient.sendToServer(feedback);
+			}catch (Exception err) {
+				err.printStackTrace();
+			}
+
+			cardLayout.show(container, "ScoreboardPanel");
+
 		}
 		
 	}

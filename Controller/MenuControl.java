@@ -39,12 +39,15 @@ public class MenuControl implements ActionListener{
 			cardLayout.show(container, "StartofGamePanel");
 		}
 		else if (action.equals("View Scoreboard")) {
-			Feedback feedback = new Feedback("Show the leaderboards", "ScoreBoardData");
+			String player_username = gameClient.getUsername();
+			Feedback feedback = new Feedback(player_username, "ScoreBoardData");
 			try {
 				gameClient.sendToServer(feedback);
 			}catch (Exception err) {
 				err.printStackTrace();
 			}
+
+			cardLayout.show(container, "ScoreboardPanel");
 		}
 	}
 

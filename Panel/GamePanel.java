@@ -33,44 +33,7 @@ public class GamePanel extends JPanel {
         
     }
 
-    // public void setGameData(GameData gd){
-    //     this.gameData = gd;
-    // }
-
-    // public GameData getGamedata(){
-    //     return this.gameData;
-    // }
-
-    // public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG, String status) {
-	// 	// unpackage game data, and tell teh panel to update
-	// 	// this.gameData = gameData;
-
-	// 	//get hit or miss
-	// 	int hit_or_miss = 0;
-	// 	if (gameData.getDetailedFeedback().equals("hit"))
-	// 		hit_or_miss = 1;	
-	// 	else if (gameData.getDetailedFeedback().equals("miss"))
-	// 		hit_or_miss = 2;
-
-	// 	if (updateShipG){
-
-	// 		this.gameData.setShipGrid(gameData.getShipGrid());
-	// 		//redraw grid
-	// 		drawShip(this.gameData.getShipGrid());
-	// 		//set turn order
-	// 		setTurnOrder(true, status);
-	// 	}
-	// 	if (updateShootG){
-	// 		int[] shot = gameData.getTarget();
-	// 		//this classes shipgrid
-	// 		shootGrid = this.gameData.getShootGrid();
-	// 		shootGrid.placeShot(hit_or_miss, shot[0], shot[1]);
-	// 		this.gameData.setShootGrid(shootGrid);
-
-	// 		//redraw grid
-	// 		drawShoot(shootGrid);
-	// 	}		
-	// }
+    
 
     public GamePanel(GameControl gc) {
         setLayout(new BorderLayout(10, 10)); // Added gap between components
@@ -168,7 +131,7 @@ public class GamePanel extends JPanel {
         this.add(container);
         // this.setSize(700,700);
 
-        gc.setGamePanel(this);
+        // gc.setGamePanel(this);
     }
     
     public void setButtonStatus(boolean bool) {

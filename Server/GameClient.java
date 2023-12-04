@@ -4,6 +4,7 @@ package Server;
 import Controller.*;
 import Utility.*;
 import Utility.Error;
+import Data.EndofGameData;
 import Data.GameData;
 
 //
@@ -38,6 +39,7 @@ public class GameClient extends AbstractClient {
 
     //Data
     private GameData gameData;
+    private EndofGameData endofGameData;
 
     //player cred
     private String username;
@@ -150,9 +152,10 @@ public class GameClient extends AbstractClient {
             }
 
             // If a player leaves before starting a game...
-            else if (error.getType().equals("MissingPlayer")){
+            else if (error.getType().equals("PlayerLeft")){
                 //bring back to Menu
                 loginController.loginSuccess();
+                //set message
             }
         }
 
@@ -191,6 +194,46 @@ public class GameClient extends AbstractClient {
                 loginController.loginSuccess();
                 //assign the client's username
                 this.username = feedback.getMessage();
+            }
+
+            // A player wins/loses
+            else if (feedback.getType().equals("EndofGame")){
+
+                //win
+                if (feedback.getMessage().equals("You win!")){
+                    endofGameData = new EndofGameData(true);
+                    endofGameData.setPlayerUsername(username);
+                    try {
+                        sendToServer(endofGameData);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    gameControl.endGame(feedback.getMessage());
+                }
+                //loss
+                else if (feedback.getMessage().equals("You lost!")){
+                    endofGameData = new EndofGameData(false);
+                    endofGameData.setPlayerUsername(username);
+                    try {
+                        sendToServer(endofGameData);
+                    } catch (IOException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+
+                    gameControl.endGame(feedback.getMessage());
+                }
+
+                // //win
+                // if (feedback.getMessage().equals("You win!")){
+                //     gameControl.endGame(feedback.getMessage());
+                // //lost
+                // }
+                // else if (feedback.getMessage().equals("You lost!")){
+                //     gameControl.endGame(feedback.getMessage());
+                // }
             }
         }
 
@@ -239,16 +282,30 @@ public class GameClient extends AbstractClient {
                 }
             }
 
-            else if (gameData.getType().equals("GameOver")){
+            // else if (gameData.getType().equals("GameOver")){
+            //     //set username
+            //     endofGameData.setPlayerUsername(username);
 
-                if (gameData.getFeedback().startsWith("You win!")){
+            //     if (gameData.getFeedback().startsWith("You win!")){
+            //         endofGameData = new EndofGameData(true);
+            //         try {
+            //             sendToServer(endofGameData);
+            //         } catch (IOException e) {
+            //             // TODO Auto-generated catch block
+            //             e.printStackTrace();
+            //         }
+            //     }
+            //     else if (gameData.getFeedback().equals("You lost!")){
+            //         endofGameData = new EndofGameData(false);
+            //         try {
+            //             sendToServer(endofGameData);
+            //         } catch (IOException e) {
+            //             // TODO Auto-generated catch block
+            //             e.printStackTrace();
+            //         }
+            //     }
 
-                }
-                else if (gameData.getFeedback().equals("You lost!")){
-
-                }
-
-            }
+            // }
             
         }
         

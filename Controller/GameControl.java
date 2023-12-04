@@ -12,6 +12,7 @@ import Data.EndofGameData;
 import Data.GameData;
 import Panel.EndGamePanel;
 import Panel.GamePanel;
+import Panel.StartOfGamePanel;
 import Server.GameClient;
 import Utility.Feedback;
 import Utility.ShipGrid;
@@ -22,6 +23,7 @@ public class GameControl implements ActionListener{
 	JPanel container;
 	GameClient gameClient;
 	GamePanel gamePanel;
+	EndGamePanel eogPanel;
 	
 	//Utilities
 	ShipGrid shipGrid;
@@ -55,6 +57,19 @@ public class GameControl implements ActionListener{
 
 	public void setPlayerTurn(String turn){
 		this.turn = turn;
+	}
+
+	// TO-DO figure out how turn order will be handled!
+	public void endGame(String msg){
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		// sogPanel = (StartOfGamePanel)container.getComponent(4);
+		// GamePanel gp = (GamePanel) container.getComponent(5);
+		eogPanel = (EndGamePanel)container.getComponent(7);
+		// gp.drawShip(sogPanel.getGrid());
+		eogPanel.setResult(msg);
+		cardLayout.show(container, "EndGamePanel");
+		//set initial turn order
+		// gp.setTurnOrder(goesFirst, msg); 
 	}
 	
 	@Override
@@ -111,7 +126,7 @@ public class GameControl implements ActionListener{
 	public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG) {
 		// unpackage game data, and tell teh panel to update
 		// this.gameData = gameData;
-		// gamePanel = (GamePanel)container.getComponent(3);
+		gamePanel = (GamePanel)container.getComponent(5);
 
 		// int nc = container.getComponentCount();
         // String numC = String.valueOf(nc);

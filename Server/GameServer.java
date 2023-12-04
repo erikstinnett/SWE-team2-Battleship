@@ -4,6 +4,7 @@ package Server;
 import Data.*;
 //
 import Utility.*;
+import Utility.Error;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.*;
@@ -50,7 +51,7 @@ public class GameServer extends AbstractServer {
 	public void startDatabase(){
 		db = new Database();
 		
-		db.setConnection("./db.properties");
+		db.setConnection("./SWE-team2-Battleship/db.properties");
         
 	}
 
@@ -197,12 +198,12 @@ public class GameServer extends AbstractServer {
 				} 
 				else {
 					for (int i = 0; i < gameRoom.size(); i++) {
-						if (gameRoom.get(i).getPlayer1().equals(arg1)){ //player 1 confirmed ship placement
-							sentence = "You are player 1...Waiting for Opponent";
-							type = "CreateGameWait";
-							addnew = false;
-							break;
-						}
+						// if (gameRoom.get(i).getPlayer1().equals(arg1)){ //player 1 confirmed ship placement
+						// 	sentence = "You are player 1...Waiting for Opponent";
+						// 	type = "CreateGameWait";
+						// 	addnew = false;
+						// 	break;
+						// }
 						if (!gameRoom.get(i).isFull()) {
 							gameRoom.get(i).setPlayer2(arg1); // player 2 presses PLAY!
 							addnew = false;
@@ -211,14 +212,14 @@ public class GameServer extends AbstractServer {
 							type = "JoinedGame";
 							break;
 						}
-						if (gameRoom.get(i).getPlayer2().equals(arg1)){
-							gameRoom.get(i).setPlayer2(arg1); // player 2 confirmed ship placement
-							addnew = false;
-							rNum = i;
-							sentence = "You are player 2";
-							type = "CreateGameReady";
-							break;
-						}
+						// if (gameRoom.get(i).getPlayer2().equals(arg1)){
+						// 	gameRoom.get(i).setPlayer2(arg1); // player 2 confirmed ship placement
+						// 	addnew = false;
+						// 	rNum = i;
+						// 	sentence = "You are player 2";
+						// 	type = "CreateGameReady";
+						// 	break;
+						// }
 					}
 				}
 
@@ -226,7 +227,7 @@ public class GameServer extends AbstractServer {
 					single_gameRoom = new GameRoom(arg1);
 					gameRoom.add(single_gameRoom); // player 2
 					rNum = gameRoom.size() - 1;
-					sentence = "You are player 2";
+					sentence = "You are player 1";
 					type = "CreatedGame";
 				}
 
@@ -239,18 +240,19 @@ public class GameServer extends AbstractServer {
 
 				try {
 					// send to player 1/2 when they are in a room
-					if (feedback.getType().equals("CreatedGame") ||  
-						feedback.getType().equals("JoinedGame")) {
-							arg1.sendToClient(feedback);
-					}
-					// send to player 1 to let them know they are waiting...
-					else if (feedback.getType().equals("CreateGameWait")) {
-						arg1.sendToClient(feedback);
-					}
-					// send to player 2, who will then send "PlayGame", which can be seen below!!
-					else if (feedback.getType().equals("CreateGameReady")){
-						arg1.sendToClient(feedback);
-					}
+					arg1.sendToClient(feedback);
+					// if (feedback.getType().equals("CreatedGame") ||  
+					// 	feedback.getType().equals("JoinedGame")) {
+					// 		arg1.sendToClient(feedback);
+					// }
+					// // send to player 1 to let them know they are waiting...
+					// else if (feedback.getType().equals("CreateGameWait")) {
+					// 	arg1.sendToClient(feedback);
+					// }
+					// // send to player 2, who will then send "PlayGame", which can be seen below!!
+					// else if (feedback.getType().equals("CreateGameReady")){
+					// 	arg1.sendToClient(feedback);
+					// }
 
 				} catch (IOException e) {
 					return;
@@ -390,7 +392,6 @@ public class GameServer extends AbstractServer {
 
 			}
 
-			// Scoreboarddata here? REVISE
 		}
 
 		else if (arg0 instanceof StartofGameData) {
@@ -431,6 +432,11 @@ public class GameServer extends AbstractServer {
 				gameRoom.get(rNum).setPlayer2Boards(startofGameData.getShipGrid(), startofGameData.getShootGrid());
 			}
 
+			// Test to see if players have both sent their boards in ... (test if username is null is a good check)
+			if (gameRoom.get(rNum).getPlayer1Username().isEmpty() || gameRoom.get(rNum).getPlayer2Username().isEmpty()){
+				gameData.setDetailedFeedback("Waiting on opponent! You are " + whichPlayer);
+			}
+
 			//Decide turn order...
 			if (whichPlayer.equals("Player 1")) {
 				// if (gameRoom.get(rNum).getPlayer2Username().isEmpty())
@@ -445,13 +451,13 @@ public class GameServer extends AbstractServer {
 
 			// Send board data to the player
 			try {
-				//Tell player 2 to wait if player 1 hasn't set their board yet
-				if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
-					Feedback feedback = new Feedback("You are " + whichPlayer + "... Waiting on opponent", "CreateGameP1NotReady");
-					arg1.sendToClient(feedback);
-				}
-				else
-					arg1.sendToClient(gameData);
+				// //Tell player 2 to wait if player 1 hasn't set their board yet
+				// if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
+				// 	Feedback feedback = new Feedback("You are " + whichPlayer + "... Waiting on opponent", "CreateGameP1NotReady");
+				// 	arg1.sendToClient(feedback);
+				// }
+				// else
+				arg1.sendToClient(gameData);
 			} catch (IOException e) {
 				return;
 			}

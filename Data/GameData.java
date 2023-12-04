@@ -14,7 +14,7 @@ public class GameData implements Serializable{
 	private String feedback;
 	// private Feedback detailed_feedback;
 	private String turn;
-	private String detailed_feedback;
+	private String detailed_feedback = "";
 	private String type;
 	
 	public ShipGrid getShipGrid()

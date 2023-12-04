@@ -3,9 +3,9 @@ package Server;
 //import packages 
 import Controller.*;
 import Utility.*;
-import Utility.Error;
 import Data.EndofGameData;
 import Data.GameData;
+import Utility.Error;
 
 //
 
@@ -242,8 +242,14 @@ public class GameClient extends AbstractClient {
 
             gameData = (GameData)arg0;
 
+            // If both players have not joined
+            if (gameData.getDetailedFeedback().startsWith("Waiting on opponent")){
+                startofGameControl.setStatus(gameData.getDetailedFeedback());
+                gameControl.setGameData(gameData);
+            }
+
             // Initial turns...
-            if (gameData.getType().equals("InitialPlayerTurn")){
+            else if (gameData.getType().equals("InitialPlayerTurn")){
                 if (gameData.getTurn().equals("Your turn")){
                     gameControl.setStatus("Opponent turn");
                     // gameControl.updateGrids(gameData,true,true);

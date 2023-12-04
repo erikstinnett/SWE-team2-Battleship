@@ -96,11 +96,19 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			//set confirm button status
 			sogPanel.setButtonStatus(false);
 
-			//send the server that they are ready to play
-			Feedback feedback = new Feedback("CreateGame", "CreateGame");
-			try {
-				gameClient.sendToServer(feedback);
-			} catch (Exception e1) {
+			// //send the server that they are ready to play
+			// Feedback feedback = new Feedback("CreateGame", "CreateGame");
+			// try {
+			// 	gameClient.sendToServer(feedback);
+			// } catch (Exception e1) {
+			// 	e1.printStackTrace();
+			// }
+
+			//send sogData
+			try{
+				gameClient.sendToServer(sogData);
+			}
+			catch(Exception e1){
 				e1.printStackTrace();
 			}
 

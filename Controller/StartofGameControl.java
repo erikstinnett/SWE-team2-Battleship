@@ -48,7 +48,12 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		gp.drawShip(sogPanel.getGrid());
 		cardLayout.show(container, "GamePanel");
 		//set initial turn order
-		gp.setTurnOrder(goesFirst, msg); 
+		gp.setTurnOrder(goesFirst, msg);
+		
+		for (Ship i : sogPanel.getShips()) {
+			i.setBounds(610, 10, i.getPreferredSize().width, i.getPreferredSize().height);
+		}
+		sogPanel.getGrid().setGridArray(new int [10][10]);
 	}
 
 	//sets the panel status

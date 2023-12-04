@@ -19,6 +19,9 @@ public class MenuControl implements ActionListener{
 		this.gameClient = gameClient;
 	}
 	
+	public void setPanel(JPanel container) {
+		this.container = container;
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
@@ -26,6 +29,7 @@ public class MenuControl implements ActionListener{
 
 		if (action.equals("Exit")) {
 			cardLayout.show(container, "InitialPanel");
+			container.setName("InitialPanel");
 		}
 		else if (action.equals("Play!")) {
 			Feedback feedback = new Feedback("Find a Game", "CreateGame");
@@ -37,6 +41,8 @@ public class MenuControl implements ActionListener{
 			}
 			System.out.println("Play! button pressed!");
 			cardLayout.show(container, "StartofGamePanel");
+			container.setName("StartofGamePanel");
+
 		}
 		else if (action.equals("View Scoreboard")) {
 			String player_username = gameClient.getUsername();

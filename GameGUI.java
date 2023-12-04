@@ -24,6 +24,16 @@ public class GameGUI extends JFrame{
 		// gameClient.setHost("localhost");
     	// gameClient.setPort(8300);
 
+	    this.addWindowListener(new WindowAdapter() {
+		    @Override
+		    public void windowClosing(WindowEvent event) {
+		        exitProcedure(gameClient);
+		    }
+		});
+
+		gameClient.setHost("localhost");
+    gameClient.setPort(8300);
+
 		try {
 			gameClient.openConnection();
 		} catch (IOException e) {

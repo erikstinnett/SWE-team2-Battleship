@@ -95,6 +95,7 @@ public class GameControl implements ActionListener{
 					gamePanel.setTurnOrder(false,status);
 					// send the data to the server
 					gameData.setTurn(turn);
+					gameData.setShootGrid(shootGrid);
 					gameClient.sendToServer(gameData);
 				}					 
 			} catch (Exception ex) {

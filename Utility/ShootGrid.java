@@ -18,8 +18,17 @@ public class ShootGrid extends Grid{
 	public ShootGrid() {
 		super();
 		setLayout(new GridLayout(10, 10));
-		initializeGrid();
+		setUp();
 		
+	}
+	
+	private void setUp() {
+		JPanel[][] cells = super.getCells();
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j< 10; j++) {
+				add(cells[i][j]);
+			}
+		}
 	}
 	
 	public void initializeGrid() {
@@ -27,8 +36,6 @@ public class ShootGrid extends Grid{
 		int[][] grid = super.getGrid();
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 10; j++) {
-				cells[i][j] = new JPanel();
-				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				switch (grid[i][j]) {
 					case 1:
 						//hit
@@ -44,7 +51,6 @@ public class ShootGrid extends Grid{
 						//nothing
 						break;
 				}
-				add(cells[i][j]);
 			}
 		}
 	}

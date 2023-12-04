@@ -50,7 +50,7 @@ public class GameServer extends AbstractServer {
 
 	public void startDatabase(){
 		db = new Database();
-        db.setConnection("db.properties");
+        db.setConnection("./db.properties");
 	}
 
 	public void setDatabase(Database db) {
@@ -438,7 +438,7 @@ public class GameServer extends AbstractServer {
 				feedback = shipGrid.update(target);
 				//update gameData to send back
 				gameData.setShipGrid(shipGrid);
-				//update gameRoom 
+				//update gameRoom
 				gameRoom.get(rNum).setPlayer2ShipGrid(shipGrid);
 			}
 			else { //player 2
@@ -511,6 +511,7 @@ public class GameServer extends AbstractServer {
 					}
 				}
 			} catch (IOException e) {
+				e.printStackTrace();
 				return;
 			}
 

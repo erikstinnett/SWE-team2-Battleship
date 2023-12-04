@@ -85,6 +85,9 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			// sogPanel.setStatus("Waiting on Opponent :)");
 			sogData = new StartofGameData(sogPanel.getGrid());
 
+			//set the username
+			// sogData.setPlayerUsername(username);
+
 			//set confirm button status
 			sogPanel.setButtonStatus(false);
 

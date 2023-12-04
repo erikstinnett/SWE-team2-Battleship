@@ -186,7 +186,7 @@ public class GameClient extends AbstractClient {
             }
             // Request player 1 / 2 to send back sogData
             else if (feedback.getType().equals("SendSOGData")){
-                startofGameControl.sendSOGdata(username);
+                startofGameControl.sendSOGdata(this.username);
             }        
 
             //login success

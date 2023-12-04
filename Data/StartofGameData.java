@@ -13,7 +13,7 @@ public class StartofGameData implements Serializable{
 	private ShootGrid shootGrid;
 
 	//player cred
-	private String player_username;
+	private String player_username = "";
 
 	public void setPlayerUsername(String player_username){
 		this.player_username = player_username;

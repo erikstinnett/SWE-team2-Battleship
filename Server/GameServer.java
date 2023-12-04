@@ -50,7 +50,7 @@ public class GameServer extends AbstractServer {
 
 	public void startDatabase(){
 		db = new Database();
-        db.setConnection("db.properties");
+        db.setConnection("SWE-team2-Battleship/db.properties");
 	}
 
 	public void setDatabase(Database db) {
@@ -511,6 +511,7 @@ public class GameServer extends AbstractServer {
 					}
 				}
 			} catch (IOException e) {
+				e.printStackTrace();
 				return;
 			}
 

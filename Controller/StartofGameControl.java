@@ -156,13 +156,10 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
     	// Check if the location is within grid bounds
     	if (row< 0 || row >= grid.getGridSize() || col < 0 || col >= grid.getGridSize()) {
     		if (shipPanel.getLastRow() != -1 && shipPanel.getLastCol() != -1) {
-    			
     			grid.clearShip(shipPanel);
     			shipPanel.setLastPosition(-1,  -1); // Reset last position since it's off-grid now
     		}
-    	}
-    	if (row >= 0 && row < grid.getGridSize() && col >= 0 && col < grid.getGridSize() && 
-                (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.getGridSize() : col + shipPanel.getShipSize() <= grid.getGridSize())) {
+    	} else {
     		for (int i = 0; i < shipPanel.getShipSize(); i ++) {
             	if (shipPanel.isVertical()) {
             		if (grid.getGridasArray()[row + i][col] != 0) {
@@ -181,12 +178,22 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 				grid.placeShip(shipPanel, row, col);
 				shipPanel.setLastPosition(row,  col); // Set the new last position
 			}
+			else {
+				JOptionPane.showMessageDialog(grid, "Please make sure your ships are not overlapping.", "Placement Error", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+    		 
+    	}
+    	if (row >= 0 && row < grid.getGridSize() && col >= 0 && col < grid.getGridSize() && 
+                (shipPanel.isVertical() ? row + shipPanel.getShipSize() <= grid.getGridSize() : col + shipPanel.getShipSize() <= grid.getGridSize())) {
+    			if(valid) {
+    				grid.placeShip(shipPanel, row, col);
+    			}
     			else {
     				JOptionPane.showMessageDialog(grid, "Please make sure your ships are not overlapping.", "Placement Error", JOptionPane.ERROR_MESSAGE);
     			}
             } else {
                 // If the ship is outside the grid, reset its position and show an error message
-            	shipPanel.setBounds(610, 10, shipPanel.getPreferredSize().width, shipPanel.getPreferredSize().height);
                 JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
 
             }

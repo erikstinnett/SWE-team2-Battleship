@@ -4,7 +4,6 @@ package Server;
 import Data.*;
 //
 import Utility.*;
-import Utility.Error;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 import javax.swing.*;
@@ -347,6 +346,50 @@ public class GameServer extends AbstractServer {
 
 			}
 
+			// When a user closes the app in game
+			else if (feedback.getType().equals("CloseApp")){
+
+				// determine the player
+				int gameRoomCount = 0;
+				String whichPlayer = "";
+
+				//grab player connections
+				ConnectionToClient player_getting_a_win = null;
+
+				// Test which gameroom to use...
+				for (int i = 0; i < gameRoom.size(); i++) {
+					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+						if (gameRoom.get(i).getPlayer1().equals(arg1)) {
+							whichPlayer = "Player 1";
+							player_getting_a_win = gameRoom.get(i).getPlayer2();
+						} else {
+							whichPlayer = "Player 2";
+							player_getting_a_win = gameRoom.get(i).getPlayer1();
+						}
+						gameRoomCount = i;
+						break;
+					}
+				}
+
+				//gameroom number
+				int rNum = gameRoomCount;
+
+				//Remove gameroom
+				gameRoom.remove(gameRoom.get(rNum));
+				
+				//Give this feedback to the player who was left...
+				feedback = new Feedback("You win!", "EndofGame");
+
+				try {
+					player_getting_a_win.sendToClient(feedback);
+				}
+				catch(Exception e){
+					e.printStackTrace();
+				}
+
+
+			}
+
 			// Scoreboarddata here? REVISE
 		}
 
@@ -404,9 +447,20 @@ public class GameServer extends AbstractServer {
 				// 		gameData.setFeedback("Your turn after opponent sets their board");
 				// }
 
+				//Tell either player to wait if the other has not placed their ships
+				if (gameRoom.get(rNum).getPlayer1Username().isEmpty() || gameRoom.get(rNum).getPlayer2Username().isEmpty()){
+					Feedback feedback = new Feedback("Waiting on opponent...", "");
+				}
+
 				// Send board data to the player
 				try {
-					arg1.sendToClient(gameData);
+					// if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
+					// 	//tell player 2 to wait if player 1 is still setting their game
+					// 	Feedback feedback = new Feedback("", whichPlayer)
+					// 	arg1.sendToClient(feedback);
+					// }
+					// else
+						arg1.sendToClient(gameData);
 				} catch (IOException e) {
 					return;
 				}

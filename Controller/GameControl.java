@@ -34,6 +34,7 @@ public class GameControl implements ActionListener{
 
 	//Update player on their shot, turn, etc
 	String status;
+	String turn;
 
 	public void setStatus(String status){
 		this.status = status;
@@ -42,6 +43,18 @@ public class GameControl implements ActionListener{
 	public GameControl(JPanel container, GameClient gameClient) {
 		this.container = container;
 		this.gameClient = gameClient;
+	}
+
+	public void setGameData(GameData gameData){
+		this.gameData = gameData;
+	}
+
+	public void setGamePanel(GamePanel gp){
+		this.gamePanel = gp;
+	}
+
+	public void setPlayerTurn(String turn){
+		this.turn = turn;
 	}
 	
 	@Override
@@ -66,14 +79,14 @@ public class GameControl implements ActionListener{
 				shot[0] = x;
 				shot[1] = y;
 				//validate the shot
-				shootGrid = gamePanel.getShootGrid();
+				shootGrid = this.gameData.getShootGrid();
 				feedback = shootGrid.validate(shot);
-				//get feedback message and display
+				//get feedback message and display if invalidShot
 				String shot_feedback = feedback.getMessage();
 				//get type to see what kind of shot it was
 				String shot_validity = feedback.getType();
 				if (shot_validity.equals("invalidShot")){
-					JOptionPane.showMessageDialog(gamePanel,"Invalid coordinates, please enter values between 0 and 9");
+					JOptionPane.showMessageDialog(gamePanel,shot_feedback);
 				}
 				else if (shot_validity.equals("validShot")){
 					//since it's valid, assign it
@@ -81,12 +94,9 @@ public class GameControl implements ActionListener{
 					//set turn order (opponent next) and status (opponent turn)
 					gamePanel.setTurnOrder(false,status);
 					// send the data to the server
+					gameData.setTurn(turn);
 					gameClient.sendToServer(gameData);
 				}					 
-				// } 
-				// else {
-				// 	JOptionPane.showMessageDialog(gamePanel,"Invalid coordinates, please enter values between 0 and 9");
-				// }
 			} catch (Exception ex) {
 				JOptionPane.showMessageDialog(gamePanel,"Invalid input format. Please enter coordinates in the format 'x,y'");
 			}
@@ -101,11 +111,44 @@ public class GameControl implements ActionListener{
 	public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG) {
 		// unpackage game data, and tell teh panel to update
 		// this.gameData = gameData;
+		// gamePanel = (GamePanel)container.getComponent(3);
+
+		// int nc = container.getComponentCount();
+        // String numC = String.valueOf(nc);
+
+        // System.out.println(numC);
+
+		//get hit or miss
+		int hit_or_miss = 0;
+		if (gameData.getDetailedFeedback().equals("hit"))
+			hit_or_miss = 1;	
+		else if (gameData.getDetailedFeedback().equals("miss"))
+			hit_or_miss = 2;
+
 		if (updateShipG){
-			setShipGrid(gameData.getShipGrid());
+			// gamePanel = (GamePanel)container.getComponent(10);
+			// setShipGrid(gameData.getShipGrid());
+			// int[] shot = gameData.getTarget();
+			// //this classes shipgrid
+			// shipGrid = this.gameData.getShipGrid();
+			// shipGrid.placeShot(hit_or_miss, shot[0], shot[1]);
+			this.gameData.setShipGrid(gameData.getShipGrid());
+			//redraw grid
+			gamePanel.drawShip(this.gameData.getShipGrid());
+			//set turn order
+			gamePanel.setTurnOrder(true, status);
 		}
 		if (updateShootG){
-			setShootGrid(gameData.getShootGrid());
+			// gamePanel = (GamePanel)container.getComponent(3);
+			// setShootGrid(gameData.getShootGrid());
+			int[] shot = gameData.getTarget();
+			//this classes shipgrid
+			shootGrid = this.gameData.getShootGrid();
+			shootGrid.placeShot(hit_or_miss, shot[0], shot[1]);
+			this.gameData.setShootGrid(shootGrid);
+
+			//redraw grid
+			gamePanel.drawShoot(shootGrid);
 		}
 
 		// //set shipgrid
@@ -129,15 +172,15 @@ public class GameControl implements ActionListener{
 	}
 
 	
-	//setter for the shipgrid
-	public void setShipGrid(ShipGrid shipGrid){
-		// this.shipGrid = shipGrid;
-		this.gameData.setShipGrid(shipGrid);
-	}
-	//setter for the shootgrid
-	public void setShootGrid(ShootGrid shootGrid){
-		// this.shootGrid = shootGrid;
-		this.gameData.setShootGrid(shootGrid);
-	}
+	// //setter for the shipgrid
+	// public void setShipGrid(ShipGrid shipGrid){
+	// 	// this.shipGrid = shipGrid;
+	// 	this.gameData.setShipGrid(shipGrid);
+	// }
+	// //setter for the shootgrid
+	// public void setShootGrid(ShootGrid shootGrid){
+	// 	// this.shootGrid = shootGrid;
+	// 	this.gameData.setShootGrid(shootGrid);
+	// }
 
 }

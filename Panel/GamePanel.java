@@ -3,6 +3,7 @@ package Panel;
 import javax.swing.*;
 
 import Controller.GameControl;
+import Data.GameData;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
@@ -21,23 +22,61 @@ public class GamePanel extends JPanel {
 
     //turn order label
     JLabel turn_order = new JLabel("");
+    
+    //game data
+    GameData gameData;
 
     public void setTurnOrder(Boolean bool, String msg){
-        if (bool){
-            turn_order.setText(msg);
-            fireButton.setEnabled(bool);
-        }
-        else{
-            turn_order.setText(msg);
-            fireButton.setEnabled(bool);
-        }
+
+        turn_order.setText(msg);
+        fireButton.setEnabled(bool);
         
     }
+
+    // public void setGameData(GameData gd){
+    //     this.gameData = gd;
+    // }
+
+    // public GameData getGamedata(){
+    //     return this.gameData;
+    // }
+
+    // public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG, String status) {
+	// 	// unpackage game data, and tell teh panel to update
+	// 	// this.gameData = gameData;
+
+	// 	//get hit or miss
+	// 	int hit_or_miss = 0;
+	// 	if (gameData.getDetailedFeedback().equals("hit"))
+	// 		hit_or_miss = 1;	
+	// 	else if (gameData.getDetailedFeedback().equals("miss"))
+	// 		hit_or_miss = 2;
+
+	// 	if (updateShipG){
+
+	// 		this.gameData.setShipGrid(gameData.getShipGrid());
+	// 		//redraw grid
+	// 		drawShip(this.gameData.getShipGrid());
+	// 		//set turn order
+	// 		setTurnOrder(true, status);
+	// 	}
+	// 	if (updateShootG){
+	// 		int[] shot = gameData.getTarget();
+	// 		//this classes shipgrid
+	// 		shootGrid = this.gameData.getShootGrid();
+	// 		shootGrid.placeShot(hit_or_miss, shot[0], shot[1]);
+	// 		this.gameData.setShootGrid(shootGrid);
+
+	// 		//redraw grid
+	// 		drawShoot(shootGrid);
+	// 	}		
+	// }
 
     public GamePanel(GameControl gc) {
         setLayout(new BorderLayout(10, 10)); // Added gap between components
         
 //        gridPanel = new JPanel(new GridLayout(10, 10));
+        
         shipGrid = new ShipGrid();
         shipGrid.setPreferredSize(new Dimension(350, 350)); // Set preferred size for a square grid
         JPanel buffer = new JPanel(new BorderLayout());
@@ -127,7 +166,9 @@ public class GamePanel extends JPanel {
         container.add(gridPanel2);
 
         this.add(container);
-        this.setSize(700,700);
+        // this.setSize(700,700);
+
+        gc.setGamePanel(this);
     }
     
     public void setButtonStatus(boolean bool) {
@@ -136,7 +177,7 @@ public class GamePanel extends JPanel {
     
     public void drawShoot(ShootGrid shootGrid) {
     	this.shootGrid.setGridArray(shootGrid.getGrid());
-    	this.removeAll();
+    	this.shootGrid.removeAll();
     	this.shootGrid.initializeGrid();
     }
     

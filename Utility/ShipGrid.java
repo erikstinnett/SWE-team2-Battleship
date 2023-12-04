@@ -40,6 +40,12 @@ public class ShipGrid extends Grid {
 //        this.add(columnHeader, BorderLayout.NORTH);
 //        this.add(gridPanel, BorderLayout.CENTER);
 //	}
+
+	// public void placeShot(int type, int x, int y){
+	// 	int[][] grid = getGrid();
+	// 	grid[x][y] = type; //hit, miss
+	// 	setGridArray(grid);
+	// }
 	
 	public void initializeGrid() {
 		JPanel[][] cells = new JPanel[10][10];

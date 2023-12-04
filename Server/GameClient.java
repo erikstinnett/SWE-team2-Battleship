@@ -210,11 +210,14 @@ public class GameClient extends AbstractClient {
             // Initial turns...
             if (gameData.getType().equals("InitialPlayerTurn")){
                 if (gameData.getTurn().equals("Your turn")){
-                    gameControl.setStatus(gameData.getTurn());
-                    gameControl.updateGrids(gameData,true,true);
+                    gameControl.setStatus("Opponent turn");
+                    // gameControl.updateGrids(gameData,true,true);
+                    gameControl.setGameData(gameData);
                     startofGameControl.startGame(true,gameData.getTurn());
                 }
                 else if (gameData.getTurn().equals("Opponent turn")){
+                    // gameControl.setStatus("");
+                    gameControl.setGameData(gameData);
                     startofGameControl.startGame(false,gameData.getTurn());
                 }
                 
@@ -224,12 +227,14 @@ public class GameClient extends AbstractClient {
 
                 if (gameData.getTurn().equals("Your turn")){
                     gameControl.setStatus(gameData.getTurn());
+                  
                     gameControl.updateGrids(gameData,true,false);
                     // startofGameControl.startGame(true,gameData.getTurn());
                 }
                 else if (gameData.getTurn().equals("Opponent turn")){
                     // startofGameControl.startGame(false,gameData.getTurn());
                     gameControl.setStatus(gameData.getTurn());
+                    
                     gameControl.updateGrids(gameData, false, true);
                 }
             }

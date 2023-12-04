@@ -400,6 +400,7 @@ public class GameServer extends AbstractServer {
 		}
 
 		else if (arg0 instanceof GameData) {
+			
 			// determine the player
 			int gameRoomCount = 0;
 			String whichPlayer = "";
@@ -420,6 +421,9 @@ public class GameServer extends AbstractServer {
 			//room number
 			int rNum = gameRoomCount;
 
+			// //for logs...
+			// log.append("Message from Client " + arg0.toString() + " " + gameRoom.get(rNum).getPlayer1Username() + "\n");
+
 			// game data
 			gameData = (GameData) arg0;
 			int[] target = gameData.getTarget();
@@ -427,19 +431,26 @@ public class GameServer extends AbstractServer {
 			//Construct Feedback 
 			Feedback feedback = null;
 
-			//see if hit or miss, and construct feedback. Also get the fleet of ships
+			//see if hit or miss, and construct feedback. Also get the fleet of ships, and update the gameRoom
 			if (whichPlayer.equals("Player 1")){
 				//get player 2 shipgrid
 				shipGrid = gameRoom.get(rNum).getPlayer2ShipGrid();
-
 				feedback = shipGrid.update(target);
+				//update gameData to send back
+				gameData.setShipGrid(shipGrid);
+				//update gameRoom 
+				gameRoom.get(rNum).setPlayer2ShipGrid(shipGrid);
 			}
 			else { //player 2
 				//get player 1 shipgrid
 				shipGrid = gameRoom.get(rNum).getPlayer1ShipGrid();
-
 				feedback = shipGrid.update(target);
+				gameData.setShipGrid(shipGrid);
+				gameRoom.get(rNum).setPlayer1ShipGrid(shipGrid);
 			}
+
+			//log
+			log.append(whichPlayer + " sent an attack\n");
 
 			//set the feedback for gamedata
 			gameData.setFeedback(feedback.getMessage());
@@ -447,11 +458,12 @@ public class GameServer extends AbstractServer {
 			if (!feedback.getDetailedMessage().isEmpty())
 				gameData.setDetailedFeedback(feedback.getDetailedMessage());
 
-			//turn order
-			if (gameData.getTurn().equals("Your turn"))
-				gameData.setTurn("Opponent turn");
-			else
-				gameData.setTurn("Your turn");
+			//switch turn order
+			gameData.setTurn("Opponent turn");
+			// if (gameData.getTurn().equals("Your turn"))
+			// 	gameData.setTurn("Opponent turn");
+			// else
+			// 	gameData.setTurn("Your turn");
 
 			gameData.setType("PlayerTurn");
 
@@ -488,23 +500,17 @@ public class GameServer extends AbstractServer {
 					//send game data to player (needs shootgrid)
 					arg1.sendToClient(gameData);
 					//send game data to opponent (needs shootgrid, and detailedMessage if any)
+					gameData.setTurn("Your turn");
 					if (whichPlayer.equals("Player 1")){
 						player_2.sendToClient(gameData);
-						player_2.sendToClient(feedback);
+						// player_2.sendToClient(feedback);
 					}	
 					else{
 						player_1.sendToClient(gameData);
-						player_1.sendToClient(feedback);
+						// player_1.sendToClient(feedback);
 					}
 				}
 			} catch (IOException e) {
-				return;
-			}
-
-			//Send GameData to player
-			try {
-				arg1.sendToClient(gameData);
-			} catch (Exception e) {
 				return;
 			}
 

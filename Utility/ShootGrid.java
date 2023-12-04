@@ -9,6 +9,12 @@ import javax.swing.JPanel;
 
 public class ShootGrid extends Grid{
 
+	public void placeShot(int type, int x, int y){
+		int[][] grid = getGrid();
+		grid[x][y] = type; //hit, miss
+		super.setGrid(grid);
+	}
+
 	public ShootGrid() {
 		super();
 		setLayout(new GridLayout(10, 10));
@@ -46,25 +52,34 @@ public class ShootGrid extends Grid{
 	public Feedback validate(int[] shot) {
 		Feedback feedback = new Feedback("","");
 		
-		grid = super.getGrid();
-		int WhatThere = grid[shot[0]][shot[1]];
-		
-		switch (WhatThere) {
-			case 1:
-				feedback.setMessage("This was already hit");
-				feedback.setType("invalidShot");
-				break;
-				
-			case 2:
-				feedback.setMessage("This was already missed");
-				feedback.setType("invalidShot");
-				break;
-								
-			default:
-				feedback.setMessage("This is a valid shot");
-				feedback.setType("validShot");
-				break;
+		try {
+			grid = super.getGrid();
+			int WhatThere = grid[shot[0]][shot[1]];
+			
+			switch (WhatThere) {
+				case 1:
+					feedback.setMessage("This was already hit");
+					feedback.setType("invalidShot");
+					break;
+					
+				case 2:
+					feedback.setMessage("This was already missed");
+					feedback.setType("invalidShot");
+					break;
+									
+				default:
+					feedback.setMessage("This is a valid shot");
+					feedback.setType("validShot");
+					break;
+			}
+			
+
+		} catch (Exception e) {
+			feedback.setMessage("Enter values between 0 and 9");
+			feedback.setType("invalidShot");
+			return feedback;
 		}
+
 		return feedback;
 	}
 

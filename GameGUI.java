@@ -16,6 +16,7 @@ public class GameGUI extends JFrame{
 	public GameGUI() {
 		
 		this.setTitle("Battleship");
+		this.setMinimumSize(new Dimension(960, 760));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	    // Create the card layout container.

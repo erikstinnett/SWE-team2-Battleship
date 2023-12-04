@@ -50,7 +50,7 @@ public class GameServer extends AbstractServer {
 	public void startDatabase(){
 		db = new Database();
 		
-		db.setConnection("./SWE-team2-Battleship/db.properties");
+		db.setConnection("./db.properties");
         
 	}
 
@@ -92,22 +92,29 @@ public class GameServer extends AbstractServer {
 		if (arg0 instanceof LoginData) {
 			// Check the username and password with the database.
 			LoginData data = (LoginData) arg0;
-			Object result;
+			//Object result;
+			Feedback succ = null;
+			Error fail = null;
 			String username = data.getUsername();
 			String password = data.getPassword();
 			String query = "select aes_decrypt(password,'key') from user where username='" + username + "'";
 
 			if (!password.equals(db.queryCheckPassword(query))) {
-				result = new Feedback(data.getUsername(), "LoginSuccessfull");
+				succ = new Feedback(data.getUsername(), "LoginSuccessfull");
 				log.append("Client " + arg1.getId() + " successfully logged in as " + data.getUsername() + "\n");
 			} else {
-				result = new Error("The username and password are incorrect.", "Login");
+				fail = new Error("The username and password are incorrect.", "Login");
 				log.append("Client " + arg1.getId() + " failed to log in\n");
 			}
 
 			// Send the result to the client.
 			try {
-				arg1.sendToClient(result);
+				if (succ != null) {
+					arg1.sendToClient(succ);
+				}
+				else {
+					arg1.sendToClient(fail);
+				}
 			} catch (IOException e) {
 				return;
 			}

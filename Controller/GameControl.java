@@ -135,11 +135,11 @@ public class GameControl implements ActionListener{
 
 		//get hit or miss
 		int hit_or_miss = 0;
-		if (gameData.getDetailedFeedback().equals("hit"))
+		if (gameData.getDetailedFeedback().equals("hit") || gameData.getDetailedFeedback().contains("Sunk"))
 			hit_or_miss = 1;	
 		else if (gameData.getDetailedFeedback().equals("miss"))
 			hit_or_miss = 2;
-
+		
 		if (updateShipG){
 			// gamePanel = (GamePanel)container.getComponent(10);
 			// setShipGrid(gameData.getShipGrid());
@@ -164,6 +164,9 @@ public class GameControl implements ActionListener{
 
 			//redraw grid
 			gamePanel.drawShoot(shootGrid);
+			if (gameData.getDetailedFeedback().contains("Sunk")) {
+				JOptionPane.showMessageDialog(gamePanel, gameData.getDetailedFeedback(), "SHIP SUNK!", JOptionPane.INFORMATION_MESSAGE);
+			}
 			
 			gamePanel.setTurnOrder(false, status);
 		}
@@ -186,6 +189,11 @@ public class GameControl implements ActionListener{
 		
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "EndGamePanel");
+		
+		// reset grids in case they play again
+		gamePanel = (GamePanel)container.getComponent(5);
+		gamePanel.drawShip(new ShipGrid());
+		gamePanel.drawShoot(new ShootGrid());
 	}
 
 	

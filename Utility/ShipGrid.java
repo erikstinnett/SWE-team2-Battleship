@@ -18,8 +18,17 @@ public class ShipGrid extends Grid {
 	public ShipGrid() {
 		super();
 		setLayout(new GridLayout(size, size)); // set layout for the grid
-		initializeGrid();
+		setUp();
 		ships = new ArrayList<Ship>();
+	}
+
+	private void setUp() {
+		JPanel[][] cells = super.getCells();
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j< 10; j++) {
+				add(cells[i][j]);
+			}
+		}
 	}
 	
 //	public ShipGrid(JPanel gridPanel) {
@@ -48,12 +57,10 @@ public class ShipGrid extends Grid {
 	// }
 	
 	public void initializeGrid() {
-		JPanel[][] cells = new JPanel[10][10];
+		JPanel[][] cells = super.getCells();
 		int[][] grid = super.getGrid();
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				cells[i][j] = new JPanel();
-				cells[i][j].setBorder(BorderFactory.createLineBorder(Color.BLACK));
 				switch (grid[i][j]) {
 					case 1:
 						//hit
@@ -94,7 +101,6 @@ public class ShipGrid extends Grid {
 						//nothing
 						break;
 				}
-				add(cells[i][j]);
 			}
 		}
 	}

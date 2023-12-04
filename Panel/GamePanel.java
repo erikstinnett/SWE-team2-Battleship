@@ -177,14 +177,12 @@ public class GamePanel extends JPanel {
     
     public void drawShoot(ShootGrid shootGrid) {
     	this.shootGrid.setGridArray(shootGrid.getGrid());
-    	this.shootGrid.removeAll();
     	this.shootGrid.initializeGrid();
     }
     
     public void drawShip(ShipGrid shipGrid) {
     	this.shipGrid.setGridArray(shipGrid.getGridasArray());
     	this.shipGrid.setShips(shipGrid.getShips());
-    	this.shipGrid.removeAll();
     	this.shipGrid.initializeGrid();
     }
 

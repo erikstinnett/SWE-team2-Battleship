@@ -75,11 +75,6 @@ public class GameControl implements ActionListener{
 		cardLayout.show(container, "EndGamePanel");
 	
 		// reset grids in case they play again
-//		gamePanel = (GamePanel)container.getComponent(5);
-//		gamePanel.drawShip(new ShipGrid());
-//		gamePanel.drawShoot(new ShootGrid());
-
-		// gp.drawShip(sogPanel.getGrid());
 		eogPanel.setResult(msg);
 		cardLayout.show(container, "EndGamePanel");
 
@@ -141,21 +136,12 @@ public class GameControl implements ActionListener{
 			}
 		}
 	}
-	
-	// public void fire(ShootGrid shootGrid, int[] target) {
-	// 	// build game data, send to server
-	// }
 
 	//this is a key setter for initializing gamedata to communicate with the server
 	public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG) {
 		// unpackage game data, and tell teh panel to update
 		// this.gameData = gameData;
 		gamePanel = (GamePanel)container.getComponent(5);
-
-		// int nc = container.getComponentCount();
-        // String numC = String.valueOf(nc);
-
-        // System.out.println(numC);
 
 		//get hit or miss
 		int hit_or_miss = 0;
@@ -165,12 +151,6 @@ public class GameControl implements ActionListener{
 			hit_or_miss = 2;
 		
 		if (updateShipG){
-			// gamePanel = (GamePanel)container.getComponent(10);
-			// setShipGrid(gameData.getShipGrid());
-			// int[] shot = gameData.getTarget();
-			// //this classes shipgrid
-			// shipGrid = this.gameData.getShipGrid();
-			// shipGrid.placeShot(hit_or_miss, shot[0], shot[1]);
 			this.gameData.setShipGrid(gameData.getShipGrid());
 			//redraw grid
 			gamePanel.drawShip(this.gameData.getShipGrid());
@@ -194,11 +174,6 @@ public class GameControl implements ActionListener{
 			
 			gamePanel.setTurnOrder(false, status);
 		}
-
-		// //set shipgrid
-		// setShipGrid(gameData.getShipGrid());
-		// //set shootgrid
-		// setShootGrid(gameData.getShootGrid());
 		
 	}
 	
@@ -225,17 +200,5 @@ public class GameControl implements ActionListener{
 		sogControl.enableAllComponents();
 
 	}
-
-	
-	// //setter for the shipgrid
-	// public void setShipGrid(ShipGrid shipGrid){
-	// 	// this.shipGrid = shipGrid;
-	// 	this.gameData.setShipGrid(shipGrid);
-	// }
-	// //setter for the shootgrid
-	// public void setShootGrid(ShootGrid shootGrid){
-	// 	// this.shootGrid = shootGrid;
-	// 	this.gameData.setShootGrid(shootGrid);
-	// }
 
 }

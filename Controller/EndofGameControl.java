@@ -3,12 +3,7 @@ package Controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-
 import javax.swing.JPanel;
-
-import Data.EndofGameData;
-import Panel.EndGamePanel;
 import Server.GameClient;
 import Utility.Feedback;
 
@@ -27,17 +22,10 @@ public class EndofGameControl implements ActionListener{
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		
 		if (action.equals("Play Again")) {
-			// Feedback feedback1 = new Feedback("Remove a game room", "RemoveGameRoom");
 
-			// try {
-			// 	gameClient.sendToServer(feedback1);
-			// } catch (Exception e1) {
-			// 	e1.printStackTrace();
-			// }
-
-			Feedback feedback2 = new Feedback("Find a Game", "CreateGame");
+			Feedback feedback1 = new Feedback("Find a Game", "CreateGame");
 			try {
-				gameClient.sendToServer(feedback2);
+				gameClient.sendToServer(feedback1);
 				// cardLayout.show(container, "StartofGamePanel");
 			}catch (Exception err) {
 				err.printStackTrace();

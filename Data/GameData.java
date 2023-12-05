@@ -1,8 +1,6 @@
 package Data;
 
 import java.io.*;
-
-import Utility.Feedback;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
@@ -80,20 +78,6 @@ public class GameData implements Serializable{
 	public String getType(){
 		return this.type;
 	}
-
-	// //detailed feedback
-	// public void setDetailedFeedback(Feedback feedback){
-	// 	this.detailed_feedback = feedback;
-	// }
-
-	// public Feedback getDetailedFeedback(){
-	// 	if (detailed_feedback.getType().isEmpty() && 
-	// 		detailed_feedback.getMessage().isEmpty() && 
-	// 		detailed_feedback.getDetailedMessage().isEmpty())
-	// 			return null;
-	// 	else
-	// 		return this.detailed_feedback;
-	// }
 
 	//constructor
 	public GameData(ShipGrid shipGrid, ShootGrid shootGrid)

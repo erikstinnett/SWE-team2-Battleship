@@ -24,11 +24,6 @@ import ocsf.client.AbstractClient;
 
 public class GameClient extends AbstractClient {
 
-
-    private JLabel status;
-    private JTextArea serverMsg;
-    private JTextField clientID;
-
     //Controllers
     private LoginControl loginController;
     private CreateAccountControl createAccountController;
@@ -54,23 +49,6 @@ public class GameClient extends AbstractClient {
         super("localhost",8300);
 
     }
-
-    public void setStatus(JLabel status){
-        //Sets the private data field status to the input parameter status
-        this.status = status;
-    }
-
-    public void setServerMsg(JTextArea serverMsg){
-        //Sets the private data field serverMsg to the input parameter serverMsg
-        this.serverMsg = serverMsg;
-
-    }
-
-    public void setClientID(JTextField clientID){
-        //Sets the private data field clientID to the input parameter clientID
-        this.clientID = clientID;
-    }
-
 
     //controllers
     public void setLoginControl(LoginControl controller){
@@ -99,38 +77,13 @@ public class GameClient extends AbstractClient {
     
 
     public void connectionEstablished(){ //hook
-        //this method is called whenever the client's connection has been established with the server
-        //update status
-
-        //set the referenced jlabel status to "listening" and make text green
-        // if(isConnected() == true){
-        //     status.setText("Connected");
-        //     status.setForeground(Color.GREEN);
-        // }
-        // else{
-        //     status.setText("Waiting to connect...");
-        //     status.setForeground(Color.CYAN);
-        // }
-        
-        
+        System.out.println("Connected to server!");
     }
 
     public void handleMessageFromServer(Object arg0){
-            
-        // If we received a String, figure out what this event is.
-        if (arg0 instanceof String){
-            // Get the text of the message.
-            String message = (String)arg0;
-            
-            // Successful account creation
-            if (message.equals("CreateAccountSuccessful")) {
-                createAccountController.createAccountSuccess();
-                //createAccountController.displayMessage(message);
-            }
-        }
         
-        // If we received an Error, figure out where to display it.
-        else if (arg0 instanceof Error){
+        // Error
+        if (arg0 instanceof Error){
             // Get the Error object.
             Error error = (Error)arg0;
             
@@ -189,6 +142,12 @@ public class GameClient extends AbstractClient {
                 this.username = feedback.getMessage();
             }
 
+            //create account success
+            else if (feedback.getType().equals("CreateAccountSuccessful")){
+                this.username = feedback.getMessage();
+                createAccountController.createAccountSuccess();
+            }
+
             // A player wins/loses
             else if (feedback.getType().equals("EndofGame")){
 
@@ -218,15 +177,6 @@ public class GameClient extends AbstractClient {
 
                     gameControl.endGame(feedback.getMessage());
                 }
-
-                // //win
-                // if (feedback.getMessage().equals("You win!")){
-                //     gameControl.endGame(feedback.getMessage());
-                // //lost
-                // }
-                // else if (feedback.getMessage().equals("You lost!")){
-                //     gameControl.endGame(feedback.getMessage());
-                // }
             }
         }
 
@@ -295,33 +245,7 @@ public class GameClient extends AbstractClient {
                     
                     gameControl.updateGrids(gameData, false, true);
                 }
-            }
-
-            // else if (gameData.getType().equals("GameOver")){
-            //     //set username
-            //     endofGameData.setPlayerUsername(username);
-
-            //     if (gameData.getFeedback().startsWith("You win!")){
-            //         endofGameData = new EndofGameData(true);
-            //         try {
-            //             sendToServer(endofGameData);
-            //         } catch (IOException e) {
-            //             // TODO Auto-generated catch block
-            //             e.printStackTrace();
-            //         }
-            //     }
-            //     else if (gameData.getFeedback().equals("You lost!")){
-            //         endofGameData = new EndofGameData(false);
-            //         try {
-            //             sendToServer(endofGameData);
-            //         } catch (IOException e) {
-            //             // TODO Auto-generated catch block
-            //             e.printStackTrace();
-            //         }
-            //     }
-
-            // }
-            
+            }            
         }
         
     }

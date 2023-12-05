@@ -4,9 +4,6 @@ import Utility.Ship;
 import Utility.ShipGrid;
 
 import java.awt.*;
-//import java.awt.dnd.*;
-//import java.awt.event.MouseAdapter;
-//import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -85,10 +82,6 @@ public class StartOfGamePanel extends JPanel {
     public void setStatus(String status) {
     	playerStatus.setText(status);
     }
-
-    // public void setButtonStatus(boolean bool) {
-    // 	confirmPlacement.setEnabled(bool);
-    // }
     
     private void addShip(String name, Color color, int x, int y, StartofGameControl control) {
         Ship ship = new Ship(name, color, control);

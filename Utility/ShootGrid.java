@@ -3,8 +3,6 @@ package Utility;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class ShootGrid extends Grid{

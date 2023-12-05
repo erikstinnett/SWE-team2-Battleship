@@ -1,25 +1,18 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.beans.EventHandler;
 import java.io.IOException;
 
 import javax.swing.*;
 
-import Server.Database;
 import Server.GameServer;
-import ocsf.server.ConnectionToClient;
 
 public class ServerGUI extends JFrame {
     
     private GameServer server;
     private JLabel status; //Initialized to “Not Connected”
-    //private String[] labels = {"Port #", "Timeout"};
-    //private JTextField[] textFields = new JTextField[labels.length];
     private JTextField textFieldPort;
     private JTextField textFieldTimeout;
 
@@ -60,20 +53,6 @@ public class ServerGUI extends JFrame {
 
         top.add(north);
 
-        // for (int i = 0; i < labels.length; i++){
-
-        //     JPanel panel = new JPanel(); //FL
-
-        //     JLabel label = new JLabel(labels[i]);
-        //     textFields[i] = new JTextField(labels[i].length());
-
-        //     panel.add(label);
-        //     panel.add(textFields[i]);
-
-        //     //add to upper
-        //     top.add(panel);
-        // }
-
         // Create port # and timeout fields and jtextfields
         JPanel panel1 = new JPanel(); //FL
         JLabel label1 = new JLabel("Port #");
@@ -90,8 +69,6 @@ public class ServerGUI extends JFrame {
         panel2.add(label2);
         panel2.add(textFieldTimeout);
         top.add(panel2);
-
-        
        
 
         //For lower portion
@@ -167,40 +144,6 @@ public class ServerGUI extends JFrame {
 
             //If the port#/timeout are not set to integers, then print error message
             if (event.getSource() == buttonListen) {
-                // String message = "";
-                // boolean isInteger = false;
-                // //for holding port/timeout values
-                // Integer[] portandtimeout = new Integer[2];
-                // // counter
-                // int i = 0;
-                // for (JTextField textField : textFields){
-                //     message = textField.getText();
-                    
-                //     try {
-                //         int number = Integer.parseInt(message);
-                //         isInteger = true;
-                //         portandtimeout[i] = number;
-                //         i += 1;
-                //     } catch (NumberFormatException e) {
-                //         isInteger = false;
-                //         log.append("Port Number/timeout not entered before pressing Listen. Issue: " + e.getMessage() + "\n");
-                //         break;
-                //     }
-                // }
-                // if (isInteger){
-                //     //set port #, server timeout, and for the server to start listening
-                //     //Once started, the server will update the server log "server started"
-                //     // and update the status to "listening"
-                //     try {
-                //         server.setPort(portandtimeout[0]); //Step B
-                //         server.setTimeout(portandtimeout[1]); // Step C
-                //         server.listen(); //ServerStarted Step D
-                    
-                //     } catch (IOException e) {
-                //         // TODO Auto-generated catch block
-                //         e.printStackTrace();
-                //     }
-                // } 
                 if (server.isListening()){
                     log.append("Server already listening.\n");
                 }

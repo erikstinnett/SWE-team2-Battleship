@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -17,10 +16,7 @@ import javax.swing.SwingUtilities;
 import Data.StartofGameData;
 import Panel.GamePanel;
 import Panel.StartOfGamePanel;
-//import Panel.StartOfGamePanel.DraggableShip;
-//import Panel.StartOfGamePanel.Grid;
 import Server.GameClient;
-import Utility.Feedback;
 import Utility.Ship;
 import Utility.ShipGrid;
 
@@ -52,11 +48,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		cardLayout.show(container, "GamePanel");
 		//set initial turn order
 		gp.setTurnOrder(goesFirst, msg);
-		
-//		for (Ship i : sogPanel.getShips()) {
-//			i.setBounds(610, 10, i.getPreferredSize().width, i.getPreferredSize().height);
-//		}
-//		sogPanel.getGrid().setGridArray(new int [10][10]);
 	}
 
 	//sets the panel status
@@ -81,7 +72,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		CardLayout cardLayout = (CardLayout) container.getLayout();
 		sogPanel = (StartOfGamePanel)container.getComponent(4);
 		
 		if (action.equals("Confirm Ship Placement")) {
@@ -102,14 +92,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 
 			//set confirm button status
 			sogPanel.setButtonStatus(false);
-
-			// //send the server that they are ready to play
-			// Feedback feedback = new Feedback("CreateGame", "CreateGame");
-			// try {
-			// 	gameClient.sendToServer(feedback);
-			// } catch (Exception e1) {
-			// 	e1.printStackTrace();
-			// }
 
 			//send sogData
 			try{

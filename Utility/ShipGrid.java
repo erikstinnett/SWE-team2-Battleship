@@ -1,15 +1,10 @@
 package Utility;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 
 public class ShipGrid extends Grid {
 	private ArrayList<Ship> ships;
@@ -30,31 +25,6 @@ public class ShipGrid extends Grid {
 			}
 		}
 	}
-	
-//	public ShipGrid(JPanel gridPanel) {
-//		this.setLayout(new BorderLayout()); // Use BorderLayout to place the headers
-//        initializeGrid();
-//
-//        // Add the headers
-//        JPanel rowHeader = new JPanel(new GridLayout(size, 1));
-//        JPanel columnHeader = new JPanel(new GridLayout(1, size));
-//
-//        for (int i = 0; i < size; i++) {
-//            rowHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
-//            columnHeader.add(new JLabel(Integer.toString(i), SwingConstants.CENTER));
-//        }
-//
-//        // Add the headers and the grid to the ShipGrid
-//        this.add(rowHeader, BorderLayout.WEST);
-//        this.add(columnHeader, BorderLayout.NORTH);
-//        this.add(gridPanel, BorderLayout.CENTER);
-//	}
-
-	// public void placeShot(int type, int x, int y){
-	// 	int[][] grid = getGrid();
-	// 	grid[x][y] = type; //hit, miss
-	// 	setGridArray(grid);
-	// }
 	
 	public void initializeGrid() {
 		JPanel[][] cells = super.getCells();

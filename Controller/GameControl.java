@@ -63,14 +63,16 @@ public class GameControl implements ActionListener{
 	public void endGame(String msg){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		eogPanel = (EndGamePanel)container.getComponent(7);
-		// gp.drawShip(sogPanel.getGrid());
-		eogPanel.setResult(msg);
-		cardLayout.show(container, "EndGamePanel");
-	
+
 		// reset grids in case they play again
 		gamePanel = (GamePanel)container.getComponent(5);
 		gamePanel.drawShip(new ShipGrid());
 		gamePanel.drawShoot(new ShootGrid());
+
+		// gp.drawShip(sogPanel.getGrid());
+		eogPanel.setResult(msg);
+		cardLayout.show(container, "EndGamePanel");
+
 
 		//reset sogPanel
 		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);

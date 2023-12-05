@@ -657,13 +657,20 @@ public class GameServer extends AbstractServer {
 			String sentences = "";
 
 			if (endofGameData.isWin()){
-				dml = "update gameData set wins = wins + 1 where name = \"" + player_username + "\";";
+				dml = "update gameData set wins = wins + 1 where username = \"" + player_username + "\";";
 				sentences = "You win!";
 			}
 				
 			else{
-				dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
+				dml = "update gameData set losses = losses + 1 where username = \"" + player_username + "\";";
 				sentences = "You lost!";
+			}
+
+			try {
+				db.executeDML(dml);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 		}

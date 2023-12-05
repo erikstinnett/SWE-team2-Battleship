@@ -82,6 +82,7 @@ public class Database {
 
     } catch (SQLException e) {
       //return null since the query did not go through
+    	e.printStackTrace();
       return null;
     }
     

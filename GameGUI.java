@@ -72,7 +72,7 @@ public class GameGUI extends JFrame{
 	    JPanel view4 = new MenuPanel(mc);
 	    JPanel view5 = new StartOfGamePanel(sgc);
 	    JPanel view6 = new GamePanel(gc);
-	    JPanel view7 = new ScoreboardPanel();
+	    JPanel view7 = new ScoreboardPanel(sc);
 	    JPanel view8 = new EndGamePanel(egc);
 
 	    // add each view to the container

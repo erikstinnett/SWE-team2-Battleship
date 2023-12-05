@@ -38,7 +38,7 @@ public class GameServer extends AbstractServer {
 	public void startDatabase(){
 		db = new Database();
 		
-		db.setConnection("./SWE-team2-Battleship/db.properties");
+		db.setConnection("./db.properties");
         
 	}
 
@@ -174,6 +174,7 @@ public class GameServer extends AbstractServer {
 				// create gameroom, or join one that's already made
 				if (gameRoom.isEmpty()) { // player 1 presses PLAY!
 					single_gameRoom = new GameRoom(arg1);
+					single_gameRoom.setPlayer1Username(feedback.getDetailedMessage());
 					gameRoom.add(single_gameRoom);
 					rNum = 0;
 					// sentence = "You are player 1\nWaiting for Opponent";
@@ -185,6 +186,7 @@ public class GameServer extends AbstractServer {
 						
 						if (!gameRoom.get(i).isFull()) {
 							gameRoom.get(i).setPlayer2(arg1); // player 2 presses PLAY!
+							gameRoom.get(i).setPlayer2Username(feedback.getDetailedMessage());
 							addnew = false;
 							rNum = i;
 							// sentence = "You are player 2";
@@ -196,6 +198,7 @@ public class GameServer extends AbstractServer {
 
 				if (addnew) { //IF ALL ROOMS ARE FULL, CREATE A NEW ONE!
 					single_gameRoom = new GameRoom(arg1);
+					single_gameRoom.setPlayer1Username(feedback.getDetailedMessage());
 					gameRoom.add(single_gameRoom); // player 2
 					rNum = gameRoom.size() - 1;
 					sentence = "You are player 1";
@@ -287,7 +290,7 @@ public class GameServer extends AbstractServer {
 
 				//grab player connections
 				ConnectionToClient player_getting_a_win = null;
-				ConnectionToClient player_getting_a_loss = null;
+				String player_getting_a_loss = null;
 
 				// Test which gameroom to use...
 				for (int i = 0; i < gameRoom.size(); i++) {
@@ -309,9 +312,9 @@ public class GameServer extends AbstractServer {
 
 				//get losing player
 				if (whichPlayer.equals("Player 1"))
-					player_getting_a_loss = gameRoom.get(rNum).getPlayer2();
+					player_getting_a_loss = gameRoom.get(rNum).getPlayer1Username();
 				else if (whichPlayer.equals("Player 2"))
-					player_getting_a_loss = gameRoom.get(rNum).getPlayer1();
+					player_getting_a_loss = gameRoom.get(rNum).getPlayer2Username();
 
 				//Remove gameroom
 				if (!gameRoom.isEmpty())
@@ -324,12 +327,21 @@ public class GameServer extends AbstractServer {
 				
 				//Give this feedback to the player who was left...
 				feedback = new Feedback("You win!", "EndofGame");
+				
+				String dml = "update gameData set losses = losses + 1 where username = \"" + player_getting_a_loss + "\";";
+
+				try {
+					db.executeDML(dml);
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
 				try {
 					player_getting_a_win.sendToClient(feedback);
 					//reassign feedback
-					feedback = new Feedback("You lost!", "EndofGame");
-					player_getting_a_loss.sendToClient(feedback);
+//					feedback = new Feedback("You lost!", "EndofGame");
+//					player_getting_a_loss.sendToClient(feedback);
 				}
 				catch(Exception e){
 					e.printStackTrace();
@@ -362,12 +374,12 @@ public class GameServer extends AbstractServer {
 				if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
 					if (gameRoom.get(i).getPlayer1().equals(arg1)) {
 						whichPlayer = "Player 1";
-						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+//						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
 						gameRoom.get(i).setP1gameData(gameData);
 						opponent_player = gameRoom.get(i).getPlayer2();
 					} else {
 						whichPlayer = "Player 2";
-						gameRoom.get(i).setPlayer2Username(startofGameData.getPlayerUsername());
+//						gameRoom.get(i).setPlayer2Username(startofGameData.getPlayerUsername());
 						gameRoom.get(i).setP2gameData(gameData);
 						opponent_player = gameRoom.get(i).getPlayer1();
 					}
@@ -384,7 +396,7 @@ public class GameServer extends AbstractServer {
 			}
 
 			// Test to see if players have both sent their boards in ... (test if username is null is a good check)
-			if (gameRoom.get(rNum).getPlayer1Username().isEmpty() || gameRoom.get(rNum).getPlayer2Username().isEmpty()){
+			if (gameRoom.get(rNum).getPlayer1ShipGrid() == null || gameRoom.get(rNum).getPlayer2ShipGrid() == null){
 				gameData.setDetailedFeedback("Waiting on opponent! You are " + whichPlayer);
 			}
 

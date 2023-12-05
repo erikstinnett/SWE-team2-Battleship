@@ -13,7 +13,7 @@ import Utility.Feedback;
 
 public class GameGUI extends JFrame{
 
-	public GameGUI() {
+	public GameGUI(String host) {
 		
 		this.setTitle("Battleship");
 		this.setMinimumSize(new Dimension(960, 760));
@@ -35,7 +35,7 @@ public class GameGUI extends JFrame{
 		    }
 		});
 
-		gameClient.setHost("localhost");
+		gameClient.setHost(host);
     	gameClient.setPort(8300);
 
 		try {
@@ -103,6 +103,6 @@ public class GameGUI extends JFrame{
 	}
 	
 	public static void main(String[] args) {
-		new GameGUI();
+		new GameGUI(args[0]);
 	}
 }

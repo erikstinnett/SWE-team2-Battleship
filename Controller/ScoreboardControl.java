@@ -28,13 +28,10 @@ public class ScoreboardControl implements ActionListener{
 		}
 		leaderBoard[leaderBoard.length-1] = users[0];
 		
-		System.out.print("Retrieve panel");
 		ScoreboardPanel sbp = (ScoreboardPanel) container.getComponent(6);
-		System.out.println("panel retrieved");
 		sbp.setTable(leaderBoard);
-		System.out.println("the table should be set");
 		CardLayout cardLayout = (CardLayout)container.getLayout();
-		System.out.println("the card layout was obtained");
+
 		cardLayout.show(container, "ScoreboardPanel");
 	}
 	

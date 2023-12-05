@@ -61,7 +61,8 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		try {
 			gameClient.sendToServer(sogData);
 		} catch (Exception e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(container.getComponent(4), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
+
 		}
 	}
 
@@ -98,9 +99,8 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 				gameClient.sendToServer(sogData);
 			}
 			catch(Exception e1){
-				e1.printStackTrace();
+				JOptionPane.showMessageDialog(container.getComponent(4), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
 			}
-
 		}
 		else if (action.equals("Toggle Ship Orientation")) {
 			Ship selectedShip = sogPanel.getSelectedShip();
@@ -195,7 +195,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
                 JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
 
             }
-        System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
     }
 	
 	private Rectangle calculateNewBounds(Ship ship) {

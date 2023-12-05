@@ -82,7 +82,6 @@ public class ShipGrid extends Grid {
 		
 		// Check if the entire ship can be placed without going out of bounds
         if ((isVertical && (rowStart + shipSize) > size) || (!isVertical && (colStart + shipSize) > size)) {
-            System.out.println("Ship placement is out of bounds.");
             return; // Ship placement is out of bounds
         }
 

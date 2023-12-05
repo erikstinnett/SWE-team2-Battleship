@@ -1,8 +1,0 @@
-should  ships = 1
-        shots = 2
-
-player1 and player2 usernames stored in GameRoom!
-
-EXTRA: 
-
-right as players begin to play after placing ships, should they get a message that tells them whcih user they're playing with? 

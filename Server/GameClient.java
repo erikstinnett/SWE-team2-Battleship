@@ -3,10 +3,10 @@ package Server;
 //import packages 
 import Controller.*;
 import Utility.*;
-import Utility.Error;
 import Data.EndofGameData;
 import Data.GameData;
 import Data.ScoreboardData;
+import Utility.Error;
 
 //
 
@@ -122,16 +122,8 @@ public class GameClient extends AbstractClient {
             // Get the text of the message.
             String message = (String)arg0;
             
-            // If we successfully logged in, tell the login controller.
-            if (message.equals("LoginSuccessful"))
-            {
-                loginController.loginSuccess();
-
-            }
-            
-            // If we successfully created an account, tell the create account controller.
-            else if (message.equals("CreateAccountSuccessful"))
-            {
+            // Successful account creation
+            if (message.equals("CreateAccountSuccessful")) {
                 createAccountController.createAccountSuccess();
                 //createAccountController.displayMessage(message);
             }
@@ -267,8 +259,14 @@ public class GameClient extends AbstractClient {
 
             gameData = (GameData)arg0;
 
+            // If both players have not joined
+            if (gameData.getDetailedFeedback().startsWith("Waiting on opponent")){
+                startofGameControl.setStatus(gameData.getDetailedFeedback());
+                gameControl.setGameData(gameData);
+            }
+
             // Initial turns...
-            if (gameData.getType().equals("InitialPlayerTurn")){
+            else if (gameData.getType().equals("InitialPlayerTurn")){
                 if (gameData.getTurn().equals("Your turn")){
                     gameControl.setStatus("Opponent turn");
                     // gameControl.updateGrids(gameData,true,true);

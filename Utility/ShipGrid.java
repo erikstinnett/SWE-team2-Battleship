@@ -98,7 +98,7 @@ public class ShipGrid extends Grid {
 						break;
 						
 					default:
-						//nothing
+						cells[i][j].setBackground(this.getBackground());
 						break;
 				}
 			}

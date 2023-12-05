@@ -51,7 +51,7 @@ public class ScoreboardPanel extends JPanel {
     
     public void setTable(String[][] data) {
     	
-    	for (int i = 0; i < 6; i++) {
+    	for (int i = 0; i < data.length; i++) {
     		for (int j = 0; j < 3; j++) {
     			labels[i + 1][j].setText(data[i][j]);
     		}

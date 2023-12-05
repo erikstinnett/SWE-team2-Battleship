@@ -4,6 +4,7 @@ import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Server.GameClient;
@@ -37,7 +38,8 @@ public class MenuControl implements ActionListener{
 				gameClient.sendToServer(feedback);
 				cardLayout.show(container, "StartofGamePanel");
 			}catch (Exception err) {
-				err.printStackTrace();
+				JOptionPane.showMessageDialog(container.getComponent(3), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
+
 			}
 			System.out.println("Play! button pressed!");
 			cardLayout.show(container, "StartofGamePanel");
@@ -50,7 +52,8 @@ public class MenuControl implements ActionListener{
 			try {
 				gameClient.sendToServer(feedback);
 			}catch (Exception err) {
-				err.printStackTrace();
+				JOptionPane.showMessageDialog(container.getComponent(3), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
+
 			}
 
 //			cardLayout.show(container, "ScoreboardPanel");

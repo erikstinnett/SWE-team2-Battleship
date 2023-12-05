@@ -38,7 +38,7 @@ public class GameServer extends AbstractServer {
 	public void startDatabase(){
 		db = new Database();
 		
-		db.setConnection("./SWE-team2-Battleship/db.properties");
+		db.setConnection("./db.properties");
         
 	}
 

@@ -132,7 +132,7 @@ public class GameControl implements ActionListener{
 					gameClient.sendToServer(gameData);
 				}					 
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(gamePanel,"Invalid input format. Please enter coordinates in the format 'x,y'");
+				JOptionPane.showMessageDialog(gamePanel,"Invalid input format. Please enter coordinates in the format 'y,x'");
 			}
 		}
 	}

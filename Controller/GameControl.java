@@ -15,6 +15,7 @@ import Panel.GamePanel;
 import Panel.StartOfGamePanel;
 import Server.GameClient;
 import Utility.Feedback;
+import Utility.Ship;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
@@ -64,10 +65,19 @@ public class GameControl implements ActionListener{
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		eogPanel = (EndGamePanel)container.getComponent(7);
 
+		// gp.drawShip(sogPanel.getGrid());
+		eogPanel.setResult(msg);
+
 		// reset grids in case they play again
 		gamePanel = (GamePanel)container.getComponent(5);
 		gamePanel.drawShip(new ShipGrid());
 		gamePanel.drawShoot(new ShootGrid());
+		cardLayout.show(container, "EndGamePanel");
+	
+		// reset grids in case they play again
+//		gamePanel = (GamePanel)container.getComponent(5);
+//		gamePanel.drawShip(new ShipGrid());
+//		gamePanel.drawShoot(new ShootGrid());
 
 		// gp.drawShip(sogPanel.getGrid());
 		eogPanel.setResult(msg);
@@ -78,6 +88,12 @@ public class GameControl implements ActionListener{
 		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
 		StartofGameControl sogControl = sogPanel.getController();
 		sogControl.enableAllComponents();
+		
+		for (Ship i : sogPanel.getShips()) {
+			i.setBounds(610, 10, i.getPreferredSize().width, i.getPreferredSize().height);
+		}
+		sogPanel.getGrid().setGridArray(new int [10][10]);
+		sogPanel.setStatus("Place Your Ships!");
 	}
 	
 	@Override

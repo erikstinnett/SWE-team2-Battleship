@@ -48,7 +48,7 @@ public class ShootGrid extends Grid{
 						break;
 						
 					default:
-						//nothing
+						cells[i][j].setBackground(this.getBackground());
 						break;
 				}
 			}

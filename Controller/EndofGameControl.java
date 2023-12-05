@@ -30,7 +30,7 @@ public class EndofGameControl implements ActionListener{
 			Feedback feedback = new Feedback("Find a Game", "CreateGame");
 			try {
 				gameClient.sendToServer(feedback);
-				cardLayout.show(container, "StartofGamePanel");
+				// cardLayout.show(container, "StartofGamePanel");
 			}catch (Exception err) {
 				err.printStackTrace();
 			}

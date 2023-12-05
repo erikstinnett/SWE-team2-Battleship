@@ -19,8 +19,16 @@ public class StartOfGamePanel extends JPanel {
     private Ship currentShip;
     private JButton toggleOrientationButton;
     private Ship selectedShip;
+    //sogControl
+    private StartofGameControl sogControl;
+
+    //gettting the controller for the game panel... in order to reset positions
+    public StartofGameControl getController(){
+        return this.sogControl;
+    }
 
     public StartOfGamePanel(StartofGameControl control) {
+        this.sogControl = control;
         grid = new ShipGrid();
         playerStatus = new JLabel("Place Your Ships!");
         playerStatus.setHorizontalAlignment(JLabel.CENTER);

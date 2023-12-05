@@ -1,5 +1,6 @@
 package Utility;
 
+import Data.GameData;
 import ocsf.server.ConnectionToClient;
 
 public class GameRoom {
@@ -8,8 +9,8 @@ public class GameRoom {
 	private ConnectionToClient player1;
 	private ConnectionToClient player2;
 	private boolean full;
-	private String player1_username;
-	private String player2_username;
+	private String player1_username = "";
+	private String player2_username = "";
 
 	//grids
 	private ShipGrid p1_shipGrid;
@@ -20,6 +21,26 @@ public class GameRoom {
 	//latest shots
 	// private int[] p1_lastShot; 
 	// private int[] p2_lastShot;
+
+	//data 
+	private GameData gameData_p1;
+	private GameData gameData_p2;
+
+	public void setP1gameData(GameData gameData){
+		this.gameData_p1 = gameData;
+	}
+
+	public GameData getP1gameData(){
+		return this.gameData_p1;
+	}
+
+	public void setP2gameData(GameData gameData){
+		this.gameData_p2 = gameData;
+	}
+
+	public GameData getP2gameData(){
+		return this.gameData_p2;
+	}
 	
 	public GameRoom(ConnectionToClient p1) {
 		this.player1 = p1;

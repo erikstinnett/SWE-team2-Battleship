@@ -3,9 +3,9 @@ package Server;
 //import packages 
 import Controller.*;
 import Utility.*;
+import Utility.Error;
 import Data.EndofGameData;
 import Data.GameData;
-import Utility.Error;
 
 //
 
@@ -159,7 +159,7 @@ public class GameClient extends AbstractClient {
             // Player 1 is in a game room, OR player 2 joins player 1's game room
             if (feedback.getType().equals("CreatedGame") ||
                 feedback.getType().equals("JoinedGame")){
-                //implement
+                startofGameControl.setUsername(username);
             }
             // If player1 has been established
             else if (feedback.getType().equals("CreateGameWait")){

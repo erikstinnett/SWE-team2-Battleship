@@ -378,6 +378,14 @@ public class GameServer extends AbstractServer {
 
 				//Remove gameroom
 				gameRoom.remove(gameRoom.get(rNum));
+
+				//in case there is no opponent, do nothing about increasing score!
+				try {
+					if (player_getting_a_win == null)
+						return;
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
 				
 				//Give this feedback to the player who was left...
 				feedback = new Feedback("You win!", "EndofGame");
@@ -410,15 +418,22 @@ public class GameServer extends AbstractServer {
 			int gameRoomCount = 0;
 			String whichPlayer = "";
 
+			// Get connections to players for when an opponent is waiting...
+			ConnectionToClient opponent_player = null;
+
 			// Test which gameroom to use...
 			for (int i = 0; i < gameRoom.size(); i++) {
 				if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
 					if (gameRoom.get(i).getPlayer1().equals(arg1)) {
 						whichPlayer = "Player 1";
 						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+						gameRoom.get(i).setP1gameData(gameData);
+						opponent_player = gameRoom.get(i).getPlayer2();
 					} else {
 						whichPlayer = "Player 2";
-						gameRoom.get(i).setPlayer1Username(startofGameData.getPlayerUsername());
+						gameRoom.get(i).setPlayer2Username(startofGameData.getPlayerUsername());
+						gameRoom.get(i).setP2gameData(gameData);
+						opponent_player = gameRoom.get(i).getPlayer1();
 					}
 					gameRoomCount = i;
 					break;
@@ -449,14 +464,27 @@ public class GameServer extends AbstractServer {
 			}
 
 
-			// Send board data to the player
+			// Send board data to the player(s)
 			try {
-				// //Tell player 2 to wait if player 1 hasn't set their board yet
-				// if (gameRoom.get(rNum).getPlayer1Username().isEmpty()){
-				// 	Feedback feedback = new Feedback("You are " + whichPlayer + "... Waiting on opponent", "CreateGameP1NotReady");
-				// 	arg1.sendToClient(feedback);
-				// }
-				// else
+				//waiting
+				if (gameData.getDetailedFeedback().startsWith("Waiting on opponent"))
+					arg1.sendToClient(gameData);
+				//ready to play!
+				else{
+					//send to player sending their sogData
+					arg1.sendToClient(gameData);
+					//send to opponent player to begin the game!
+					if (whichPlayer.equals("Player 1")){
+						GameData p2gd = gameRoom.get(rNum).getP2gameData();
+						p2gd.setDetailedFeedback("");
+						opponent_player.sendToClient(p2gd);
+					}	
+					else if (whichPlayer.equals("Player 2")) {
+						GameData p1gd = gameRoom.get(rNum).getP1gameData();
+						p1gd.setDetailedFeedback("");
+						opponent_player.sendToClient(p1gd);
+					}
+				}
 				arg1.sendToClient(gameData);
 			} catch (IOException e) {
 				return;

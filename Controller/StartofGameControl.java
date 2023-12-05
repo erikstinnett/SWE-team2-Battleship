@@ -34,6 +34,9 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	StartofGameData sogData;
 	//Panel
 	StartOfGamePanel sogPanel;
+
+	//user cred
+	String username = "";
 	
 	public StartofGameControl(JPanel container, GameClient gameClient) {
 		this.container = container;
@@ -70,6 +73,10 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+
+	public void setUsername(String username){
+		this.username = username;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -91,7 +98,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			sogData = new StartofGameData(sogPanel.getGrid());
 
 			//set the username
-			// sogData.setPlayerUsername(username);
+			sogData.setPlayerUsername(username);
 
 			//set confirm button status
 			sogPanel.setButtonStatus(false);
@@ -220,6 +227,15 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
         } else {
             return new Rectangle(x, y, ship.getShipSize() * Ship.getCELL_SIZE(), Ship.getCELL_SIZE());
         }
+	}
+
+	//for resetting purposes
+	public void enableAllComponents(){
+		sogPanel.setButtonStatus(true);
+		for (Ship i : sogPanel.getShips()) {
+			i.addMouseListener(this);
+			i.addMouseListener(this);
+		}
 	}
 
 }

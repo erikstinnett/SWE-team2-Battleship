@@ -62,14 +62,20 @@ public class GameControl implements ActionListener{
 	// TO-DO figure out how turn order will be handled!
 	public void endGame(String msg){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
-		// sogPanel = (StartOfGamePanel)container.getComponent(4);
-		// GamePanel gp = (GamePanel) container.getComponent(5);
 		eogPanel = (EndGamePanel)container.getComponent(7);
 		// gp.drawShip(sogPanel.getGrid());
 		eogPanel.setResult(msg);
 		cardLayout.show(container, "EndGamePanel");
-		//set initial turn order
-		// gp.setTurnOrder(goesFirst, msg); 
+	
+		// reset grids in case they play again
+		gamePanel = (GamePanel)container.getComponent(5);
+		gamePanel.drawShip(new ShipGrid());
+		gamePanel.drawShoot(new ShootGrid());
+
+		//reset sogPanel
+		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		StartofGameControl sogControl = sogPanel.getController();
+		sogControl.enableAllComponents();
 	}
 	
 	@Override
@@ -194,6 +200,12 @@ public class GameControl implements ActionListener{
 		gamePanel = (GamePanel)container.getComponent(5);
 		gamePanel.drawShip(new ShipGrid());
 		gamePanel.drawShoot(new ShootGrid());
+
+		//reset sogPanel
+		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		StartofGameControl sogControl = sogPanel.getController();
+		sogControl.enableAllComponents();
+
 	}
 
 	

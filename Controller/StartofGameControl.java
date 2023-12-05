@@ -31,9 +31,9 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	private Point offset;
 
 	//Data
-	StartofGameData sogData;
+	private StartofGameData sogData;
 	//Panel
-	StartOfGamePanel sogPanel;
+	private StartOfGamePanel sogPanel;
 
 	//user cred
 	String username = "";
@@ -231,6 +231,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 
 	//for resetting purposes
 	public void enableAllComponents(){
+		sogPanel = (StartOfGamePanel)container.getComponent(4);
 		sogPanel.setButtonStatus(true);
 		for (Ship i : sogPanel.getShips()) {
 			i.addMouseListener(this);

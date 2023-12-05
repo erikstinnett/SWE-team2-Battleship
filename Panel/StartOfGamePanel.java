@@ -86,9 +86,9 @@ public class StartOfGamePanel extends JPanel {
     	playerStatus.setText(status);
     }
 
-    public void setButtonStatus(boolean bool) {
-    	confirmPlacement.setEnabled(bool);
-    }
+    // public void setButtonStatus(boolean bool) {
+    // 	confirmPlacement.setEnabled(bool);
+    // }
     
     private void addShip(String name, Color color, int x, int y, StartofGameControl control) {
         Ship ship = new Ship(name, color, control);
@@ -125,7 +125,7 @@ public class StartOfGamePanel extends JPanel {
     	this.currentShip = currentShip;
     }
  
-    public void setButtonStatus(Boolean bool) {
+    public void setButtonStatus(boolean bool) {
     	confirmPlacement.setEnabled(bool);
     	toggleOrientationButton.setEnabled(bool);
     }

@@ -355,29 +355,29 @@ public class GameServer extends AbstractServer {
 
 			}
 
-			//After a game is finished, remove the players gameroom
-			else if (feedback.getType().equals("RemoveGameRoom")){
+			// //After a game is finished, remove the players gameroom
+			// else if (feedback.getType().equals("RemoveGameRoom")){
 
-				// determine the player
-				int gameRoomCount = 0;
+			// 	// determine the player
+			// 	int gameRoomCount = 0;
 
-				// Test which gameroom to use...
-				for (int i = 0; i < gameRoom.size(); i++) {
-					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
-						gameRoomCount = i;
-						break;
-					}
-				}
+			// 	// Test which gameroom to use...
+			// 	for (int i = 0; i < gameRoom.size(); i++) {
+			// 		if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+			// 			gameRoomCount = i;
+			// 			break;
+			// 		}
+			// 	}
 
-				//remove gameroom
-				gameRoom.remove(gameRoomCount);
+			// 	//remove gameroom
+			// 	gameRoom.remove(gameRoomCount);
 
-				try {
-					return;
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+			// 	try {
+			// 		return;
+			// 	} catch (Exception e) {
+			// 		e.printStackTrace();
+			// 	}
+			// }
 
 			// When a user closes the app in game
 			else if (feedback.getType().equals("CloseApp")){
@@ -618,6 +618,9 @@ public class GameServer extends AbstractServer {
 						player_2.sendToClient(feedback);
 					else
 						player_1.sendToClient(feedback);
+					
+					//clean the game room
+					gameRoom.remove(rNum);
 				}
 				//Otherwise, send feedback regarding their attack
 				else{
@@ -638,9 +641,6 @@ public class GameServer extends AbstractServer {
 				e.printStackTrace();
 				return;
 			}
-
-			//clean the game room
-			gameRoom.remove(rNum);
 
 		}
 

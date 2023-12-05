@@ -11,6 +11,9 @@
     step 10: select the libraries tab and classpath.
     step 11: add the ocsf and the mysql connector jar files located within the project.
     step 12: select add library, select JUnit then next. then make sure JUnit 4 is selected. hit finish. apply and close.
+    step 13: run a mysql server.
+    step 14: ensure there is a user named student with the password "hello" that has access to a database called student_space.
+    step 15: run the battleshipdb.sql file in mysql to set up our program's database.
 
 # The project should now be fully set up into papyrus, but now you have some options to run it #
 

@@ -27,9 +27,17 @@ public class EndofGameControl implements ActionListener{
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		
 		if (action.equals("Play Again")) {
-			Feedback feedback = new Feedback("Find a Game", "CreateGame");
+			// Feedback feedback1 = new Feedback("Remove a game room", "RemoveGameRoom");
+
+			// try {
+			// 	gameClient.sendToServer(feedback1);
+			// } catch (Exception e1) {
+			// 	e1.printStackTrace();
+			// }
+
+			Feedback feedback2 = new Feedback("Find a Game", "CreateGame");
 			try {
-				gameClient.sendToServer(feedback);
+				gameClient.sendToServer(feedback2);
 				// cardLayout.show(container, "StartofGamePanel");
 			}catch (Exception err) {
 				err.printStackTrace();

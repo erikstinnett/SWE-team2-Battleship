@@ -355,6 +355,30 @@ public class GameServer extends AbstractServer {
 
 			}
 
+			//After a game is finished, remove the players gameroom
+			else if (feedback.getType().equals("RemoveGameRoom")){
+
+				// determine the player
+				int gameRoomCount = 0;
+
+				// Test which gameroom to use...
+				for (int i = 0; i < gameRoom.size(); i++) {
+					if (gameRoom.get(i).getPlayer1().equals(arg1) || gameRoom.get(i).getPlayer2().equals(arg1)) {
+						gameRoomCount = i;
+						break;
+					}
+				}
+
+				//remove gameroom
+				gameRoom.remove(gameRoomCount);
+
+				try {
+					return;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+
 			// When a user closes the app in game
 			else if (feedback.getType().equals("CloseApp")){
 
@@ -384,15 +408,13 @@ public class GameServer extends AbstractServer {
 				int rNum = gameRoomCount;
 
 				//Remove gameroom
-				gameRoom.remove(gameRoom.get(rNum));
+				if (!gameRoom.isEmpty())
+					gameRoom.remove(rNum);
 
 				//in case there is no opponent, do nothing about increasing score!
-				try {
-					if (player_getting_a_win == null)
-						return;
-				} catch (Exception e) {
-					// TODO: handle exception
-				}
+				if (player_getting_a_win == null)
+					return;
+				
 				
 				//Give this feedback to the player who was left...
 				feedback = new Feedback("You win!", "EndofGame");
@@ -617,6 +639,9 @@ public class GameServer extends AbstractServer {
 				return;
 			}
 
+			//clean the game room
+			gameRoom.remove(rNum);
+
 		}
 
 		else if (arg0 instanceof EndofGameData) {
@@ -627,7 +652,6 @@ public class GameServer extends AbstractServer {
 
 			String player_username = endofGameData.getPlayerUsername();
 			
-
 			// determine if win/loss and add the result to wins/losses
 			String dml = "";
 			String sentences = "";
@@ -640,26 +664,6 @@ public class GameServer extends AbstractServer {
 			else{
 				dml = "update gameData set losses = losses + 1 where name = \"" + player_username + "\";";
 				sentences = "You lost!";
-			}
-				
-
-			// // update database
-			// try {
-			// 	db.executeDML(dml);
-			// } catch (SQLException e) {
-			// 	// TODO Auto-generated catch block
-			// 	//e.printStackTrace();
-			// }
-
-			// construct message
-			Object result;
-			result = new Feedback(sentences, "EndofGame");
-
-			// Send the result to the client.
-			try {
-				arg1.sendToClient(result);
-			} catch (IOException e) {
-				return;
 			}
 
 		}

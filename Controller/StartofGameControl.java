@@ -234,7 +234,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		sogPanel.setButtonStatus(true);
 		for (Ship i : sogPanel.getShips()) {
 			i.addMouseListener(this);
-			i.addMouseListener(this);
+			i.addMouseMotionListener(this);
 		}
 	}
 

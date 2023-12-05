@@ -195,7 +195,6 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
                 JOptionPane.showMessageDialog(grid, "Please place the ship inside the grid.", "Placement Error", JOptionPane.ERROR_MESSAGE);
 
             }
-        System.out.println("Dropped at grid coordinates: Row = " + row + ", Col: " + col);
     }
 	
 	private Rectangle calculateNewBounds(Ship ship) {

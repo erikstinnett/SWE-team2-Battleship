@@ -34,6 +34,7 @@ public class MenuControl implements ActionListener{
 		}
 		else if (action.equals("Play!")) {
 			Feedback feedback = new Feedback("Find a Game", "CreateGame");
+			feedback.setDetailedMessage(gameClient.getUsername());
 			try {
 				gameClient.sendToServer(feedback);
 				cardLayout.show(container, "StartofGamePanel");
@@ -41,7 +42,7 @@ public class MenuControl implements ActionListener{
 				JOptionPane.showMessageDialog(container.getComponent(3), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
 
 			}
-			System.out.println("Play! button pressed!");
+			
 			cardLayout.show(container, "StartofGamePanel");
 			container.setName("StartofGamePanel");
 

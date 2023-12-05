@@ -200,8 +200,6 @@ public class GameClient extends AbstractClient {
             
             scoreboardControl.buildLeaderboard(sbd);
             menuControl.showScreen();
-            System.out.println(sbd);
-
         }
 
         //Server sends gameData

@@ -32,7 +32,7 @@ public class EndofGameControl implements ActionListener{
 			}catch (Exception err) {
 				JOptionPane.showMessageDialog(container.getComponent(7), "Could not connect to server. Exit the application and try again", "Server Connection Error", JOptionPane.ERROR_MESSAGE);
 			}
-			System.out.println("Play! button pressed!");
+			
 			cardLayout.show(container, "StartofGamePanel");
 		}
 		else if (action.equals("Exit to Main Menu")) {

@@ -17,6 +17,6 @@
 
 # The project should now be fully set up into papyrus, but now you have some options to run it #
 
-    You can use the .bat files to run the application (the easiest way), or you can make a run configuration in papyrus for GameGUI.java that has a commandline argument of "localhost". Once that is set up, run ServerGUI, then GameGUI. Now the program is running!
+You can use the .bat files to run the application (the easiest way), or you can make a run configuration in papyrus for GameGUI.java that has a commandline argument of "localhost". Once that is set up, run ServerGUI, then GameGUI. Now the program is running!
 
-    Always make sure to run the ServerGUI before any GameGUIs.
+Always make sure to run the ServerGUI before any GameGUIs.

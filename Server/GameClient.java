@@ -6,6 +6,7 @@ import Utility.*;
 import Utility.Error;
 import Data.EndofGameData;
 import Data.GameData;
+import Data.ScoreboardData;
 
 //
 
@@ -229,11 +230,27 @@ public class GameClient extends AbstractClient {
             }
         }
 
-        else if (arg0 instanceof ArrayList){
-
-            ArrayList test = (ArrayList)arg0;
-
-            //
+        else if (arg0 instanceof ScoreboardData){
+        	
+        	ScoreboardData data = (ScoreboardData) arg0;
+        	
+            String[][] sbd = new String[6][3];
+            for (int i = 0; i < data.getSb().size(); i++) {
+            	String[] temp = data.getSb().get(i).split(" , ");
+            	for (int j = 0; j < 3; j++) {
+            		if (temp[j] == null) {
+            			sbd[i][j] = "empty";
+            		}
+            		else {
+            			sbd[i][j] = temp[j];
+            	
+            		}
+            	}
+            }
+            
+            scoreboardControl.buildLeaderboard(sbd);
+            menuControl.showScreen();
+            System.out.println(sbd);
 
         }
 

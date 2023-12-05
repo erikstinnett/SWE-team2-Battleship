@@ -31,18 +31,15 @@ public class Database {
             e.printStackTrace();
         }
 
-        // Get the username,password, and url
-        String url = prop.getProperty("url");
-        String user = prop.getProperty("user");
-        String pass = prop.getProperty("password");
-
-        // Set the conn object
-        try {
-            conn = DriverManager.getConnection(url, user, pass);
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+    } catch (SQLException e) {
+      //return null since the query did not go through
+    	e.printStackTrace();
+      return null;
+    }
+    
+    //return to show if it exists or not
+    if (records.isEmpty()){
+        return null;
     }
 
     public Connection getConnection() {
@@ -92,6 +89,20 @@ public class Database {
             return records;
         }
     }
+    } catch (SQLException e) {
+      //return null since the query did not go through
+    	e.printStackTrace();
+      return null;
+    }
+    
+    //return to show if it exists or not
+    if (records.isEmpty()){
+        return null;
+    }
+    else{
+        return records;
+    }
+  }
 
     public String queryCheckPassword(String query) {
         String retrievedPW = "";

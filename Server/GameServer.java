@@ -46,7 +46,7 @@ public class GameServer extends AbstractServer {
 	private Ship ship;
 
 	// other utilities for mini tasks
-	private ArrayList queryResults;
+	private ArrayList<String> queryResults;
 
 	public void startDatabase(){
 		db = new Database();
@@ -324,24 +324,31 @@ public class GameServer extends AbstractServer {
 				// } else {
 				// 	player_username = gameRoom.get(rNum).getPlayer2Username();
 				// }
+				
+				ArrayList<String> results = new ArrayList<String>();
 
 				//player username
 				String player_username = feedback.getMessage();
-
 				// query for getting the player's username
-				String query_get_player = "select username,wins,losses from gameData where name = \"" + player_username
-						+ "\";";
+				String query_get_player = "select username,wins,losses from gameData where username = \'" + player_username
+						+ "\';";
 
 				// query for getting top 5 players
 				String query_get_top_5 = "select username,wins,losses from gameData order by wins desc limit 5;";
-
+				
 				// get the player, and top 5, and add them to queryResults
-				queryResults.addAll(0, db.query(query_get_player));
-				queryResults.addAll(1, db.query(query_get_top_5));
-
+//				queryResults.addAll(0, db.query(query_get_player));
+//				queryResults.addAll(1, db.query(query_get_top_5));
+				ArrayList<String> playerRes = db.query(query_get_player);
+				results.add(playerRes.get(0));
+				ArrayList<String> top5Res = db.query(query_get_top_5);
+				for (String i : top5Res) {
+					results.add(i);
+				}
+				
 				// Send the queryREsults.
 				try {
-					arg1.sendToClient(queryResults);
+					arg1.sendToClient(new ScoreboardData(results));
 				} catch (IOException e) {
 					return;
 				}

@@ -15,6 +15,7 @@ import Panel.GamePanel;
 import Panel.StartOfGamePanel;
 import Server.GameClient;
 import Utility.Feedback;
+import Utility.Ship;
 import Utility.ShipGrid;
 import Utility.ShootGrid;
 
@@ -62,14 +63,32 @@ public class GameControl implements ActionListener{
 	// TO-DO figure out how turn order will be handled!
 	public void endGame(String msg){
 		CardLayout cardLayout = (CardLayout) container.getLayout();
-		// sogPanel = (StartOfGamePanel)container.getComponent(4);
-		// GamePanel gp = (GamePanel) container.getComponent(5);
 		eogPanel = (EndGamePanel)container.getComponent(7);
+
 		// gp.drawShip(sogPanel.getGrid());
 		eogPanel.setResult(msg);
+
+		// reset grids in case they play again
+		gamePanel = (GamePanel)container.getComponent(5);
+		gamePanel.drawShip(new ShipGrid());
+		gamePanel.drawShoot(new ShootGrid());
 		cardLayout.show(container, "EndGamePanel");
-		//set initial turn order
-		// gp.setTurnOrder(goesFirst, msg); 
+	
+		// reset grids in case they play again
+		eogPanel.setResult(msg);
+		cardLayout.show(container, "EndGamePanel");
+
+
+		//reset sogPanel
+		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		StartofGameControl sogControl = sogPanel.getController();
+		sogControl.enableAllComponents();
+		
+		for (Ship i : sogPanel.getShips()) {
+			i.setBounds(610, 10, i.getPreferredSize().width, i.getPreferredSize().height);
+		}
+		sogPanel.getGrid().setGridArray(new int [10][10]);
+		sogPanel.setStatus("Place Your Ships!");
 	}
 	
 	@Override
@@ -117,10 +136,6 @@ public class GameControl implements ActionListener{
 			}
 		}
 	}
-	
-	// public void fire(ShootGrid shootGrid, int[] target) {
-	// 	// build game data, send to server
-	// }
 
 	//this is a key setter for initializing gamedata to communicate with the server
 	public void updateGrids(GameData gameData, Boolean updateShipG, Boolean updateShootG) {
@@ -128,25 +143,14 @@ public class GameControl implements ActionListener{
 		// this.gameData = gameData;
 		gamePanel = (GamePanel)container.getComponent(5);
 
-		// int nc = container.getComponentCount();
-        // String numC = String.valueOf(nc);
-
-        // System.out.println(numC);
-
 		//get hit or miss
 		int hit_or_miss = 0;
-		if (gameData.getDetailedFeedback().equals("hit"))
+		if (gameData.getDetailedFeedback().equals("hit") || gameData.getDetailedFeedback().contains("Sunk"))
 			hit_or_miss = 1;	
 		else if (gameData.getDetailedFeedback().equals("miss"))
 			hit_or_miss = 2;
-
+		
 		if (updateShipG){
-			// gamePanel = (GamePanel)container.getComponent(10);
-			// setShipGrid(gameData.getShipGrid());
-			// int[] shot = gameData.getTarget();
-			// //this classes shipgrid
-			// shipGrid = this.gameData.getShipGrid();
-			// shipGrid.placeShot(hit_or_miss, shot[0], shot[1]);
 			this.gameData.setShipGrid(gameData.getShipGrid());
 			//redraw grid
 			gamePanel.drawShip(this.gameData.getShipGrid());
@@ -164,12 +168,12 @@ public class GameControl implements ActionListener{
 
 			//redraw grid
 			gamePanel.drawShoot(shootGrid);
+			if (gameData.getDetailedFeedback().contains("Sunk")) {
+				JOptionPane.showMessageDialog(gamePanel, gameData.getDetailedFeedback(), "SHIP SUNK!", JOptionPane.INFORMATION_MESSAGE);
+			}
+			
+			gamePanel.setTurnOrder(false, status);
 		}
-
-		// //set shipgrid
-		// setShipGrid(gameData.getShipGrid());
-		// //set shootgrid
-		// setShootGrid(gameData.getShootGrid());
 		
 	}
 	
@@ -184,18 +188,17 @@ public class GameControl implements ActionListener{
 		
 		CardLayout cardLayout = (CardLayout) container.getLayout();
 		cardLayout.show(container, "EndGamePanel");
-	}
+		
+		// reset grids in case they play again
+		gamePanel = (GamePanel)container.getComponent(5);
+		gamePanel.drawShip(new ShipGrid());
+		gamePanel.drawShoot(new ShootGrid());
 
-	
-	// //setter for the shipgrid
-	// public void setShipGrid(ShipGrid shipGrid){
-	// 	// this.shipGrid = shipGrid;
-	// 	this.gameData.setShipGrid(shipGrid);
-	// }
-	// //setter for the shootgrid
-	// public void setShootGrid(ShootGrid shootGrid){
-	// 	// this.shootGrid = shootGrid;
-	// 	this.gameData.setShootGrid(shootGrid);
-	// }
+		//reset sogPanel
+		StartOfGamePanel sogPanel = (StartOfGamePanel)container.getComponent(4);
+		StartofGameControl sogControl = sogPanel.getController();
+		sogControl.enableAllComponents();
+
+	}
 
 }

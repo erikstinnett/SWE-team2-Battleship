@@ -3,7 +3,6 @@ package Controller;
 import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
@@ -21,17 +20,21 @@ public class ScoreboardControl implements ActionListener{
 		
 	}
 	
-	public void buildLeaderboard(Object[][] users) {
-		Object[][] leaderBoard = new Object[6][3];
+	public void buildLeaderboard(String[][] users) {
+		String[][] leaderBoard = new String[6][3];
 		
 		for (int i = 1; i < users.length; i++) {
 			leaderBoard[i-1] = users[i];
 		}
 		leaderBoard[leaderBoard.length-1] = users[0];
 		
-		ScoreboardPanel sbp = (ScoreboardPanel) container.getComponent(8);
-		sbp.setTable(leaderBoard, this);
+		System.out.print("Retrieve panel");
+		ScoreboardPanel sbp = (ScoreboardPanel) container.getComponent(6);
+		System.out.println("panel retrieved");
+		sbp.setTable(leaderBoard);
+		System.out.println("the table should be set");
 		CardLayout cardLayout = (CardLayout)container.getLayout();
+		System.out.println("the card layout was obtained");
 		cardLayout.show(container, "ScoreboardPanel");
 	}
 	
@@ -42,7 +45,9 @@ public class ScoreboardControl implements ActionListener{
 		if (action.equals("Exit")) {
 			CardLayout cardLayout = (CardLayout)container.getLayout();
 			cardLayout.show(container, "MenuPanel");
+			
+			ScoreboardPanel sbp = (ScoreboardPanel) container.getComponent(6);
+			sbp.setTable(new String[1][3]);
 		}
 	}
-
 }

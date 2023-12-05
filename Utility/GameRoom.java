@@ -1,5 +1,6 @@
 package Utility;
 
+import Data.GameData;
 import ocsf.server.ConnectionToClient;
 
 public class GameRoom {
@@ -8,8 +9,8 @@ public class GameRoom {
 	private ConnectionToClient player1;
 	private ConnectionToClient player2;
 	private boolean full;
-	private String player1_username;
-	private String player2_username;
+	private String player1_username = "";
+	private String player2_username = "";
 
 	//grids
 	private ShipGrid p1_shipGrid;
@@ -17,9 +18,25 @@ public class GameRoom {
 	private ShipGrid p2_shipGrid;
 	private ShootGrid p2_shootGrid;
 
-	//latest shots
-	// private int[] p1_lastShot; 
-	// private int[] p2_lastShot;
+	//data 
+	private GameData gameData_p1;
+	private GameData gameData_p2;
+
+	public void setP1gameData(GameData gameData){
+		this.gameData_p1 = gameData;
+	}
+
+	public GameData getP1gameData(){
+		return this.gameData_p1;
+	}
+
+	public void setP2gameData(GameData gameData){
+		this.gameData_p2 = gameData;
+	}
+
+	public GameData getP2gameData(){
+		return this.gameData_p2;
+	}
 	
 	public GameRoom(ConnectionToClient p1) {
 		this.player1 = p1;
@@ -74,22 +91,6 @@ public class GameRoom {
 		this.p1_shipGrid = shipGrid;
 	}
 
-	// public void setPlayer1LastShot(int[] lastShot){
-	// 	p1_lastShot = lastShot;
-	// }
-
-	// public int[] getPlayer1LastShot(){
-	// 	return p1_lastShot;
-	// }
-
-	// public void updatePlayer1ShootGrid(int[] lastShot){
-	// 	p1_shootGrid.update(lastShot);
-	// }
-
-	// public void updatePlayer1ShipGridWithShots(int[] lastShot,String type){
-	// 	p2_shipGrid.update(lastShot,type);
-	// }
-
 	//player 2 boards
 	public void setPlayer2Boards(ShipGrid shipGrid,ShootGrid shootGrid){
 		p2_shipGrid = shipGrid;
@@ -103,21 +104,5 @@ public class GameRoom {
 	public void setPlayer2ShipGrid(ShipGrid shipGrid){
 		this.p2_shipGrid = shipGrid;
 	}
-
-	// public void setPlayer2LastShot(int[] lastShot){
-	// 	p2_lastShot = lastShot;
-	// }
-
-	// public int[] getPlayer2LastShot(){
-	// 	return p2_lastShot;
-	// }
-
-	// public void updatePlayer2ShootGrid(int[] lastShot){
-	// 	p2_shootGrid.update(lastShot);
-	// }
-
-	// public void updatePlayer2ShipGridWithShots(int[] lastShot,String type){
-	// 	p2_shipGrid.update(lastShot,type);
-	// }
 
 }

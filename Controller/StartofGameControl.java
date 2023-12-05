@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
@@ -17,10 +16,7 @@ import javax.swing.SwingUtilities;
 import Data.StartofGameData;
 import Panel.GamePanel;
 import Panel.StartOfGamePanel;
-//import Panel.StartOfGamePanel.DraggableShip;
-//import Panel.StartOfGamePanel.Grid;
 import Server.GameClient;
-import Utility.Feedback;
 import Utility.Ship;
 import Utility.ShipGrid;
 
@@ -31,9 +27,12 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 	private Point offset;
 
 	//Data
-	StartofGameData sogData;
+	private StartofGameData sogData;
 	//Panel
-	StartOfGamePanel sogPanel;
+	private StartOfGamePanel sogPanel;
+
+	//user cred
+	String username = "";
 	
 	public StartofGameControl(JPanel container, GameClient gameClient) {
 		this.container = container;
@@ -48,7 +47,7 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 		gp.drawShip(sogPanel.getGrid());
 		cardLayout.show(container, "GamePanel");
 		//set initial turn order
-		gp.setTurnOrder(goesFirst, msg); 
+		gp.setTurnOrder(goesFirst, msg);
 	}
 
 	//sets the panel status
@@ -65,11 +64,14 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			e.printStackTrace();
 		}
 	}
+
+	public void setUsername(String username){
+		this.username = username;
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String action = e.getActionCommand();
-		CardLayout cardLayout = (CardLayout) container.getLayout();
 		sogPanel = (StartOfGamePanel)container.getComponent(4);
 		
 		if (action.equals("Confirm Ship Placement")) {
@@ -85,14 +87,17 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
 			// sogPanel.setStatus("Waiting on Opponent :)");
 			sogData = new StartofGameData(sogPanel.getGrid());
 
+			//set the username
+			sogData.setPlayerUsername(username);
+
 			//set confirm button status
 			sogPanel.setButtonStatus(false);
 
-			//send the server that they are ready to play
-			Feedback feedback = new Feedback("CreateGame", "CreateGame");
-			try {
-				gameClient.sendToServer(feedback);
-			} catch (Exception e1) {
+			//send sogData
+			try{
+				gameClient.sendToServer(sogData);
+			}
+			catch(Exception e1){
 				e1.printStackTrace();
 			}
 
@@ -204,6 +209,16 @@ public class StartofGameControl extends MouseAdapter implements ActionListener {
         } else {
             return new Rectangle(x, y, ship.getShipSize() * Ship.getCELL_SIZE(), Ship.getCELL_SIZE());
         }
+	}
+
+	//for resetting purposes
+	public void enableAllComponents(){
+		sogPanel = (StartOfGamePanel)container.getComponent(4);
+		sogPanel.setButtonStatus(true);
+		for (Ship i : sogPanel.getShips()) {
+			i.addMouseListener(this);
+			i.addMouseMotionListener(this);
+		}
 	}
 
 }

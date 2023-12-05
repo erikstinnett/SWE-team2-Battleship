@@ -53,8 +53,13 @@ public class MenuControl implements ActionListener{
 				err.printStackTrace();
 			}
 
-			cardLayout.show(container, "ScoreboardPanel");
+//			cardLayout.show(container, "ScoreboardPanel");
 		}
+	}
+	
+	public void showScreen() {
+		CardLayout cardLayout = (CardLayout) container.getLayout();
+		cardLayout.show(container, "ScoreboardPanel");
 	}
 
 }

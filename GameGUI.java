@@ -9,7 +9,6 @@ import Panel.*;
 
 import javax.swing.*;
 import Server.*;
-
 import Utility.Feedback;
 
 public class GameGUI extends JFrame{
@@ -17,8 +16,8 @@ public class GameGUI extends JFrame{
 	public GameGUI() {
 		
 		this.setTitle("Battleship");
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.setMinimumSize(new Dimension(960, 760));
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	
 	    // Create the card layout container.
 	    CardLayout cardLayout = new CardLayout();
@@ -26,6 +25,8 @@ public class GameGUI extends JFrame{
 	    
 	    //Create player client and and open connection
 	    GameClient gameClient = new GameClient();
+		// gameClient.setHost("localhost");
+    	// gameClient.setPort(8300);
 
 	    this.addWindowListener(new WindowAdapter() {
 		    @Override
@@ -35,7 +36,7 @@ public class GameGUI extends JFrame{
 		});
 
 		gameClient.setHost("localhost");
-    gameClient.setPort(8300);
+    	gameClient.setPort(8300);
 
 		try {
 			gameClient.openConnection();
@@ -71,7 +72,7 @@ public class GameGUI extends JFrame{
 	    JPanel view4 = new MenuPanel(mc);
 	    JPanel view5 = new StartOfGamePanel(sgc);
 	    JPanel view6 = new GamePanel(gc);
-	    JPanel view7 = new ScoreboardPanel();
+	    JPanel view7 = new ScoreboardPanel(sc);
 	    JPanel view8 = new EndGamePanel(egc);
 
 	    // add each view to the container
@@ -91,11 +92,11 @@ public class GameGUI extends JFrame{
 	    this.setSize(550, 350);
 	    this.setVisible(true);
 	}
-	
+
 	public void exitProcedure(GameClient gameClient) {
 		Feedback feedback = new Feedback("Player is closing the application", "CloseApp");
 		try {
-			gameClient.sendToServer(gameClient);
+			gameClient.sendToServer(feedback);
 		} catch (IOException e) {}
 	    this.dispose();
 	    System.exit(0);

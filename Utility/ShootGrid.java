@@ -3,8 +3,6 @@ package Utility;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridLayout;
-
-import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 
 public class ShootGrid extends Grid{
@@ -48,7 +46,7 @@ public class ShootGrid extends Grid{
 						break;
 						
 					default:
-						//nothing
+						cells[i][j].setBackground(this.getBackground());
 						break;
 				}
 			}

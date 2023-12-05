@@ -11,11 +11,11 @@ public class EndGamePanel extends JPanel {
     private JLabel resultLabel;
 
     public EndGamePanel(EndofGameControl egc) {
-        this.control = egc; // Store the reference to the EndGameControl object
+        // this.control = egc; // Store the reference to the EndGameControl object
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Determine the winner and create a message
-        resultLabel = new JLabel("", JLabel.CENTER);
+        resultLabel = new JLabel("TEST", JLabel.CENTER);
         resultLabel.setFont(new Font("Serif", Font.BOLD, 24));
         resultLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -29,6 +29,11 @@ public class EndGamePanel extends JPanel {
         exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         exitButton.addActionListener(egc);
 
+        // Scoreboard button
+        JButton scoreBoardButton = new JButton("View Scoreboard");
+        scoreBoardButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        scoreBoardButton.addActionListener(egc);
+
         // Add components to the panel
         add(Box.createVerticalGlue());
         add(resultLabel);
@@ -36,7 +41,16 @@ public class EndGamePanel extends JPanel {
         add(replayButton);
         add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
         add(exitButton);
+        add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
+        add(scoreBoardButton);
         add(Box.createVerticalGlue());
+        // JPanel panel1 = new JPanel(new GridLayout(4,1,5,5));
+        // panel1.add(resultLabel);
+        // panel1.add(replayButton);
+        // panel1.add(exitButton);
+        // panel1.add(scoreBoardButton);
+
+        // this.add(panel1,BorderLayout.CENTER);
     }
     
     

@@ -42,9 +42,6 @@ public class CreateAccountPanel extends JPanel
   // Constructor for the create account panel.
   public CreateAccountPanel(CreateAccountControl cac)
   {
-    // Create the controller and set it in the chat client.
-    //CreateAccountControl controller = new CreateAccountControl(container, client);
-    //client.setCreateAccountControl(controller);
     
     // Create a panel for the labels at the top of the GUI.
     JPanel labelPanel = new JPanel(new GridLayout(3, 1, 5, 5));
